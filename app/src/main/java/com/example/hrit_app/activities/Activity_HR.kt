@@ -1,9 +1,10 @@
-package com.example.hrit_app
+package com.example.hrit_app.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.hrit_app.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Activity_HR : AppCompatActivity() {
