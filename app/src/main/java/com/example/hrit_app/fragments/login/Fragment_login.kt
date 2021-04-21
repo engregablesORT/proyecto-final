@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.navigation.findNavController
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
@@ -21,6 +22,7 @@ class Fragment_login : Fragment() {
     lateinit var btnRegistrar: Button
     lateinit var userName: EditText
     lateinit var passWord: EditText
+    lateinit var welcomeMessage: TextView
     var userService: UserService = UserService()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,11 +32,14 @@ class Fragment_login : Fragment() {
         btnRegistrar = v.findViewById(R.id.btn_signup)
         userName = v.findViewById(R.id.userName)
         passWord = v.findViewById(R.id.passWord)
+        welcomeMessage = v.findViewById(R.id.welcomeMessage)
         return v
     }
 
     override fun onStart() {
         super.onStart()
+        welcomeMessage.setText("Bienvenido a < HR&IT />")
+
         btnLogin.setOnClickListener {
             val user = verificarSiElUsuarioExiste(userName.text.toString(), passWord.text.toString())
             if (user != null){
