@@ -5,13 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
+import android.widget.*
 import androidx.navigation.findNavController
 import com.example.hrit_app.R
 import com.example.hrit_app.services.UserService
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_signup.*
+import java.util.*
 
 class Fragment_signup : Fragment() {
     lateinit var v: View
@@ -21,14 +21,17 @@ class Fragment_signup : Fragment() {
     lateinit var userName: EditText
     lateinit var passWord: EditText
     lateinit var rePassWord: EditText
-    lateinit var radioButtonDev: RadioButton
-    lateinit var radioButtonHr: RadioButton
+    lateinit var spinner : Spinner
+    lateinit var rolSeleccionado : String
     var userService: UserService = UserService()
+    lateinit var arrayAdapter: ArrayAdapter<String>
+    private var recursosHumanos = "Recursos Humanos"
+    private var asesorTecnico = "AsesorTecnico"
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_signup, container, false)
         userName = v.findViewById(R.id.email_signin)
@@ -37,8 +40,7 @@ class Fragment_signup : Fragment() {
         lastName = v.findViewById(R.id.lastName)
         name = v.findViewById(R.id.name)
         rePassWord = v.findViewById(R.id.rePassword)
-        radioButtonDev = v.findViewById(R.id.radioButtonDev)
-        radioButtonHr = v.findViewById(R.id.radioButtonHr)
+        spinner = v.findViewById(R.id.spinner)
         return v
     }
 
@@ -58,15 +60,29 @@ class Fragment_signup : Fragment() {
             }
         }
 
-        /*radioButtonDev.setOnLongClickListener {
+        var roles = arrayOf("Seleccionar un Rol ...", "Recursos Humanos", "Asesoria Tecnica")
+        spinner.adapter = ArrayAdapter<String>(requireActivity(), R.layout.support_simple_spinner_dropdown_item, roles)
 
-        }*/
+        spinner.setSelection(0)
+
+        spinner.onItemSelectedListener = object :
+
+                AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                rolSeleccionado = roles[position]
+            }
+        }
     }
 
     fun verificarDatosObligatorios(): Boolean {
         return userName.text.length > 0  && passWord.text.length > 0 &&
                 rePassWord.text.length > 0 && name.text.length > 0 &&
-                lastName .text.length > 0
+                lastName .text.length > 0 &&
+                (spinner.selectedItem.equals(recursosHumanos) || spinner.selectedItem.equals(asesorTecnico))
     }
 
     fun verificarPasswordIguales(): Boolean {
