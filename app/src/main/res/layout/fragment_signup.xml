@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:autofillHints="Elegir Rol"
-    android:background="@color/bg_bottom"
+    android:background="@color/bg_singup"
     tools:context=".fragments.login.Fragment_signup">
 
 
