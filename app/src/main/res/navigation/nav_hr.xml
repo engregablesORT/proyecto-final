@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_hr"
+    app:startDestination="@id/fragmentHR_Home">
+
+    <fragment
+        android:id="@+id/fragmentHR_Home"
+        android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_Home"
+        android:label="fragment_hr__home"
+        tools:layout="@layout/fragment_hr__home" />
+    <fragment
+        android:id="@+id/fragmentHR_historial"
+        android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_historial"
+        android:label="fragment_hr_historial"
+        tools:layout="@layout/fragment_hr_historial" />
+    <fragment
+        android:id="@+id/fragmentHR_perfil"
+        android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_perfil"
+        android:label="fragment_hr_perfil"
+        tools:layout="@layout/fragment_hr_perfil" />
+</navigation>
