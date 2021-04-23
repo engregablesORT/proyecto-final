@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fragmentDev_Home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/fragmentDev_historial"
+        android:icon="@drawable/metrics"
+        android:title="Historial"
+        />
+    <item
+        android:id="@+id/fragmentDev_perfil"
+        android:icon="@drawable/usuario"
+        android:title="Perfil" />
+</menu>

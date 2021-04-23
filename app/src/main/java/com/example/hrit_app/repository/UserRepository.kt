@@ -9,7 +9,8 @@ object UserRepository {
         User("flor@gmail.com", "passwordflor", "Flor", "Garduno"),
         User("juli@gmail.com", "passwordjuli", "Julian", "Grilli"),
         User("fede@gmail.com", "passwordfede", "Federico", "Mateucci"),
-        User("mati@gmail.com", "passwordmati", "Matias", "Romera"))
+        User("mati@gmail.com", "passwordmati", "Matias", "Romera"),
+        User("Santiago_56@hotmail.com", "passwordsanti", "Santiago", "Escuder"))
 
     fun findByUsernameAndPassword(username: String, password: String): User {
         val usuarioFiltrado = listaUsuarios.filter { userRepo ->

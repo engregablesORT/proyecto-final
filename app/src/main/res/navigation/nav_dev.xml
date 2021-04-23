@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_dev"
+    app:startDestination="@id/fragmentDev_Home">
+
+    <fragment
+        android:id="@+id/fragmentDev_Home"
+        android:name="com.example.hrit_app.fragments.dev.FragmentDev_Home"
+        android:label="fragment_dev__home"
+        tools:layout="@layout/fragment_dev__home" />
+    <fragment
+        android:id="@+id/fragmentDev_historial"
+        android:name="com.example.hrit_app.fragments.dev.FragmentDev_historial"
+        android:label="fragment_dev_historial"
+        tools:layout="@layout/fragment_dev_historial" />
+    <fragment
+        android:id="@+id/fragmentDev_perfil"
+        android:name="com.example.hrit_app.fragments.dev.FragmentDev_perfil"
+        android:label="fragment_dev_perfil"
+        tools:layout="@layout/fragment_dev_perfil" />
+</navigation>

@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_fragment_login_to_fragment_signup"
             app:destination="@id/fragment_signup" />
+        <action
+            android:id="@+id/action_fragment_login_to_activity_Dev2"
+            app:destination="@id/activity_Dev2" />
     </fragment>
     <fragment
         android:id="@+id/fragment_signup"
         android:name="com.example.hrit_app.fragments.login.Fragment_signup"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
+    <activity
+        android:id="@+id/activity_Dev2"
+        android:name="com.example.hrit_app.activities.Activity_Dev"
+        android:label="activity__dev"
+        tools:layout="@layout/activity__dev" />
 </navigation>
