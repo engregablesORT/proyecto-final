@@ -10,4 +10,5 @@
     <color name="bg_top">#1674BF</color>
     <color name="bg_center">#0072AF</color>
     <color name="bg_bottom">#043E6C</color>
+    <color name="bg_singup">#FF094F87</color>
 </resources>
