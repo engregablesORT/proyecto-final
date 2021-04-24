@@ -67,7 +67,7 @@ class Fragment_login : Fragment() {
     }
 
     private fun redirectToAppActivity(){
-        /*val appActivityAction = LoginFragmentDirections.actionLoginFragmentToAppActivity2()
-        v.findNavController().navigate(appActivityAction)*/
+        val appActivityAction = Fragment_loginDirections.actionFragmentLoginToActivityDev2()
+        v.findNavController().navigate(appActivityAction)
     }
 }
