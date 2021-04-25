@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.navigation.findNavController
 import com.example.hrit_app.R
+import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
+import com.example.hrit_app.utils.constants.Rol
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_signup.*
 import java.util.*
@@ -24,9 +26,6 @@ class Fragment_signup : Fragment() {
     lateinit var spinner : Spinner
     lateinit var rolSeleccionado : String
     var userService: UserService = UserService()
-    lateinit var arrayAdapter: ArrayAdapter<String>
-    private var recursosHumanos = "Recursos Humanos"
-    private var asesorTecnico = "AsesorTecnico"
 
 
     override fun onCreateView(
@@ -60,7 +59,7 @@ class Fragment_signup : Fragment() {
             }
         }
 
-        var roles = arrayOf("Seleccionar un Rol ...", "Recursos Humanos", "Asesoria Tecnica")
+        var roles = arrayOf("Seleccionar un Rol ...", Rol.RH, Rol.AT)
         spinner.adapter = ArrayAdapter<String>(requireActivity(), R.layout.support_simple_spinner_dropdown_item, roles)
 
         spinner.setSelection(0)
@@ -82,7 +81,7 @@ class Fragment_signup : Fragment() {
         return userName.text.length > 0  && passWord.text.length > 0 &&
                 rePassWord.text.length > 0 && name.text.length > 0 &&
                 lastName .text.length > 0 &&
-                (spinner.selectedItem.equals(recursosHumanos) || spinner.selectedItem.equals(asesorTecnico))
+                (spinner.selectedItem.equals(Rol.RH) || spinner.selectedItem.equals(Rol.AT))
     }
 
     fun verificarPasswordIguales(): Boolean {
@@ -90,12 +89,12 @@ class Fragment_signup : Fragment() {
     }
 
     private fun redirectToAction1(){
-        /*val action1 = SigninFragmentDirections.actionSigninFragmentToLoginFragment()
-        v.findNavController().navigate(action1)*/
+        val action1 = Fragment_signupDirections.actionFragmentSignupToFragmentLogin()
+        v.findNavController().navigate(action1)
     }
 
     private fun crearNuevoUsuario(){
-        /*val user = User(userName.text.toString(), passWord.text.toString(), name.text.toString(), lastName.text.toString())
-        userService.createUser(user)*/
+        val user = User(userName.text.toString(), passWord.text.toString(), name.text.toString(), lastName.text.toString(), spinner.selectedItem.toString())
+        userService.createUser(user)
     }
 }
