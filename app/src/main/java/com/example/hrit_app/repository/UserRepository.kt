@@ -2,14 +2,16 @@ package com.example.hrit_app.repository
 
 import android.content.res.Resources
 import com.example.hrit_app.entities.User
+import com.example.hrit_app.utils.constants.Rol
 
 object UserRepository {
 
     var listaUsuarios: MutableList<User> = mutableListOf(
-        User("flor@gmail.com", "passwordflor", "Flor", "Garduno"),
-        User("juli@gmail.com", "passwordjuli", "Julian", "Grilli"),
-        User("fede@gmail.com", "passwordfede", "Federico", "Mateucci"),
-        User("mati@gmail.com", "passwordmati", "Matias", "Romera"))
+        User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT),
+        User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT),
+        User("fede@gmail.com", "passwordfede", "Federico", "Mateucci", Rol.RH),
+        User("mati@gmail.com", "passwordmati", "Matias", "Romera", Rol.RH),
+        User("Santiago_56@hotmail.com", "passwordsanti", "Santiago", "Escuder", Rol.AT))
 
     fun findByUsernameAndPassword(username: String, password: String): User {
         val usuarioFiltrado = listaUsuarios.filter { userRepo ->

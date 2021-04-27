@@ -4,12 +4,13 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-open class User(email: String, password: String, name: String, lastName: String): Parcelable {
+open class User(email: String, password: String, name: String, lastName: String, rol: String): Parcelable {
 
     var email: String
     var password: String
     var name: String
     var lastName: String
+    var rol: String
 
 
     init {
@@ -17,9 +18,11 @@ open class User(email: String, password: String, name: String, lastName: String)
         this.password = password
         this.name = name
         this.lastName = lastName
+        this.rol = rol
     }
 
     constructor(source: Parcel) : this(
+        source.readString()!!,
         source.readString()!!,
         source.readString()!!,
         source.readString()!!,
@@ -33,13 +36,7 @@ open class User(email: String, password: String, name: String, lastName: String)
         writeString(password)
         writeString(name)
         writeString(lastName)
-    }
-
-    class Roles {
-        companion object {
-            val typeHr = "HR"
-            val typeDev = "DEV"
-        }
+        writeString(rol)
     }
 
     companion object {
