@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
+import com.example.hrit_app.utils.constants.Rol
 import com.google.android.material.snackbar.Snackbar
 
 class Fragment_login : Fragment() {
@@ -43,7 +44,7 @@ class Fragment_login : Fragment() {
         btnLogin.setOnClickListener {
             val user = verificarSiElUsuarioExiste(userName.text.toString(), passWord.text.toString())
             if (user != null){
-                redirectToAppActivity()
+                redirectToDevActivityOrHrActivity(user)
             }
         }
         btnRegistrar.setOnClickListener {
@@ -66,8 +67,21 @@ class Fragment_login : Fragment() {
         v.findNavController().navigate(action2)
     }
 
-    private fun redirectToAppActivity(){
+    private fun redirectToDevActivityOrHrActivity(user: User){
+        if (Rol.AT.equals(user.rol)){
+            redirectToDevActivity()
+        } else {
+            redirectToHrActivity()
+        }
+    }
+
+    private fun redirectToDevActivity(){
         val appActivityAction = Fragment_loginDirections.actionFragmentLoginToActivityDev2()
+        v.findNavController().navigate(appActivityAction)
+    }
+
+    private fun redirectToHrActivity(){
+        val appActivityAction = Fragment_loginDirections.actionFragmentLoginToActivityHR()
         v.findNavController().navigate(appActivityAction)
     }
 }
