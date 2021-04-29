@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
@@ -23,6 +24,7 @@ class FragmentHR_Home : Fragment() {
     lateinit var recTecnologias: RecyclerView
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var tecnologiaListAdapter: TecnologiaListAdapter
+    lateinit var filterImage : ImageFilterView
     var tecnologias : MutableList<Tecnologia> = ArrayList<Tecnologia>()
     var tecnologiaService: TecnologiaService = TecnologiaService()
 
@@ -37,6 +39,7 @@ class FragmentHR_Home : Fragment() {
         // Inflate the layout for this fragment
         recTecnologias = v.findViewById(R.id.recTecnologias)
         recAsesores = v.findViewById(R.id.recAsesoresTecnicos)
+        filterImage = v.findViewById(R.id.filterImage)
         return v
     }
 
@@ -58,20 +61,26 @@ class FragmentHR_Home : Fragment() {
         recAsesores.layoutManager = linearLayoutManagerAsesores
         recAsesores.adapter = asesoresListAdapter
 
+        filterImage.setOnClickListener(){
+            /**
+             * TODO redirigir a nuevo fragment para filtros.
+             * ***/
+        }
+
     }
 
     fun onTecnologiaClick (position: Int): Boolean {
         /**
-         * TODO
-         * filtrar asesores tecnicos por tecnologia
+         * TODO filtrar asesores tecnicos por tecnologia
+         *
          * */
         return true
     }
 
     fun onAsesorClick (position: Int): Boolean {
         /**
-         * TODO
-         * Crear contratacion
+         * TODO Crear contratacion
+         *
          * */
         return true
     }
