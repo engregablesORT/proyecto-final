@@ -11,7 +11,10 @@ object UserRepository {
         User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT),
         User("fede@gmail.com", "passwordfede", "Federico", "Mateucci", Rol.RH),
         User("mati@gmail.com", "passwordmati", "Matias", "Romera", Rol.RH),
-        User("Santiago_56@hotmail.com", "passwordsanti", "Santiago", "Escuder", Rol.AT))
+        User("Santiago_56@hotmail.com", "passwordsanti", "Santiago", "Escuder", Rol.AT),
+        User("fran@hotmail.com", "passwordsfran", "Francisco", "Heili", Rol.AT),
+        User("fabian@hotmail.com", "passwordsfabian", "Fabian", "Pestchanker", Rol.AT),
+        User("julian-raspanti@hotmail.com", "passwordsraspanti", "Julian", "Raspanti", Rol.AT))
 
     fun findByUsernameAndPassword(username: String, password: String): User {
         val usuarioFiltrado = listaUsuarios.filter { userRepo ->
