@@ -24,6 +24,11 @@ object UserRepository {
         listaUsuarios.add(user)
     }
 
+    fun findAllAT(): MutableList<User>{
+       val asesoresTecnicos = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) }
+        return asesoresTecnicos.toMutableList()
+    }
+
     fun getResultFromFilter(usuarioFiltrado : List<User>): User{
         if ( usuarioFiltrado.size > 0) {
             return usuarioFiltrado.get(0)

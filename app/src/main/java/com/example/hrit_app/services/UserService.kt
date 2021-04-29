@@ -19,6 +19,10 @@ class UserService {
         }
     }
 
+    fun findAllAsesoresTecnicos(): MutableList<User> {
+        return  userRepository.findAllAT()
+    }
+
     fun createUser(user: User){
         userRepository.save(user)
     }
