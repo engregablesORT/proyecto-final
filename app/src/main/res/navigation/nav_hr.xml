@@ -20,4 +20,9 @@
         android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_perfil"
         android:label="fragment_hr_perfil"
         tools:layout="@layout/fragment_hr_perfil" />
+    <fragment
+        android:id="@+id/fragmentHR_calendar"
+        android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_calendar"
+        android:label="fragment_hr_calendar"
+        tools:layout="@layout/fragment_hr_calendar" />
 </navigation>
