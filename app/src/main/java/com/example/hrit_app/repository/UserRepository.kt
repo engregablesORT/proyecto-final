@@ -44,8 +44,8 @@ object UserRepository {
     }
 
     fun findByTecnologia(text: String): MutableList<User>{
-        val usuariosFiltrados = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) && (usuario.name.contains(text) ||
-                usuario.lastName.contains(text))  }
+        val usuariosFiltrados = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(text.toUpperCase()) ||
+                usuario.lastName.toUpperCase().contains(text.toUpperCase()))  }
         return  usuariosFiltrados.toMutableList()
     }
 }
