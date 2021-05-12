@@ -7,7 +7,6 @@ import com.example.hrit_app.repository.UserRepository
 
 class UserService {
 
-    var tecnologiaRepository: TecnologiaRepository = TecnologiaRepository
     var userRepository: UserRepository = UserRepository
 
     fun findUserByUsernameAndPassword(email: String, password: String): User {

@@ -34,6 +34,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:windowSoftInputMode="adjustNothing"
             android:name=".activities.Activity_HR"
             android:label="@string/title_activity__h_r">
             <intent-filter>
