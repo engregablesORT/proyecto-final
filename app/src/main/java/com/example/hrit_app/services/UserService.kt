@@ -2,6 +2,7 @@ package com.example.hrit_app.services
 
 import android.content.res.Resources
 import com.example.hrit_app.entities.User
+import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.repository.UserRepository
 
 class UserService {
@@ -21,6 +22,10 @@ class UserService {
 
     fun findAllAsesoresTecnicos(): MutableList<User> {
         return  userRepository.findAllAT()
+    }
+
+    fun findByNombre(textNombre: String): MutableList<User> {
+        return userRepository.findByTecnologia(textNombre)
     }
 
     fun createUser(user: User){

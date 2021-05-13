@@ -5,7 +5,19 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FDFDFD"
     tools:context=".fragments.rrhh.FragmentHR_Home">
+
+    <TextView
+        android:id="@+id/filterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="20dp"
+        android:text="FILTRAR"
+        android:textColor="#03A9F4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recTecnologias"
@@ -14,15 +26,15 @@
         android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="376dp"
+        android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/bg_center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,6 +48,7 @@
         android:layout_marginTop="25dp"
         android:fontFamily="sans-serif"
         android:text="Tecnologías"
+        android:textColor="#4E4D4D"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
@@ -46,6 +59,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="3dp"
         android:text="Asesores Técnicos"
+        android:textColor="#FF4E4D4D"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
 
@@ -57,17 +71,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
-
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/filterImage"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:background="#0072AF"
-        android:clickable="true"
-        android:contextClickable="true"
-        android:longClickable="true"
-        android:src="@drawable/filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

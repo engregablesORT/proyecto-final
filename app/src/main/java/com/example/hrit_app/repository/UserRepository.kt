@@ -1,13 +1,16 @@
 package com.example.hrit_app.repository
 
 import android.content.res.Resources
+import com.example.hrit_app.R
+import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.utils.constants.Rol
+import java.util.*
 
 object UserRepository {
 
     var listaUsuarios: MutableList<User> = mutableListOf(
-        User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT),
+        User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"), Tecnologia(R.drawable.java, "Java"))),
         User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT),
         User("fede@gmail.com", "passwordfede", "Federico", "Mateucci", Rol.RH),
         User("mati@gmail.com", "passwordmati", "Matias", "Romera", Rol.RH),
@@ -35,8 +38,14 @@ object UserRepository {
     fun getResultFromFilter(usuarioFiltrado : List<User>): User{
         if ( usuarioFiltrado.size > 0) {
             return usuarioFiltrado.get(0)
-        } else {
-            throw Resources.NotFoundException("User no encontrado")
         }
+        throw Resources.NotFoundException("User no encontrado")
+
+    }
+
+    fun findByTecnologia(text: String): MutableList<User>{
+        val usuariosFiltrados = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(text.toUpperCase()) ||
+                usuario.lastName.toUpperCase().contains(text.toUpperCase()))  }
+        return  usuariosFiltrados.toMutableList()
     }
 }
