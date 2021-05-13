@@ -16,7 +16,16 @@ class UserService {
         } catch (e: Resources.NotFoundException) {
             System.out.println(" === ERROR :" + e.message.toString())
             throw e
+        }
+    }
 
+    fun findUserByUsername(email: String): User {
+        try {
+            val usuarioFiltrado = userRepository.findByUsername(email)
+            return usuarioFiltrado
+        } catch (e: Resources.NotFoundException) {
+            System.out.println(" === ERROR :" + e.message.toString())
+            throw e
         }
     }
 
