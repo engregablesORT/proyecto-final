@@ -13,7 +13,8 @@ import com.example.hrit_app.entities.Entrevista
 
 class EntrevistaListAdapter (
         private var  entrevistasList: MutableList<Entrevista>,
-        val onItemClick: (Int) -> Boolean
+        val onItemClickA: (Int) -> Boolean,
+        val onItemClickR: (Int) -> Boolean
 ) :  RecyclerView.Adapter<EntrevistaListAdapter.EntrevistaHolder>()  {
 
 
@@ -42,9 +43,12 @@ class EntrevistaListAdapter (
             txt.text = empresaHr
         }
 
-        fun setbotonAceptar(botonAceptar: Button){
-            var button: Button = view.findViewById(R.id.button_acept)
-            button = botonAceptar
+        fun getbotonAceptar(): Button {
+            return view.findViewById(R.id.button_acept)
+        }
+
+        fun getbotonRechazar(): Button {
+            return view.findViewById(R.id.button_rechazar)
         }
 
         fun getCardLayout (): CardView {
@@ -69,8 +73,12 @@ class EntrevistaListAdapter (
         holder.setFecha(entrevistasList[position].fecha)
         holder.setNombreHr(entrevistasList[position].nombreUserHr)
         holder.setEmpresaHr(entrevistasList[position].nombreEmpresaHr)
-        holder.getCardLayout().setOnLongClickListener(){
-            onItemClick(position)
+        holder.getbotonAceptar().setOnLongClickListener(){
+            onItemClickA(position)
         }
+        holder.getbotonRechazar().setOnLongClickListener(){
+            onItemClickR(position)
+        }
+
     }
 }

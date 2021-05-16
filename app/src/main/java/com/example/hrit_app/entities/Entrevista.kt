@@ -18,6 +18,8 @@ class Entrevista (id: Int, nombreUserHr: String , nombreEmpresaHr: String, idUse
 
     var valoracion: Int = 0
 
+    var estado: String = ""
+
 
     class Constants {
         companion object {
@@ -25,7 +27,6 @@ class Entrevista (id: Int, nombreUserHr: String , nombreEmpresaHr: String, idUse
             val estadoPendienteRespuesta = "PENDIENTE"
             val estadoRechazada = "RECHAZADA"
             val estadoFinalizada = "FINALIZADA"
-
         }
     }
 
@@ -38,5 +39,6 @@ class Entrevista (id: Int, nombreUserHr: String , nombreEmpresaHr: String, idUse
         this.duracion= duracion!!
         this.urlImage= urlImage!!
         this.valoracion= valoracion!!
+        this.estado= estado!!
     }
 }
