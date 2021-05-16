@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.hrit_app.R
@@ -20,13 +19,21 @@ import com.google.android.material.textfield.TextInputLayout
 class FragmentHR_perfil : Fragment() {
 
     lateinit var v: View
-    lateinit var txtViewFullName: TextView
     lateinit var btnEditar: ImageView
-    lateinit var inputPassword: TextInputLayout
-    lateinit var inputPassword2: TextInputEditText
-    lateinit var inputEmail: TextInputLayout
-    lateinit var inputEmail2: TextInputEditText
     lateinit var btnGuardar: Button
+
+    // Inputs de usuario HR
+    lateinit var inputFirstName: TextInputLayout
+    lateinit var inputFirstNameEdit: TextInputEditText
+    lateinit var inputLastName: TextInputLayout
+    lateinit var inputLastNameEdit: TextInputEditText
+    lateinit var inputPassword: TextInputLayout
+    lateinit var inputPasswordEdit: TextInputEditText
+    lateinit var inputEmail: TextInputLayout
+    lateinit var inputEmailEdit: TextInputEditText
+
+    // User
+    lateinit var user: User
 
     var userService: UserService = UserService()
 
@@ -35,17 +42,23 @@ class FragmentHR_perfil : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         v = inflater.inflate(R.layout.fragment_hr_perfil, container, false)
-        txtViewFullName = v.findViewById(R.id.txtFullName)
         btnEditar = v.findViewById(R.id.btnEditar)
+
+        inputFirstName = v.findViewById(R.id.txtFieldFirstName)
+        inputFirstNameEdit = v.findViewById(R.id.inputFirstNameEdit)
+        inputLastName = v.findViewById(R.id.txtFieldLastName)
+        inputLastNameEdit = v.findViewById(R.id.inputLastNameEdit)
         inputPassword = v.findViewById(R.id.txtFieldPassword)
-        inputPassword2 = v.findViewById(R.id.inputPasswordEdit)
+        inputPasswordEdit = v.findViewById(R.id.inputPasswordEdit)
         inputEmail = v.findViewById(R.id.txtFieldEmail)
-        inputEmail2 = v.findViewById(R.id.inputEmailEdit)
+        inputEmailEdit = v.findViewById(R.id.inputEmailEdit)
         btnGuardar = v.findViewById(R.id.btnGuardar)
 
-        // Esto deberia ir en el xml
+        // Esto deberia ir en el xml... creo
         inputPassword.isEnabled = false
+        inputLastName.isEnabled = false
         inputEmail.isEnabled = false
+        inputFirstName.isEnabled = false
 
         return v
     }
@@ -53,37 +66,51 @@ class FragmentHR_perfil : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        // Shared Preferences
+        // Shared Preferences para obtener el usuario por mail
         val sharedPreferences =
                 requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        var user = userService.findUserByUsername(sharedPreferences.getString("email", "").toString())
+        user = userService.findUserByUsername(sharedPreferences.getString("email", "").toString())
 
-        var textoFullName = user.name.toString() + " " + user.lastName.toString()
+        var textoFirstName = user.name.toString()
+        var textoLastName = user.lastName.toString()
         var textoEmail = user.email.toString()
         var textoPassword = user.password.toString()
 
-        txtViewFullName.text = textoFullName
+        inputFirstName.hint = textoFirstName
+        inputLastName.hint = textoLastName
         inputPassword.hint = "**********"
         inputEmail.hint = textoEmail
 
         btnEditar.setOnClickListener {
+            inputFirstName.isEnabled = true
+            inputLastName.isEnabled = true
             inputPassword.isEnabled = true
             inputEmail.isEnabled = true
+
             btnGuardar.visibility = View.VISIBLE
 
-            inputEmail2.setText(textoEmail.toString())
-            inputPassword2.setText(textoPassword.toString())
+            inputFirstNameEdit.setText(textoFirstName.toString())
+            inputLastNameEdit.setText(textoLastName.toString())
+            inputPasswordEdit.setText(textoPassword.toString())
+            inputEmailEdit.setText(textoEmail.toString())
 
-            txtViewFullName.text = textoFullName
-
-            inputEmail.hint = "Email"
+            inputFirstName.hint = "Nombre"
+            inputLastName.hint = "Apellido"
             inputPassword.hint = "Password"
+            inputEmail.hint = "Email"
         }
 
         btnGuardar.setOnClickListener {
-            // TODO funcion del servicio que recibe el email viejo y el nuevo usuario
-            // eliminar el viejo y guardar el nuevo
+            var userNuevo = User(inputEmailEdit.text.toString(), inputPasswordEdit.text.toString(), inputFirstNameEdit.text.toString(), inputLastNameEdit.text.toString(), user.rol, user.tecnologias)
+
+            Log.d("TEST", userNuevo.email.toString())
+            Log.d("TEST", userNuevo.password.toString())
+            Log.d("TEST", userNuevo.name.toString())
+            Log.d("TEST", userNuevo.lastName.toString())
+
+            // userService.deleteUser(user)
+            // userService.createUser(userNuevo)
         }
     }
 

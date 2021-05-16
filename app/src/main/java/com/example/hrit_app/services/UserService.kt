@@ -40,4 +40,8 @@ class UserService {
     fun createUser(user: User){
         userRepository.save(user)
     }
+
+    fun deleteUser(user: User){
+        userRepository.delete(user)
+    }
 }

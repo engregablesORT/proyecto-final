@@ -37,6 +37,10 @@ object UserRepository {
         listaUsuarios.add(user)
     }
 
+    fun delete(user: User) {
+        this.listaUsuarios.remove(user)
+    }
+
     fun findAllAT(): MutableList<User> {
         val asesoresTecnicos = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) }
         return asesoresTecnicos.toMutableList()
