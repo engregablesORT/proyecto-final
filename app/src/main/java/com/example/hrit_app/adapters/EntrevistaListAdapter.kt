@@ -73,10 +73,10 @@ class EntrevistaListAdapter (
         holder.setFecha(entrevistasList[position].fecha)
         holder.setNombreHr(entrevistasList[position].nombreUserHr)
         holder.setEmpresaHr(entrevistasList[position].nombreEmpresaHr)
-        holder.getbotonAceptar().setOnLongClickListener(){
+        holder.getbotonAceptar().setOnClickListener(){
             onItemClickA(position)
         }
-        holder.getbotonRechazar().setOnLongClickListener(){
+        holder.getbotonRechazar().setOnClickListener(){
             onItemClickR(position)
         }
 

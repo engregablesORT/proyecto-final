@@ -2,6 +2,7 @@ package com.example.hrit_app.fragments.dev
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +62,7 @@ class FragmentDev_Home : Fragment() {
         }, {
             x -> onItemClickR(x,"Entrevista rechazada")
         })
+
 
       //    entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes )
 
