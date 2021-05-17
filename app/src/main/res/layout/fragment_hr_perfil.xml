@@ -25,7 +25,7 @@
         android:id="@+id/txtTitular"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginStart="11dp"
+        android:layout_marginStart="32dp"
         android:text="Reclutador IT"
         android:textColor="#5E5757"
         app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -55,7 +55,7 @@
         android:id="@+id/txtFieldFirstName"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
+        android:layout_marginStart="185dp"
         android:layout_marginTop="85dp"
         android:hint="FirstName"
         android:inputType="textPassword"
@@ -66,7 +66,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputFirstNameEdit"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#000000"
             android:textColor="#000000"
@@ -92,7 +92,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputLastNameEdit"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#000000"
             android:textColor="#000000"
@@ -162,13 +162,19 @@
 
     <Button
         android:id="@+id/btnGuardar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="85dp"
+        android:background="@drawable/button_rounded"
         android:text="Guardar"
         android:visibility="invisible"
+        app:backgroundTint="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passWord" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
