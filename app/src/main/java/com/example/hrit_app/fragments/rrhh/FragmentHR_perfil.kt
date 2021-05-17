@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -103,12 +104,7 @@ class FragmentHR_perfil : Fragment() {
 
         btnGuardar.setOnClickListener {
             var userNuevo = User(inputEmailEdit.text.toString(), inputPasswordEdit.text.toString(), inputFirstNameEdit.text.toString(), inputLastNameEdit.text.toString(), user.rol, user.tecnologias)
-
-            Log.d("TEST", userNuevo.email.toString())
-            Log.d("TEST", userNuevo.password.toString())
-            Log.d("TEST", userNuevo.name.toString())
-            Log.d("TEST", userNuevo.lastName.toString())
-
+            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
             // userService.deleteUser(user)
             // userService.createUser(userNuevo)
         }
