@@ -3,6 +3,7 @@ package com.example.hrit_app.fragments.dev
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +20,6 @@ import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_disponibilidad.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -43,10 +41,6 @@ class FragmentDev_perfil : Fragment() {
     lateinit var passwordEditText: EditText
     lateinit var btnEditarDev : ImageView
     lateinit var btnGuardarDevPerfil : Button
-    lateinit var horaLunes: TextView
-    lateinit var horaMartes: TextView
-    lateinit var timePickerLunes: ImageView
-    lateinit var timePickerMartes: ImageView
     // User
     lateinit var user: User
     var userService: UserService = UserService()
@@ -86,62 +80,17 @@ class FragmentDev_perfil : Fragment() {
         recTecnologias.layoutManager = linearLayoutManager
         recTecnologias.adapter = tecnologiaListAdapter
 
-
-        btnEditarDev.setOnClickListener {
-            btnGuardarDevPerfil.visibility = View.VISIBLE
-            setAllFieldsEditables()
-        }
-
         btnGuardarDevPerfil.setOnClickListener {
+            // TODO agregar validaciones ---------
             Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
+        }
 
+        passwordEditText.setOnClickListener{
+            passwordEditText.setText(user.password)
         }
 
     }
 
-    private fun bindeoDelInputTextEImagenes(disponibilidadDialog: View) {
-        horaLunes = disponibilidadDialog.valorHoraLunes
-        horaMartes = disponibilidadDialog.valorHoraMartes
-        timePickerLunes = disponibilidadDialog.horaLunesImg
-        timePickerMartes = disponibilidadDialog.horaMartesImg
-    }
-
-    private fun onImgDiaClick(disponibilidadDialogDia: View, horaDia: TextView) {
-        disponibilidadDialogDia.setOnClickListener{
-            val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener{timePiker, hour, min ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, min)
-                horaDia.text = SimpleDateFormat("HH:mm").format(cal.time)
-
-            }
-            TimePickerDialog(requireContext(), timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
-        }
-    }
-
-    private fun onCheckBoxDia(checkBoxDia: CheckBox, valorHoraDia: TextView, timePickerImg: ImageView) {
-        checkBoxDia.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                timePickerImg.visibility = View.VISIBLE
-                valorHoraDia.visibility = View.VISIBLE
-            }else{
-                timePickerImg.visibility = View.INVISIBLE
-                valorHoraDia.setText("")
-                valorHoraDia.visibility = View.INVISIBLE
-            }
-        }
-    }
-
-    private fun setAllFieldsEditables() {
-        nombreEditText.setFocusable(true)
-        apellidoEditText.setFocusable(true)
-        titleEditText.setFocusable(true)
-        descripcionEditText.setFocusable(true)
-        precioHoraEdit.setFocusable(true)
-        experienciaEditText.setFocusable(true)
-        emailEditText.setFocusable(true)
-        passwordEditText.setFocusable(true)
-    }
 
     private fun activarTecnologias(tecnologiasDelUsuario: List<Tecnologia>, tecnologias: MutableList<Tecnologia>) {
         for (tecUsu in tecnologiasDelUsuario) {
@@ -161,7 +110,7 @@ class FragmentDev_perfil : Fragment() {
         experienciaEditText.setText("10 años")
         titleEditText.setText("Java SR")
         emailEditText.setText(user.email)
-        passwordEditText.setText("*******")
+        passwordEditText.setText("*********")
     }
 
     fun onTecnologiaClick (position: Int): Boolean {
