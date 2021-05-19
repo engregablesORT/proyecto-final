@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +32,7 @@ class FragmentDev_Home : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        v =  inflater.inflate(R.layout.fragment_dev__home, container, false)
+        v =  inflater.inflate(R.layout.fragment_dev_home, container, false)
         recEntrevistasPendientes = v.findViewById(R.id.rec_entrevistasPendientes)
         return v
     }
@@ -48,7 +47,7 @@ class FragmentDev_Home : Fragment() {
 
         entrevistasPendientes.add(Entrevista( 1, "Valentina Gonzalez" , "Snoop Consulting", 2 , "10 de Abril - 18:00hs ", 2,5, Entrevista.Constants.estadoPendienteRespuesta))
         entrevistasPendientes.add(Entrevista( 2, "Victoria Lopez" , "Accenture", 3 , "10 de Abril - 18:00hs ", 2,5, Entrevista.Constants.estadoPendienteRespuesta))
-        entrevistasPendientes.add(Entrevista( 3, "Martin Guzman" , "web.com", 6 , "10 de Abril - 18:00hs ", 2,5, Entrevista.Constants.estadoPendienteRespuesta))
+        entrevistasPendientes.add(Entrevista( 3, "Martin Guzman" , "web.com", 6 , "10 de Abril - 18:00hs ", 1,5, Entrevista.Constants.estadoPendienteRespuesta))
         entrevistasPendientes.add(Entrevista( 3, "Juan Perez" , "web.com", 6 , "10 de Abril - 18:00hs ", 2,5, Entrevista.Constants.estadoRechazada))
 
         entrevistasPendientes = findAllPendientes()
@@ -58,9 +57,9 @@ class FragmentDev_Home : Fragment() {
         recEntrevistasPendientes.layoutManager = linearLayoutManager
 
         entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes, { x ->
-            onItemClickA(x)
+            onAceptarEntrevistaClick(x)
         }, {
-            x -> onItemClickR(x)
+            x -> onRechazarEntrevistaClick(x)
         })
 
 
@@ -71,34 +70,36 @@ class FragmentDev_Home : Fragment() {
     }
 
 
-    fun validateClick(texto: String, x : Int, estado : String ){
+    fun confirmarAccion(texto: String, x : Int, estado : String ){
         val mAlertDialog = AlertDialog.Builder(this.context);
         mAlertDialog.setTitle("Confirmar accion");
         mAlertDialog.setMessage(texto);
         mAlertDialog.setIcon(R.mipmap.ic_launcher);
-        mAlertDialog.setPositiveButton("Aceptar") { dialog, id ->
+        mAlertDialog.setPositiveButton("Cancelar") { dialog, id ->
+            Snackbar.make(v, "Accion cancelada", Snackbar.LENGTH_SHORT).show()
+        }
+        mAlertDialog.setNegativeButton("Aceptar") { dialog, id ->
             Snackbar.make(v, "Accion aceptada", Snackbar.LENGTH_SHORT).show()
             entrevistasPendientes[x].estado = estado;
             entrevistasPendientes = findAllPendientes()
             actualizarEntrevistas(entrevistasPendientes)
         }
-        mAlertDialog.setNegativeButton("Cancelar") { dialog, id ->
-            Snackbar.make(v, "Accion cancelada", Snackbar.LENGTH_SHORT).show()
-        }
         mAlertDialog.show();
 
     }
 
-    fun onItemClickA (x : Int) : Boolean {
-        var estado= Entrevista.Constants.estadoAceptado;
-        this.validateClick("Estas por aceptar una entrevista" ,x , estado);
+    fun onAceptarEntrevistaClick (x : Int) : Boolean {
+        var estado = Entrevista.Constants.estadoAceptado;
+        var mensaje = "Estas por aceptar una entrevista"
+        this.confirmarAccion(mensaje, x, estado);
         return true
     }
 
 
-    fun onItemClickR (x : Int) : Boolean {
-        var estado= Entrevista.Constants.estadoRechazada;
-        this.validateClick("Estas por rechazar una entrevista" ,x , estado);
+    fun onRechazarEntrevistaClick (x : Int) : Boolean {
+        var estado = Entrevista.Constants.estadoRechazada;
+        var mensaje = "Estas por rechazar una entrevista"
+        this.confirmarAccion(mensaje, x, estado);
         return true
     }
 
@@ -109,9 +110,9 @@ class FragmentDev_Home : Fragment() {
 
     private fun actualizarEntrevistas(entrevistasPendientes: MutableList<Entrevista>){
         entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes, { x ->
-            onItemClickA(x)
+            onAceptarEntrevistaClick(x)
         }, {
-            x -> onItemClickR(x)
+            x -> onRechazarEntrevistaClick(x)
         })
         recEntrevistasPendientes.adapter = entrevistaListAdapter
     }

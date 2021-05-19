@@ -19,9 +19,9 @@
 
         <ImageView
             android:id="@+id/img_item_hor"
-            android:layout_width="64dp"
-            android:layout_height="69dp"
-            android:layout_marginStart="32dp"
+            android:layout_width="137dp"
+            android:layout_height="113dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="23dp"
             android:layout_marginBottom="10dp"
@@ -29,77 +29,91 @@
             app:layout_constraintEnd_toStartOf="@+id/text_item_at_nombre"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.116"
+            app:layout_constraintVertical_bias="0.078"
             app:srcCompat="@drawable/entrevista" />
 
         <TextView
             android:id="@+id/fecha"
-            android:layout_width="72dp"
-            android:layout_height="22dp"
+            android:layout_width="133dp"
+            android:layout_height="17dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="19dp"
             android:layout_marginEnd="50dp"
             android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.469"
+            app:layout_constraintStart_toEndOf="@+id/img_item_hor"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/duracion"
+            android:layout_width="133dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="50dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.469"
             app:layout_constraintStart_toEndOf="@+id/img_item_hor"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/HR"
-            android:layout_width="72dp"
-            android:layout_height="22dp"
+            android:layout_width="133dp"
+            android:layout_height="17dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="76dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="128dp"
             android:text="TextView2"
-            android:textColor="#5F5F5F"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toEndOf="@+id/img_item_hor" />
+            app:layout_constraintHorizontal_bias="0.469"
+            app:layout_constraintStart_toEndOf="@+id/img_item_hor"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_empresa"
-            android:layout_width="72dp"
-            android:layout_height="22dp"
+            android:layout_width="133dp"
+            android:layout_height="17dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="104dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="104dp"
             android:text="TextView2"
-            android:textColor="#5F5F5F"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toEndOf="@+id/img_item_hor" />
+            app:layout_constraintHorizontal_bias="0.469"
+            app:layout_constraintStart_toEndOf="@+id/img_item_hor"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button_acept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="172dp"
-            android:layout_marginTop="34dp"
-            android:layout_marginBottom="22dp"
+            android:layout_marginBottom="16dp"
+            android:background="#5F5F5F"
             android:text="Aceptar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_rechazar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_empresa"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/button_rechazar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="7dp"
-            android:layout_marginTop="139dp"
             android:layout_marginEnd="26dp"
-            android:layout_marginBottom="22dp"
+            android:layout_marginBottom="16dp"
+            android:background="#5F5F5F"
             android:text="RECHAZAR"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button_acept"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/button_acept" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

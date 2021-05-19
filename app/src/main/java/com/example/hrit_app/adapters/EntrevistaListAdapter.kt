@@ -13,8 +13,8 @@ import com.example.hrit_app.entities.Entrevista
 
 class EntrevistaListAdapter (
         private var  entrevistasList: MutableList<Entrevista>,
-        val onItemClickA: (Int) -> Boolean,
-        val onItemClickR: (Int) -> Boolean
+        val onAceptarEntrevistaClick: (Int) -> Boolean,
+        val onRechazarEntrevistaClick: (Int) -> Boolean
 ) :  RecyclerView.Adapter<EntrevistaListAdapter.EntrevistaHolder>()  {
 
 
@@ -31,6 +31,11 @@ class EntrevistaListAdapter (
         fun setFecha(fecha: String){
             val txt: TextView = view.findViewById(R.id.fecha)
             txt.text = fecha
+        }
+
+        fun setHora(duracion: Int){
+            val txt: TextView = view.findViewById(R.id.duracion)
+            txt.text = "Duracion: " + duracion.toString() + validarHoras(duracion)
         }
 
         fun setNombreHr(nombreHr: String){
@@ -56,6 +61,14 @@ class EntrevistaListAdapter (
             return view.findViewById(R.id.card_package_item)
         }
 
+        fun validarHoras(duracion: Int): String {
+            return if (duracion > 1) {
+                " horas"
+            } else {
+                " hora"
+            }
+         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntrevistaHolder {
@@ -71,13 +84,14 @@ class EntrevistaListAdapter (
     override fun onBindViewHolder(holder: EntrevistaHolder, position: Int) {
         // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setFecha(entrevistasList[position].fecha)
+        holder.setHora(entrevistasList[position].duracion)
         holder.setNombreHr(entrevistasList[position].nombreUserHr)
         holder.setEmpresaHr(entrevistasList[position].nombreEmpresaHr)
         holder.getbotonAceptar().setOnClickListener(){
-            onItemClickA(position)
+            onAceptarEntrevistaClick(position)
         }
         holder.getbotonRechazar().setOnClickListener(){
-            onItemClickR(position)
+            onRechazarEntrevistaClick(position)
         }
 
     }
