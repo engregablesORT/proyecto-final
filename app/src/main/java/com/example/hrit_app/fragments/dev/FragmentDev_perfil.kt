@@ -88,7 +88,7 @@ class FragmentDev_perfil : Fragment() {
         recTecnologias.layoutManager = linearLayoutManager
         recTecnologias.adapter = tecnologiaListAdapter
 
-        btnDisponibilidadDev.setOnClickListener{
+        /*btnDisponibilidadDev.setOnClickListener{
             Snackbar.make(v,"Disponibilidad Apretado", Snackbar.LENGTH_SHORT).show()
            val disponibilidadDialog: View = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_disponibilidad, null)
             val dialogBuilder = AlertDialog.Builder(requireContext())
@@ -112,7 +112,7 @@ class FragmentDev_perfil : Fragment() {
                 // TODO deberiamos ocultar dialogo
                 btnGuardarDevPerfil.visibility = View.VISIBLE
             }
-        }
+        }*/
 
         btnEditarDev.setOnClickListener {
             btnGuardarDevPerfil.visibility = View.VISIBLE
