@@ -42,7 +42,6 @@ class FragmentDev_perfil : Fragment() {
     lateinit var emailEditText: EditText
     lateinit var passwordEditText: EditText
     lateinit var btnEditarDev : ImageView
-    lateinit var btnDisponibilidadDev : Button
     lateinit var btnGuardarDevPerfil : Button
     lateinit var horaLunes: TextView
     lateinit var horaMartes: TextView
@@ -66,7 +65,6 @@ class FragmentDev_perfil : Fragment() {
         emailEditText = v.findViewById(R.id.emailDevEditText)
         passwordEditText = v.findViewById(R.id.passwordDevEditText)
         btnEditarDev = v.findViewById(R.id.btnEditarDev)
-        btnDisponibilidadDev = v.findViewById(R.id.btnDisponibilidadDev)
         btnGuardarDevPerfil = v.findViewById(R.id.btnGuardarDevPerfil)
         return v
     }
@@ -88,31 +86,6 @@ class FragmentDev_perfil : Fragment() {
         recTecnologias.layoutManager = linearLayoutManager
         recTecnologias.adapter = tecnologiaListAdapter
 
-        /*btnDisponibilidadDev.setOnClickListener{
-            Snackbar.make(v,"Disponibilidad Apretado", Snackbar.LENGTH_SHORT).show()
-           val disponibilidadDialog: View = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_disponibilidad, null)
-            val dialogBuilder = AlertDialog.Builder(requireContext())
-                    .setView(disponibilidadDialog)
-            dialogBuilder.show()
-
-            bindeoDelInputTextEImagenes(disponibilidadDialog)
-
-            // Lunes
-            onCheckBoxDia(disponibilidadDialog.checkBoxLunes, horaLunes, timePickerLunes)
-            onImgDiaClick(disponibilidadDialog.horaLunesImg, horaLunes)
-
-            // Martes
-            onCheckBoxDia(disponibilidadDialog.checkBoxMartes, horaMartes, timePickerMartes)
-            onImgDiaClick(disponibilidadDialog.horaMartesImg, horaMartes)
-
-            // TODO deberiamos hacer lo mismo para los siguientes dias hasta el viernes inclusive.
-
-            disponibilidadDialog.btnDisponibilidadAdd.setOnClickListener {
-                Snackbar.make(v, "Guardado", Snackbar.LENGTH_SHORT).show()
-                // TODO deberiamos ocultar dialogo
-                btnGuardarDevPerfil.visibility = View.VISIBLE
-            }
-        }*/
 
         btnEditarDev.setOnClickListener {
             btnGuardarDevPerfil.visibility = View.VISIBLE
