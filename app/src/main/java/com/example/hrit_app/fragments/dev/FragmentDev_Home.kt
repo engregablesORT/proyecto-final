@@ -2,10 +2,10 @@ package com.example.hrit_app.fragments.dev
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,19 +70,39 @@ class FragmentDev_Home : Fragment() {
 
     }
 
-    fun onItemClickA (x : Int,  text : String ) : Boolean {
-        entrevistasPendientes[x].estado = Entrevista.Constants.estadoAceptado
-        Snackbar.make(v,text,Snackbar.LENGTH_SHORT).show()
-        entrevistasPendientes = findAllPendientes()
-        actualizarEntrevistas(entrevistasPendientes)
-        return true
+
+    fun validateClick(texto: String, x : Int, estado : String ){
+        val mAlertDialog = AlertDialog.Builder(this.context);
+        mAlertDialog.setTitle("Aceptar entrevista");
+        mAlertDialog.setMessage("Usted esta por aceptar una entrevista");
+        mAlertDialog.setIcon(R.mipmap.ic_launcher);
+        mAlertDialog.setPositiveButton("Aceptar") { dialog, id ->
+            //perform some tasks here
+            Snackbar.make(v, "Aceptar", Snackbar.LENGTH_SHORT).show()
+            entrevistasPendientes[x].estado = estado;
+//            Snackbar.make(v,text,Snackbar.LENGTH_SHORT).show()
+            entrevistasPendientes = findAllPendientes()
+            actualizarEntrevistas(entrevistasPendientes)
+        }
+        mAlertDialog.setNegativeButton("Rechazar") { dialog, id ->
+            //perform some tasks here
+            Snackbar.make(v, "Rechazo", Snackbar.LENGTH_SHORT).show()
+        }
+        mAlertDialog.show();
+
     }
 
+    fun onItemClickA (x : Int,  text : String ) : Boolean {
+        var estado= Entrevista.Constants.estadoAceptado;
+        this.validateClick("Estas por aceptar una entrevista" ,x , estado);
+        return true
+
+    }
+
+
     fun onItemClickR (x : Int, text : String ) : Boolean {
-        entrevistasPendientes[x].estado = Entrevista.Constants.estadoRechazada
-        Snackbar.make(v,text,Snackbar.LENGTH_SHORT).show()
-        entrevistasPendientes = findAllPendientes()
-        actualizarEntrevistas(entrevistasPendientes)
+        var estado= Entrevista.Constants.estadoRechazada;
+        this.validateClick("Estas por rechazar una entrevista" ,x , estado);
         return true
     }
 
