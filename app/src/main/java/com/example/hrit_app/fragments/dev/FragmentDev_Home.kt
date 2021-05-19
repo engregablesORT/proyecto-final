@@ -58,9 +58,9 @@ class FragmentDev_Home : Fragment() {
         recEntrevistasPendientes.layoutManager = linearLayoutManager
 
         entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes, { x ->
-            onItemClickA(x, "Entrevista aceptada")
+            onItemClickA(x)
         }, {
-            x -> onItemClickR(x,"Entrevista rechazada")
+            x -> onItemClickR(x)
         })
 
 
@@ -73,34 +73,30 @@ class FragmentDev_Home : Fragment() {
 
     fun validateClick(texto: String, x : Int, estado : String ){
         val mAlertDialog = AlertDialog.Builder(this.context);
-        mAlertDialog.setTitle("Aceptar entrevista");
-        mAlertDialog.setMessage("Usted esta por aceptar una entrevista");
+        mAlertDialog.setTitle("Confirmar accion");
+        mAlertDialog.setMessage(texto);
         mAlertDialog.setIcon(R.mipmap.ic_launcher);
         mAlertDialog.setPositiveButton("Aceptar") { dialog, id ->
-            //perform some tasks here
-            Snackbar.make(v, "Aceptar", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(v, "Accion aceptada", Snackbar.LENGTH_SHORT).show()
             entrevistasPendientes[x].estado = estado;
-//            Snackbar.make(v,text,Snackbar.LENGTH_SHORT).show()
             entrevistasPendientes = findAllPendientes()
             actualizarEntrevistas(entrevistasPendientes)
         }
-        mAlertDialog.setNegativeButton("Rechazar") { dialog, id ->
-            //perform some tasks here
-            Snackbar.make(v, "Rechazo", Snackbar.LENGTH_SHORT).show()
+        mAlertDialog.setNegativeButton("Cancelar") { dialog, id ->
+            Snackbar.make(v, "Accion cancelada", Snackbar.LENGTH_SHORT).show()
         }
         mAlertDialog.show();
 
     }
 
-    fun onItemClickA (x : Int,  text : String ) : Boolean {
+    fun onItemClickA (x : Int) : Boolean {
         var estado= Entrevista.Constants.estadoAceptado;
         this.validateClick("Estas por aceptar una entrevista" ,x , estado);
         return true
-
     }
 
 
-    fun onItemClickR (x : Int, text : String ) : Boolean {
+    fun onItemClickR (x : Int) : Boolean {
         var estado= Entrevista.Constants.estadoRechazada;
         this.validateClick("Estas por rechazar una entrevista" ,x , estado);
         return true
@@ -113,9 +109,9 @@ class FragmentDev_Home : Fragment() {
 
     private fun actualizarEntrevistas(entrevistasPendientes: MutableList<Entrevista>){
         entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes, { x ->
-            onItemClickA(x, "Entrevista aceptada")
+            onItemClickA(x)
         }, {
-            x -> onItemClickR(x,"Entrevista rechazada")
+            x -> onItemClickR(x)
         })
         recEntrevistasPendientes.adapter = entrevistaListAdapter
     }
