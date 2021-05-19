@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activities.Activity_Dev"></activity>
+        <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".activities.Activity_Dev">
+        </activity>
 
         <uses-library
             android:name="com.google.android.wearable"

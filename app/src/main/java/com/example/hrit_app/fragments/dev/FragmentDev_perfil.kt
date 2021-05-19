@@ -110,6 +110,7 @@ class FragmentDev_perfil : Fragment() {
             disponibilidadDialog.btnDisponibilidadAdd.setOnClickListener {
                 Snackbar.make(v, "Guardado", Snackbar.LENGTH_SHORT).show()
                 // TODO deberiamos ocultar dialogo
+                btnGuardarDevPerfil.visibility = View.VISIBLE
             }
         }
 
