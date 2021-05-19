@@ -10,8 +10,9 @@ import java.util.*
 object UserRepository {
 
     var listaUsuarios: MutableList<User> = mutableListOf(
-            User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"), Tecnologia(R.drawable.java, "Java"))),
-            User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT),
+            User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"),
+                    Tecnologia(R.drawable.java, "Java"), Tecnologia(R.drawable.python, "Python"))),
+            User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT, Arrays.asList(Tecnologia(R.drawable.react, "React JS"), Tecnologia(R.drawable.java, "Java"))),
             User("fede@gmail.com", "passwordfede", "Federico", "Mateucci", Rol.RH),
             User("mati@gmail.com", "passwordmati", "Matias", "Romera", Rol.RH),
             User("santi@hotmail.com", "passwordsanti", "Santiago", "Escuder", Rol.AT),

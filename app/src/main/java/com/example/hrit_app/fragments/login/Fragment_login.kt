@@ -15,6 +15,7 @@ import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Rol
+import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
 
 class Fragment_login : Fragment() {
@@ -28,7 +29,6 @@ class Fragment_login : Fragment() {
     var userService: UserService = UserService()
 
     // Shared Preferences name const
-    val PREF_NAME = "misPreferencias"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -45,14 +45,13 @@ class Fragment_login : Fragment() {
         super.onStart()
         welcomeMessage.setText("Bienvenido a < HR&IT />")
 
-        val sharedPreferences =
-                requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         btnLogin.setOnClickListener {
             val user = verificarSiElUsuarioExiste(userName.text.toString(), passWord.text.toString())
             if (user != null) {
-                editor.putString("email", user.email)
+                editor.putString(SharedPreferencesKey.EMAIL, user.email)
                 editor.apply()
 
                 redirectToDevActivityOrHrActivity(user)

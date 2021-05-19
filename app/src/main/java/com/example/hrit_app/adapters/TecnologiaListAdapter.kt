@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.Tecnologia
+import kotlinx.android.synthetic.main.item_tecnologia.view.*
 
 class TecnologiaListAdapter(
         private var tecnologias: MutableList<Tecnologia>,
@@ -29,6 +30,10 @@ class TecnologiaListAdapter(
         // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setText(tecnologias[position].text)
         holder.setImg(tecnologias[position].id)
+        if (tecnologias[position].active) {
+            holder.itemView.tecnologiaActivaDev.visibility = View.VISIBLE
+        }
+
         holder.getCardLayout().setOnLongClickListener(){
             onItemClick(position)
         }
@@ -44,7 +49,7 @@ class TecnologiaListAdapter(
         }
 
         fun setText(text: String){
-            val txt: TextView = view.findViewById(R.id.text_item_tec)
+            val txt: TextView = view.findViewById(R.id.text_item_disponibilidad)
             txt.text = text
         }
 

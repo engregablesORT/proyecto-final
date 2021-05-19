@@ -1,14 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".fragments.dev.FragmentDev_perfil">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/btnGuardarDevPerfil"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="DEV_PERFIL" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/button_rounded"
+        android:text="Guardar"
+        android:visibility="invisible"
+        app:backgroundTint="#00BCD4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/btnEditarDev"
+        android:layout_width="23dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtEncabezado2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtEncabezado2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perfil"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recTecnologias"
+        android:layout_width="399dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/imgDevPerfil"
+        android:layout_width="129dp"
+        android:layout_height="127dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="68dp"
+        android:src="@drawable/profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nombreDev"
+        android:layout_width="72dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="35dp"
+        android:editable="true"
+        android:hint="Nombre"
+        android:textColor="#000000"
+        android:textColorHint="#717171"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imgDevPerfil"
+        app:layout_constraintTop_toBottomOf="@+id/txtEncabezado2" />
+
+    <EditText
+        android:id="@+id/expEditText"
+        android:layout_width="124dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:editable="true"
+        android:hint="Nombre"
+        android:text="TextView"
+        android:textColor="#2196F3"
+        android:textColorHint="#2196F3"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText2" />
+
+    <EditText
+        android:id="@+id/precioPorHoraEditText"
+        android:layout_width="127dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="25dp"
+        android:editable="true"
+        android:hint="Nombre"
+        android:text="TextView"
+        android:textColor="#4CAF50"
+        android:textColorHint="#4CAF50"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText4" />
+
+    <EditText
+        android:id="@+id/emailDevEditText"
+        android:layout_width="279dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:editable="true"
+        android:textColor="#000000"
+        android:textColorHint="#4CAF50"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintStart_toEndOf="@+id/emailDevText"
+        app:layout_constraintTop_toBottomOf="@+id/precioPorHoraEditText" />
+
+    <EditText
+        android:id="@+id/passwordDevEditText"
+        android:layout_width="72dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="140dp"
+        android:editable="true"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toEndOf="@+id/passwordDevText"
+        app:layout_constraintTop_toBottomOf="@+id/emailDevEditText" />
+
+    <EditText
+        android:id="@+id/tituloDev"
+        android:layout_width="98dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="2dp"
+        android:editable="true"
+        android:textColor="#686868"
+        android:textColorHint="#5A5A5A"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/imgDevPerfil"
+        app:layout_constraintTop_toBottomOf="@+id/nombreDev" />
+
+    <EditText
+        android:id="@+id/descripcionDev"
+        android:layout_width="372dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:editable="true"
+        android:hint="Descripcion"
+        android:textColor="#5A5A5A"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.903"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgDevPerfil" />
+
+    <EditText
+        android:id="@+id/apellidoDev"
+        android:layout_width="71dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="35dp"
+        android:editable="true"
+        android:hint="Apellido"
+        android:textColor="#000000"
+        android:textColorHint="#717171"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/nombreDev"
+        app:layout_constraintTop_toBottomOf="@+id/txtEncabezado2" />
+
+    <TextView
+        android:id="@+id/tecnologiasDevText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Tecnologias"
+        android:textColor="#131313"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
+
+    <TextView
+        android:id="@+id/tecnologiasDevText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:text="Años de Experiencia"
+        android:textColor="#131313"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+
+    <TextView
+        android:id="@+id/emailDevText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Email: "
+        android:textColor="#131313"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expEditText" />
+
+    <TextView
+        android:id="@+id/passwordDevText"
+        android:layout_width="68dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="52dp"
+        android:text="Password: "
+        android:textColor="#131313"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expEditText" />
+
+    <TextView
+        android:id="@+id/tecnologiasDevText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="15dp"
+        android:text="Precio / Hora"
+        android:textColor="#131313"
+        app:layout_constraintStart_toEndOf="@+id/anioExpText"
+        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+
+    <TextView
+        android:id="@+id/anioExpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="24dp"
+        android:text="|"
+        android:textColor="#131313"
+        app:layout_constraintStart_toEndOf="@+id/tecnologiasDevText2"
+        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+
+    <Button
+        android:id="@+id/btnDisponibilidadDev"
+        android:layout_width="161dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#0569B8"
+        android:text="Disponibilidad"
+        app:layout_constraintBottom_toTopOf="@+id/btnGuardarDevPerfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordDevText"
+        app:layout_constraintVertical_bias="0.391" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

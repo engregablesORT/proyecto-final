@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
+import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -35,11 +36,7 @@ class FragmentHR_perfil : Fragment() {
 
     // User
     lateinit var user: User
-
     var userService: UserService = UserService()
-
-    // Shared Preferences name const
-    val PREF_NAME = "misPreferencias"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         v = inflater.inflate(R.layout.fragment_hr_perfil, container, false)
@@ -66,12 +63,9 @@ class FragmentHR_perfil : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
 
-        // Shared Preferences para obtener el usuario por mail
-        val sharedPreferences =
-                requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
-        user = userService.findUserByUsername(sharedPreferences.getString("email", "").toString())
+        user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
 
         var textoFirstName = user.name.toString()
         var textoLastName = user.lastName.toString()
