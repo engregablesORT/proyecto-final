@@ -9,7 +9,7 @@
         android:id="@+id/fragmentDev_Home"
         android:name="com.example.hrit_app.fragments.dev.FragmentDev_Home"
         android:label="fragment_dev__home"
-        tools:layout="@layout/fragment_dev__home" />
+        tools:layout="@layout/fragment_dev_home" />
     <fragment
         android:id="@+id/fragmentDev_historial"
         android:name="com.example.hrit_app.fragments.dev.FragmentDev_historial"

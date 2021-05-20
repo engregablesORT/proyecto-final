@@ -2,6 +2,7 @@ package com.example.hrit_app.services
 
 import android.content.res.Resources
 import com.example.hrit_app.entities.User
+import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.repository.UserRepository
 
 class UserService {
@@ -15,7 +16,16 @@ class UserService {
         } catch (e: Resources.NotFoundException) {
             System.out.println(" === ERROR :" + e.message.toString())
             throw e
+        }
+    }
 
+    fun findUserByUsername(email: String): User {
+        try {
+            val usuarioFiltrado = userRepository.findByUsername(email)
+            return usuarioFiltrado
+        } catch (e: Resources.NotFoundException) {
+            System.out.println(" === ERROR :" + e.message.toString())
+            throw e
         }
     }
 
@@ -23,7 +33,15 @@ class UserService {
         return  userRepository.findAllAT()
     }
 
+    fun findByNombre(textNombre: String): MutableList<User> {
+        return userRepository.findByTecnologia(textNombre)
+    }
+
     fun createUser(user: User){
         userRepository.save(user)
+    }
+
+    fun deleteUser(user: User){
+        userRepository.delete(user)
     }
 }

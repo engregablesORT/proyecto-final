@@ -20,4 +20,9 @@ object TecnologiaRepository {
     fun findAll(): MutableList<Tecnologia>{
         return listaTecnologia;
     }
+
+    fun findByText(nombreTecnologia: String): Tecnologia{
+        val tecnologiaFiltradaPorNombre = listaTecnologia.filter { tecnologia -> tecnologia.text.equals(nombreTecnologia)  }
+        return tecnologiaFiltradaPorNombre.get(0)
+    }
 }
