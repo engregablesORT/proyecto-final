@@ -10,14 +10,15 @@ import java.util.*
 object UserRepository {
 
     var listaUsuarios: MutableList<User> = mutableListOf(
-        User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"), Tecnologia(R.drawable.java, "Java"))),
-        User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT),
-        User("fede@gmail.com", "passwordfede", "Federico", "Mateucci", Rol.RH),
-        User("mati@gmail.com", "passwordmati", "Matias", "Romera", Rol.RH),
-        User("santi@hotmail.com", "passwordsanti", "Santiago", "Escuder", Rol.AT),
-        User("fran@hotmail.com", "passwordsfran", "Francisco", "Heili", Rol.AT),
-        User("fabian@hotmail.com", "passwordsfabian", "Fabian", "Pestchanker", Rol.AT),
-        User("julian-raspanti@hotmail.com", "passwordsraspanti", "Julian", "Raspanti", Rol.AT))
+            User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"),
+                    Tecnologia(R.drawable.java, "Java"), Tecnologia(R.drawable.python, "Python"))),
+            User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT, Arrays.asList(Tecnologia(R.drawable.react, "React JS"), Tecnologia(R.drawable.java, "Java"))),
+            User("fede@gmail.com", "passwordfede", "Federico", "Mateucci", Rol.RH),
+            User("mati@gmail.com", "passwordmati", "Matias", "Romera", Rol.RH),
+            User("santi@hotmail.com", "passwordsanti", "Santiago", "Escuder", Rol.AT),
+            User("fran@hotmail.com", "passwordsfran", "Francisco", "Heili", Rol.AT),
+            User("fabian@hotmail.com", "passwordsfabian", "Fabian", "Pestchanker", Rol.AT),
+            User("julian-raspanti@hotmail.com", "passwordsraspanti", "Julian", "Raspanti", Rol.AT))
 
     fun findByUsernameAndPassword(username: String, password: String): User {
         val usuarioFiltrado = listaUsuarios.filter { userRepo ->
@@ -26,26 +27,39 @@ object UserRepository {
         return getResultFromFilter(usuarioFiltrado)
     }
 
-    fun save(user: User){
+    fun findByUsername(username: String): User {
+        val usuarioFiltrado = listaUsuarios.filter { userRepo ->
+            userRepo.email.equals(username)
+        }
+        return getResultFromFilter(usuarioFiltrado)
+    }
+
+    fun save(user: User) {
         listaUsuarios.add(user)
     }
 
-    fun findAllAT(): MutableList<User>{
-       val asesoresTecnicos = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) }
+    fun delete(user: User) {
+        this.listaUsuarios.remove(user)
+    }
+
+    fun findAllAT(): MutableList<User> {
+        val asesoresTecnicos = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) }
         return asesoresTecnicos.toMutableList()
     }
 
-    fun getResultFromFilter(usuarioFiltrado : List<User>): User{
-        if ( usuarioFiltrado.size > 0) {
+    fun getResultFromFilter(usuarioFiltrado: List<User>): User {
+        if (usuarioFiltrado.size > 0) {
             return usuarioFiltrado.get(0)
         }
         throw Resources.NotFoundException("User no encontrado")
 
     }
 
-    fun findByTecnologia(text: String): MutableList<User>{
-        val usuariosFiltrados = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(text.toUpperCase()) ||
-                usuario.lastName.toUpperCase().contains(text.toUpperCase()))  }
-        return  usuariosFiltrados.toMutableList()
+    fun findByTecnologia(text: String): MutableList<User> {
+        val usuariosFiltrados = listaUsuarios.filter { usuario ->
+            usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(text.toUpperCase()) ||
+                    usuario.lastName.toUpperCase().contains(text.toUpperCase()))
+        }
+        return usuariosFiltrados.toMutableList()
     }
 }

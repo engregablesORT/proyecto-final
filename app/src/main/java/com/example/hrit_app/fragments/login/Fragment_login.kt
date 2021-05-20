@@ -1,5 +1,6 @@
 package com.example.hrit_app.fragments.login
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Rol
+import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
 
 class Fragment_login : Fragment() {
@@ -25,6 +27,8 @@ class Fragment_login : Fragment() {
     lateinit var passWord: EditText
     lateinit var welcomeMessage: TextView
     var userService: UserService = UserService()
+
+    // Shared Preferences name const
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -41,9 +45,15 @@ class Fragment_login : Fragment() {
         super.onStart()
         welcomeMessage.setText("Bienvenido a < HR&IT />")
 
+        val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
         btnLogin.setOnClickListener {
             val user = verificarSiElUsuarioExiste(userName.text.toString(), passWord.text.toString())
-            if (user != null){
+            if (user != null) {
+                editor.putString(SharedPreferencesKey.EMAIL, user.email)
+                editor.apply()
+
                 redirectToDevActivityOrHrActivity(user)
             }
         }
@@ -56,31 +66,31 @@ class Fragment_login : Fragment() {
         try {
             val user = userService.findUserByUsernameAndPassword(email, password)
             return user
-        }catch (e: Resources.NotFoundException) {
-            Snackbar.make(v,"Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()
+        } catch (e: Resources.NotFoundException) {
+            Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()
         }
         return null
     }
 
-    private fun redirectToRegisterPage(){
+    private fun redirectToRegisterPage() {
         val action2 = Fragment_loginDirections.actionFragmentLoginToFragmentSignup()
         v.findNavController().navigate(action2)
     }
 
-    private fun redirectToDevActivityOrHrActivity(user: User){
-        if (Rol.AT.equals(user.rol)){
+    private fun redirectToDevActivityOrHrActivity(user: User) {
+        if (Rol.AT.equals(user.rol)) {
             redirectToDevActivity()
         } else {
             redirectToHrActivity()
         }
     }
 
-    private fun redirectToDevActivity(){
+    private fun redirectToDevActivity() {
         val appActivityAction = Fragment_loginDirections.actionFragmentLoginToActivityDev2()
         v.findNavController().navigate(appActivityAction)
     }
 
-    private fun redirectToHrActivity(){
+    private fun redirectToHrActivity() {
         val appActivityAction = Fragment_loginDirections.actionFragmentLoginToActivityHR()
         v.findNavController().navigate(appActivityAction)
     }
