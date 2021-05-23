@@ -5,9 +5,14 @@ import com.example.hrit_app.R
 import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.utils.constants.Rol
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 object UserRepository {
+
+    private val db = Firebase.firestore
 
     var listaUsuarios: MutableList<User> = mutableListOf(
             User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"),
@@ -32,6 +37,25 @@ object UserRepository {
             userRepo.email.equals(username)
         }
         return getResultFromFilter(usuarioFiltrado)
+    }
+
+    fun crearUsuarioFirebase(user: User, uid: String){
+        // Create a new user with a first and last name
+        val userFirebase = hashMapOf(
+            "name" to user.name,
+            "lastname" to user.lastName,
+            "email" to user.email,
+            "passoword" to user.password,
+            "rol" to user.rol
+        )
+        db.collection("users")
+            .add(userFirebase)
+            .addOnSuccessListener { documentReference ->
+                System.out.println("todo ok")
+            }
+            .addOnFailureListener { e ->
+                System.out.println("error")
+            }
     }
 
     fun save(user: User) {

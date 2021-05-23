@@ -16,6 +16,7 @@ import com.example.hrit_app.utils.constants.Rol
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_signup.*
 import java.util.*
@@ -32,7 +33,6 @@ class Fragment_signup : Fragment() {
     lateinit var rolSeleccionado: String
     var userService: UserService = UserService()
     private lateinit var auth: FirebaseAuth
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,8 +117,8 @@ class Fragment_signup : Fragment() {
                     val user = auth.currentUser
                     val uid = user.uid
                     System.out.println(userName.text.toString() +  " " +  passWord.text.toString() +  " " + name.text.toString() +  " " + lastName.text.toString() +  " " + spinner.selectedItem.toString() + " " + uid)
-
-                    //       updateUI(user)
+                    val usuarioFirebase = User(userName.text.toString(), passWord.text.toString(), name.text.toString(), lastName.text.toString(), spinner.selectedItem.toString())
+                    userService.createUserFirebase(usuarioFirebase, uid)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)

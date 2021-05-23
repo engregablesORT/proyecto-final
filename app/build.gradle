@@ -54,4 +54,5 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.6.0'
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 }

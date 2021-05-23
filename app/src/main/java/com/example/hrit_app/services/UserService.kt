@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.repository.UserRepository
+import com.google.firebase.auth.FirebaseAuth
 
 class UserService {
 
@@ -39,6 +40,10 @@ class UserService {
 
     fun createUser(user: User){
         userRepository.save(user)
+    }
+
+    fun createUserFirebase(user: User, uid: String){
+        userRepository.crearUsuarioFirebase(user, uid)
     }
 
     fun deleteUser(user: User){
