@@ -56,7 +56,7 @@ class Fragment_login : Fragment() {
 
         val currentUser = auth.currentUser
         if(currentUser != null) {
-            //reload();
+            //update
         }
         btnLogin.setOnClickListener {
             auth.signInWithEmailAndPassword(userName.text.toString(), passWord.text.toString()).addOnCompleteListener(requireActivity()){task ->
@@ -64,16 +64,13 @@ class Fragment_login : Fragment() {
                     val parentJob = Job()
                     val scope = CoroutineScope(Dispatchers.Default + parentJob)
                     scope.launch {
-                        val user = async { verificarSiElUsuarioExiste(userName.text.toString()) }.await()
+                        val user =  verificarSiElUsuarioExiste(userName.text.toString())
                         if (user != null) {
                             editor.putString(SharedPreferencesKey.EMAIL, userName.text.toString())
                             editor.apply()
-                            //redirectToDevActivityOrHrActivity(user.await())
+                            redirectToDevActivityOrHrActivity(user)
                         }
                     }
-
-                } else{
-                    Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -82,9 +79,10 @@ class Fragment_login : Fragment() {
         }
     }
 
-    private fun verificarSiElUsuarioExiste(email: String): User? {
+    private suspend fun verificarSiElUsuarioExiste(email: String): User? {
         try {
             val user = userService.findRolByEmail(email)
+            return user
         } catch (e: Resources.NotFoundException) {
             Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()
         }

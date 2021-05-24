@@ -21,7 +21,7 @@ class UserService {
         }
     }
 
-    fun findRolByEmail(email: String): String{
+    suspend fun findRolByEmail(email: String): User?{
         try {
             return  userRepository.obtenerRolDeUsuarioByEmail(email)
         } catch (e: Resources.NotFoundException) {
@@ -30,7 +30,7 @@ class UserService {
         }
     }
 
-    fun findAllAsesoresTecnicos(): MutableList<User> {
+    suspend fun findAllAsesoresTecnicos(): MutableList<User> {
         return  userRepository.findAllAT()
     }
 

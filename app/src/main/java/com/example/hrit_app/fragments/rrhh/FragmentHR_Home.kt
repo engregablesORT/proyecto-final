@@ -18,6 +18,10 @@ import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,20 +53,22 @@ class FragmentHR_Home : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        tecnologias = tecnologiaService.getAllTecnologias()
-        asesoresTecnicos = userService.findAllAsesoresTecnicos()
-
-        recTecnologias.setHasFixedSize(true)
-        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
-        recTecnologias.layoutManager = linearLayoutManager
-        recTecnologias.adapter = tecnologiaListAdapter
-
-        // Recycler Vertical
-        linearLayoutManagerAsesores = LinearLayoutManager(context)
-        recAsesores.layoutManager = linearLayoutManagerAsesores
-        actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos)
-
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+            /*tecnologias = tecnologiaService.getAllTecnologias()
+            recTecnologias.setHasFixedSize(true)
+            linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
+            recTecnologias.layoutManager = linearLayoutManager
+            recTecnologias.adapter = tecnologiaListAdapter*/
+            // TODO ver error aqui
+            // Recycler Vertical
+            linearLayoutManagerAsesores = LinearLayoutManager(context)
+            recAsesores.layoutManager = linearLayoutManagerAsesores
+        scope.launch {
+            asesoresTecnicos = userService.findAllAsesoresTecnicos()
+            actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos)
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //asesoresListAdapter.notifyDataSetChanged()
@@ -72,9 +78,9 @@ class FragmentHR_Home : Fragment() {
             override fun onQueryTextChange(newText: String): Boolean {
                 asesoresTecnicos = Collections.EMPTY_LIST as MutableList<User>
                 if (newText.replace(" ", "").length>0){
-                    asesoresTecnicos = userService.findByNombre(newText)
+                    //asesoresTecnicos = userService.findByNombre(newText)
                 } else {
-                    asesoresTecnicos = userService.findAllAsesoresTecnicos()
+                    //asesoresTecnicos = userService.findAllAsesoresTecnicos()
                 }
                 actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos)
                 return false
