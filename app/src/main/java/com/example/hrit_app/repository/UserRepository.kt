@@ -8,11 +8,21 @@ import com.example.hrit_app.utils.constants.Rol
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 object UserRepository {
 
     private val db = Firebase.firestore
+    val USERS_COLLECTION = "users";
+    val NAME = "name"
+    val LAST_NAME = "lastname"
+    val PASSWORD = "password"
+    val EMAIL = "email"
+    val TECNOLOGIAS = "TECNOLOGIAS"
+    val ROL = "rol"
 
     var listaUsuarios: MutableList<User> = mutableListOf(
             User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"),
@@ -39,23 +49,30 @@ object UserRepository {
         return getResultFromFilter(usuarioFiltrado)
     }
 
+
+    fun obtenerRolDeUsuarioByEmail(email: String): String {
+        var rolUser: String = ""
+        db.collection(USERS_COLLECTION)
+                .whereEqualTo(EMAIL, email)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                   System.out.println("todo ok")
+                    if (snapshot != null) {
+
+                    }
+                   val response =  snapshot.documents.get(0).data
+                   rolUser = response?.get(ROL).toString()
+                   return@addOnSuccessListener
+                }
+                .addOnFailureListener{e ->
+
+                }
+        return rolUser
+    }
+
     fun crearUsuarioFirebase(user: User, uid: String){
-        // Create a new user with a first and last name
-        val userFirebase = hashMapOf(
-            "name" to user.name,
-            "lastname" to user.lastName,
-            "email" to user.email,
-            "passoword" to user.password,
-            "rol" to user.rol
-        )
-        db.collection("users")
-            .add(userFirebase)
-            .addOnSuccessListener { documentReference ->
-                System.out.println("todo ok")
-            }
-            .addOnFailureListener { e ->
-                System.out.println("error")
-            }
+        var userFirebase : User = User(user.email,user.password, user.name, user.lastName, user.rol)
+        db.collection("users").document(uid).set(userFirebase)
     }
 
     fun save(user: User) {

@@ -5,6 +5,7 @@ import com.example.hrit_app.entities.User
 import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.*
 
 class UserService {
 
@@ -20,10 +21,9 @@ class UserService {
         }
     }
 
-    fun findUserByUsername(email: String): User {
+    fun findRolByEmail(email: String): String{
         try {
-            val usuarioFiltrado = userRepository.findByUsername(email)
-            return usuarioFiltrado
+            return  userRepository.obtenerRolDeUsuarioByEmail(email)
         } catch (e: Resources.NotFoundException) {
             System.out.println(" === ERROR :" + e.message.toString())
             throw e

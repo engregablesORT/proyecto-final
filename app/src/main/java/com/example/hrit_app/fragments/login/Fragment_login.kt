@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 
 class Fragment_login : Fragment() {
 
@@ -57,25 +58,23 @@ class Fragment_login : Fragment() {
         if(currentUser != null) {
             //reload();
         }
-
         btnLogin.setOnClickListener {
-
             auth.signInWithEmailAndPassword(userName.text.toString(), passWord.text.toString()).addOnCompleteListener(requireActivity()){task ->
                 if (task.isSuccessful){
-                    val user = auth.currentUser
-                    auth.updateCurrentUser(user)
+                    val parentJob = Job()
+                    val scope = CoroutineScope(Dispatchers.Default + parentJob)
+                    scope.launch {
+                        val user = async { verificarSiElUsuarioExiste(userName.text.toString()) }.await()
+                        if (user != null) {
+                            editor.putString(SharedPreferencesKey.EMAIL, userName.text.toString())
+                            editor.apply()
+                            //redirectToDevActivityOrHrActivity(user.await())
+                        }
+                    }
+
                 } else{
-
+                    Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()
                 }
-            }
-
-
-            val user = verificarSiElUsuarioExiste(userName.text.toString(), passWord.text.toString())
-            if (user != null) {
-                editor.putString(SharedPreferencesKey.EMAIL, user.email)
-                editor.apply()
-
-                redirectToDevActivityOrHrActivity(user)
             }
         }
         btnRegistrar.setOnClickListener {
@@ -83,10 +82,9 @@ class Fragment_login : Fragment() {
         }
     }
 
-    private fun verificarSiElUsuarioExiste(email: String, password: String): User? {
+    private fun verificarSiElUsuarioExiste(email: String): User? {
         try {
-            val user = userService.findUserByUsernameAndPassword(email, password)
-            return user
+            val user = userService.findRolByEmail(email)
         } catch (e: Resources.NotFoundException) {
             Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()
         }

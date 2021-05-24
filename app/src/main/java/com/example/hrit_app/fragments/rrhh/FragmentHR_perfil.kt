@@ -65,7 +65,7 @@ class FragmentHR_perfil : Fragment() {
         super.onStart()
         val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
 
-        user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
+        /*user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
 
         var textoFirstName = user.name.toString()
         var textoLastName = user.lastName.toString()
@@ -101,7 +101,7 @@ class FragmentHR_perfil : Fragment() {
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
             // userService.deleteUser(user)
             // userService.createUser(userNuevo)
-        }
+        }*/
     }
 
 }

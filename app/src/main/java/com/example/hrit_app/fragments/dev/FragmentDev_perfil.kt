@@ -67,7 +67,7 @@ class FragmentDev_perfil : Fragment() {
         super.onStart()
         val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
         // Recycler View
-        user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
+        /*user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
         setInitialValues(user)
         tecnologias = tecnologiaService.getAllTecnologias()
         recTecnologias.setHasFixedSize(true)
@@ -78,16 +78,16 @@ class FragmentDev_perfil : Fragment() {
         
         tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
         recTecnologias.layoutManager = linearLayoutManager
-        recTecnologias.adapter = tecnologiaListAdapter
+        recTecnologias.adapter = tecnologiaListAdapter*/
 
-        btnGuardarDevPerfil.setOnClickListener {
+       /* btnGuardarDevPerfil.setOnClickListener {
             // TODO agregar validaciones ---------
             Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
         }
 
         passwordEditText.setOnClickListener{
             passwordEditText.setText(user.password)
-        }
+        }*/
 
     }
 
