@@ -7,7 +7,7 @@ class TecnologiaService {
 
     var tecnologiaRepository: TecnologiaRepository = TecnologiaRepository
 
-    fun getAllTecnologias(): MutableList<Tecnologia> {
+    suspend fun getAllTecnologias(): MutableList<Tecnologia> {
         return  tecnologiaRepository.findAll();
     }
 }

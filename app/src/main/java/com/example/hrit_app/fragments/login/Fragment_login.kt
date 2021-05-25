@@ -81,7 +81,7 @@ class Fragment_login : Fragment() {
 
     private suspend fun verificarSiElUsuarioExiste(email: String): User? {
         try {
-            val user = userService.findRolByEmail(email)
+            val user = userService.findByEmail(email)
             return user
         } catch (e: Resources.NotFoundException) {
             Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()

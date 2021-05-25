@@ -56,46 +56,44 @@ class FragmentHR_Home : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        // creamos recycler asesores
         recAsesores.setHasFixedSize(true)
         linearLayoutManagerAsesores = LinearLayoutManager(context)
-        recAsesores.layoutManager = linearLayoutManagerAsesores
-        asesoresListAdapter =
-            AsesorTecnicoListAdapter(asesoresTecnicos) { x -> onAsesorClick(x) }
-        recAsesores.adapter = asesoresListAdapter
 
+        // creamos recycler tecnologia
+        recTecnologias.setHasFixedSize(true)
+        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        // Cargamos los valores tanto para los asesores como para las tecnologias
         val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)
         scope.launch {
             asesoresTecnicos = userService.findAllAsesoresTecnicos()
+            tecnologias = tecnologiaService.getAllTecnologias()
             activity?.runOnUiThread {
                 actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos)
+                setTecnolgias(tecnologias)
             }
 
         }
-
-        /*
-        tecnologias = tecnologiaService.getAllTecnologias()
-        recTecnologias.setHasFixedSize(true)
-        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
-        recTecnologias.layoutManager = linearLayoutManager
-        recTecnologias.adapter = tecnologiaListAdapter
-        */
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                //asesoresListAdapter.notifyDataSetChanged()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                asesoresTecnicos = Collections.EMPTY_LIST as MutableList<User>
-                if (newText.replace(" ", "").length > 0) {
-                    //asesoresTecnicos = userService.findByNombre(newText)
-                } else {
-                    //asesoresTecnicos = userService.findAllAsesoresTecnicos()
+                val parentJob = Job()
+                val scope = CoroutineScope(Dispatchers.Default + parentJob)
+                scope.launch {
+                    if (newText.replace(" ", "").length>0){
+                        asesoresTecnicos = userService.findByNombre(newText, asesoresTecnicos)
+                    } else {
+                        asesoresTecnicos = userService.findAllAsesoresTecnicos()
+                    }
+                    activity?.runOnUiThread {
+                        actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos)
+                    }
                 }
-                actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos)
                 return false
             }
         })
@@ -105,7 +103,15 @@ class FragmentHR_Home : Fragment() {
 
     private fun actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos: MutableList<User>) {
         asesoresListAdapter = AsesorTecnicoListAdapter(asesoresTecnicos, { x -> onAsesorClick(x) })
+        recAsesores.layoutManager = linearLayoutManagerAsesores
         recAsesores.adapter = asesoresListAdapter
+    }
+
+    private fun setTecnolgias(tecnologias: MutableList<Tecnologia>) {
+        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
+        recTecnologias.layoutManager = linearLayoutManager
+        recTecnologias.adapter = tecnologiaListAdapter
+
     }
 
     fun onTecnologiaClick(position: Int): Boolean {

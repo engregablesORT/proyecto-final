@@ -20,6 +20,10 @@ import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
@@ -65,29 +69,37 @@ class FragmentDev_perfil : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        v.visibility = View.INVISIBLE
         val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
-        // Recycler View
-        /*user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
-        setInitialValues(user)
-        tecnologias = tecnologiaService.getAllTecnologias()
+        // creamos recycler tecnologia
         recTecnologias.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        
-        // activar tecnologias
-        activarTecnologias(user.tecnologias, tecnologias)
-        
-        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
-        recTecnologias.layoutManager = linearLayoutManager
-        recTecnologias.adapter = tecnologiaListAdapter*/
 
-       /* btnGuardarDevPerfil.setOnClickListener {
+        // Usamos asincronismo
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+        scope.launch {
+            user = userService.findByEmail(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())!!
+            tecnologias = tecnologiaService.getAllTecnologias()
+            activity?.runOnUiThread {
+                tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
+                recTecnologias.layoutManager = linearLayoutManager
+                recTecnologias.adapter = tecnologiaListAdapter
+                setInitialValues(user)
+                activarTecnologias(user.tecnologias, tecnologias)
+                v.visibility = View.VISIBLE
+            }
+        }
+
+       btnGuardarDevPerfil.setOnClickListener {
             // TODO agregar validaciones ---------
+           // TODO VER COMO FUNCIONA EL UPDATE
             Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
         }
 
         passwordEditText.setOnClickListener{
             passwordEditText.setText(user.password)
-        }*/
+        }
 
     }
 

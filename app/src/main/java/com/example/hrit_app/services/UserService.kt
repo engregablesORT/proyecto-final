@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.repository.UserRepository
+import com.example.hrit_app.utils.constants.Rol
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 
@@ -11,17 +12,8 @@ class UserService {
 
     var userRepository: UserRepository = UserRepository
 
-    fun findUserByUsernameAndPassword(email: String, password: String): User {
-        try {
-            val usuarioFiltrado = userRepository.findByUsernameAndPassword(email, password)
-            return usuarioFiltrado
-        } catch (e: Resources.NotFoundException) {
-            System.out.println(" === ERROR :" + e.message.toString())
-            throw e
-        }
-    }
 
-    suspend fun findRolByEmail(email: String): User? {
+    suspend fun findByEmail(email: String): User? {
         try {
             return userRepository.obtenerRolDeUsuarioByEmail(email)
         } catch (e: Resources.NotFoundException) {
@@ -34,19 +26,17 @@ class UserService {
         return userRepository.findAllAT()
     }
 
-    fun findByNombre(textNombre: String): MutableList<User> {
-        return userRepository.findByTecnologia(textNombre)
+    fun findByNombre(textNombre: String, asesoresTecnicos:MutableList<User>): MutableList<User> {
+        val usuariosFiltrados = asesoresTecnicos.filter { usuario ->
+            usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(textNombre.toUpperCase()) ||
+                    usuario.lastName.toUpperCase().contains(textNombre.toUpperCase()))
+        }
+        return usuariosFiltrados.toMutableList()
     }
 
-    fun createUser(user: User) {
-        userRepository.save(user)
-    }
 
     fun createUserFirebase(user: User, uid: String) {
         userRepository.crearUsuarioFirebase(user, uid)
     }
 
-    fun deleteUser(user: User) {
-        userRepository.delete(user)
-    }
 }
