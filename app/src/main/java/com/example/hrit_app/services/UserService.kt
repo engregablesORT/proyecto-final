@@ -21,9 +21,9 @@ class UserService {
         }
     }
 
-    suspend fun findRolByEmail(email: String): User?{
+    suspend fun findRolByEmail(email: String): User? {
         try {
-            return  userRepository.obtenerRolDeUsuarioByEmail(email)
+            return userRepository.obtenerRolDeUsuarioByEmail(email)
         } catch (e: Resources.NotFoundException) {
             System.out.println(" === ERROR :" + e.message.toString())
             throw e
@@ -31,22 +31,22 @@ class UserService {
     }
 
     suspend fun findAllAsesoresTecnicos(): MutableList<User> {
-        return  userRepository.findAllAT()
+        return userRepository.findAllAT()
     }
 
     fun findByNombre(textNombre: String): MutableList<User> {
         return userRepository.findByTecnologia(textNombre)
     }
 
-    fun createUser(user: User){
+    fun createUser(user: User) {
         userRepository.save(user)
     }
 
-    fun createUserFirebase(user: User, uid: String){
+    fun createUserFirebase(user: User, uid: String) {
         userRepository.crearUsuarioFirebase(user, uid)
     }
 
-    fun deleteUser(user: User){
+    fun deleteUser(user: User) {
         userRepository.delete(user)
     }
 }

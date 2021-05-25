@@ -1,20 +1,14 @@
 package com.example.hrit_app.repository
 
 import android.content.res.Resources
+import android.util.Log
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.utils.constants.Rol
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 import java.util.*
 
 object UserRepository {
@@ -53,16 +47,16 @@ object UserRepository {
         return getResultFromFilter(usuarioFiltrado)
     }
 
-    suspend fun  obtenerRolDeUsuarioByEmail(email: String): User? {
-       val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(EMAIL, email).get().await()
-       val mapa = snapshot.documents.get(0).data
+    suspend fun obtenerRolDeUsuarioByEmail(email: String): User? {
+        val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(EMAIL, email).get().await()
+        val mapa = snapshot.documents.get(0).data
 
-       return User(mapa?.get(EMAIL).toString(), mapa?.get(PASSWORD).toString(),
+        return User(mapa?.get(EMAIL).toString(), mapa?.get(PASSWORD).toString(),
                 mapa?.get(NAME).toString(), mapa?.get(LAST_NAME).toString(), mapa?.get(ROL).toString())
-   }
+    }
 
-    fun crearUsuarioFirebase(user: User, uid: String){
-        var userFirebase : User = User(user.email,user.password, user.name, user.lastName, user.rol)
+    fun crearUsuarioFirebase(user: User, uid: String) {
+        var userFirebase: User = User(user.email, user.password, user.name, user.lastName, user.rol)
         db.collection("users").document(uid).set(userFirebase)
     }
 
@@ -75,13 +69,14 @@ object UserRepository {
     }
 
     suspend fun findAllAT(): MutableList<User> {
-        var usersAT : MutableList<User> = arrayListOf()
+        var usersAT: MutableList<User> = arrayListOf()
         try {
             val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(ROL, Rol.AT).get().await()
-            for (documento in snapshot.documents){
+            for (documento in snapshot.documents) {
                 val user = obtenerUsuarioByDocumentoDeFirebase(documento.data as Map<String, Object>)
                 usersAT.add(user)
             }
+            Log.d("TEST", usersAT.toString())
             return usersAT
         } catch (e: Exception) {
             return arrayListOf()
@@ -90,7 +85,7 @@ object UserRepository {
 
     private fun obtenerUsuarioByDocumentoDeFirebase(mapa: Map<String, Object>): User {
         return User(mapa?.get(EMAIL).toString(), mapa?.get(PASSWORD).toString(),
-            mapa?.get(NAME).toString(), mapa?.get(LAST_NAME).toString(), mapa?.get(ROL).toString())
+                mapa?.get(NAME).toString(), mapa?.get(LAST_NAME).toString(), mapa?.get(ROL).toString())
     }
 
     fun getResultFromFilter(usuarioFiltrado: List<User>): User {
