@@ -25,7 +25,7 @@
         android:id="@+id/txtTitular"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:text="Reclutador IT"
         android:textColor="#5E5757"
         app:layout_constraintStart_toEndOf="@+id/imageView"

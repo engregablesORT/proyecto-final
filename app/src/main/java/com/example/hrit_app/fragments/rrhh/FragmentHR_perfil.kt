@@ -1,6 +1,7 @@
 package com.example.hrit_app.fragments.rrhh
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,6 +18,10 @@ import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class FragmentHR_perfil : Fragment() {
 
@@ -34,11 +39,24 @@ class FragmentHR_perfil : Fragment() {
     lateinit var inputEmail: TextInputLayout
     lateinit var inputEmailEdit: TextInputEditText
 
+    // Valores
+    lateinit var textoFirstName: String
+    lateinit var textoLastName: String
+    lateinit var textoEmail: String
+    lateinit var textoPassword: String
+
     // User
     lateinit var user: User
     var userService: UserService = UserService()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    // SharedPreferences
+    lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         v = inflater.inflate(R.layout.fragment_hr_perfil, container, false)
         btnEditar = v.findViewById(R.id.btnEditar)
 
@@ -58,24 +76,25 @@ class FragmentHR_perfil : Fragment() {
         inputEmail.isEnabled = false
         inputFirstName.isEnabled = false
 
+        // Shared Preferences
+        sharedPreferences = requireContext().getSharedPreferences(
+            SharedPreferencesKey.PREF_NAME,
+            Context.MODE_PRIVATE
+        )
+
         return v
     }
 
     override fun onStart() {
         super.onStart()
-        val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
 
-        /*user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
-
-        var textoFirstName = user.name.toString()
-        var textoLastName = user.lastName.toString()
-        var textoEmail = user.email.toString()
-        var textoPassword = user.password.toString()
-
-        inputFirstName.hint = textoFirstName
-        inputLastName.hint = textoLastName
-        inputPassword.hint = "**********"
-        inputEmail.hint = textoEmail
+        val emailKey = sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString()
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+        scope.launch {
+            user = userService.findByEmail(emailKey)!!
+            setUserInputValues()
+        }
 
         btnEditar.setOnClickListener {
             inputFirstName.isEnabled = true
@@ -97,11 +116,29 @@ class FragmentHR_perfil : Fragment() {
         }
 
         btnGuardar.setOnClickListener {
-            var userNuevo = User(inputEmailEdit.text.toString(), inputPasswordEdit.text.toString(), inputFirstNameEdit.text.toString(), inputLastNameEdit.text.toString(), user.rol, user.tecnologias)
+            var userNuevo = User(
+                inputEmailEdit.text.toString(),
+                inputPasswordEdit.text.toString(),
+                inputFirstNameEdit.text.toString(),
+                inputLastNameEdit.text.toString(),
+                user.rol,
+                user.tecnologias
+            )
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
             // userService.deleteUser(user)
             // userService.createUser(userNuevo)
-        }*/
+        }
+    }
+
+    private fun setUserInputValues() {
+        textoFirstName = user.name
+        textoLastName = user.lastName
+        textoEmail = user.email
+        textoPassword = user.password
+        inputFirstName.hint = textoFirstName
+        inputLastName.hint = textoLastName
+        inputPassword.hint = "**********"
+        inputEmail.hint = textoEmail
     }
 
 }
