@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
 
 class AsesorTecnicoListAdapter(
-        private var asesores: MutableList<User>,
-        val onItemClick: (Int) -> Boolean
+    private var asesores: MutableList<User>,
+    val onItemClick: (Int) -> Boolean
 ) : RecyclerView.Adapter<AsesorTecnicoListAdapter.AsesorTecnicoHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsesorTecnicoHolder {
@@ -28,7 +28,7 @@ class AsesorTecnicoListAdapter(
         // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setName(asesores[position].name)
         holder.setApellido(asesores[position].lastName)
-        holder.getCardLayout().setOnLongClickListener(){
+        holder.getCardLayout().setOnLongClickListener() {
             onItemClick(position)
         }
     }
@@ -42,17 +42,17 @@ class AsesorTecnicoListAdapter(
             this.view = v
         }
 
-        fun setName(nombre: String){
-            val name : TextView = view.findViewById(R.id.text_item_at_nombre)
+        fun setName(nombre: String) {
+            val name: TextView = view.findViewById(R.id.text_item_at_nombre)
             name.text = nombre
         }
 
-        fun setApellido(apellido: String){
+        fun setApellido(apellido: String) {
             val lastName: TextView = view.findViewById(R.id.text_item_at_2)
             lastName.text = apellido
         }
 
-        fun getCardLayout (): CardView {
+        fun getCardLayout(): CardView {
             // Me posiciono sobre el click especifico de la card
             return view.findViewById(R.id.card_package_item)
         }

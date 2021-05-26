@@ -1,14 +1,14 @@
 package com.example.hrit_app.entities
 
-class Tecnologia(id: Int, text: String, active: Boolean = false) {
+class Tecnologia(imgsrc: Int, text: String, active: Boolean = false) {
 
-    var id: Int
+    var imgsrc: Int
     var text: String
     var active: Boolean
 
 
     init {
-        this.id = id
+        this.imgsrc = imgsrc
         this.text = text
         this.active = active
     }

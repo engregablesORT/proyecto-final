@@ -17,6 +17,10 @@ import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Rol
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 
 class Fragment_login : Fragment() {
 
@@ -27,6 +31,7 @@ class Fragment_login : Fragment() {
     lateinit var passWord: EditText
     lateinit var welcomeMessage: TextView
     var userService: UserService = UserService()
+    private lateinit var auth: FirebaseAuth
 
     // Shared Preferences name const
 
@@ -38,6 +43,7 @@ class Fragment_login : Fragment() {
         userName = v.findViewById(R.id.userName)
         passWord = v.findViewById(R.id.passWord)
         welcomeMessage = v.findViewById(R.id.welcomeMessage)
+        auth = Firebase.auth
         return v
     }
 
@@ -48,13 +54,24 @@ class Fragment_login : Fragment() {
         val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
+        val currentUser = auth.currentUser
+        if(currentUser != null) {
+            //update
+        }
         btnLogin.setOnClickListener {
-            val user = verificarSiElUsuarioExiste(userName.text.toString(), passWord.text.toString())
-            if (user != null) {
-                editor.putString(SharedPreferencesKey.EMAIL, user.email)
-                editor.apply()
-
-                redirectToDevActivityOrHrActivity(user)
+            auth.signInWithEmailAndPassword(userName.text.toString(), passWord.text.toString()).addOnCompleteListener(requireActivity()){task ->
+                if (task.isSuccessful){
+                    val parentJob = Job()
+                    val scope = CoroutineScope(Dispatchers.Default + parentJob)
+                    scope.launch {
+                        val user =  verificarSiElUsuarioExiste(userName.text.toString())
+                        if (user != null) {
+                            editor.putString(SharedPreferencesKey.EMAIL, userName.text.toString())
+                            editor.apply()
+                            redirectToDevActivityOrHrActivity(user)
+                        }
+                    }
+                }
             }
         }
         btnRegistrar.setOnClickListener {
@@ -62,9 +79,9 @@ class Fragment_login : Fragment() {
         }
     }
 
-    private fun verificarSiElUsuarioExiste(email: String, password: String): User? {
+    private suspend fun verificarSiElUsuarioExiste(email: String): User? {
         try {
-            val user = userService.findUserByUsernameAndPassword(email, password)
+            val user = userService.findByEmail(email)
             return user
         } catch (e: Resources.NotFoundException) {
             Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()

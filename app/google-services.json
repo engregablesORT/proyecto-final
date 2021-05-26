@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "962481359976",
-    "project_id": "hritapp-cec8e",
-    "storage_bucket": "hritapp-cec8e.appspot.com"
+    "project_number": "305784778756",
+    "project_id": "hrit-45853",
+    "storage_bucket": "hrit-45853.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:962481359976:android:4118bd8190054dffd07fdd",
+        "mobilesdk_app_id": "1:305784778756:android:8c23d0981994b9f55cc551",
         "android_client_info": {
           "package_name": "com.example.hrit_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "962481359976-o356unesf6l77pmr2g3ocvm5o9mv740d.apps.googleusercontent.com",
+          "client_id": "305784778756-p4rru165kh6jhrsimq3mlcvmj30ar91o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAkWn6ZaRoU_RkLQHsqIeZxE5NT6u_Rbzc"
+          "current_key": "AIzaSyBIJUapHuDGVDqrO-cKhJbAOSMQ5B85Wkg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "962481359976-o356unesf6l77pmr2g3ocvm5o9mv740d.apps.googleusercontent.com",
+              "client_id": "305784778756-p4rru165kh6jhrsimq3mlcvmj30ar91o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

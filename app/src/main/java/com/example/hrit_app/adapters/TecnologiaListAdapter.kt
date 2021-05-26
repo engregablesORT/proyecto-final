@@ -29,7 +29,7 @@ class TecnologiaListAdapter(
     override fun onBindViewHolder(holder: TecnologiaHolder, position: Int) {
         // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setText(tecnologias[position].text)
-        holder.setImg(tecnologias[position].id)
+        holder.setImg(tecnologias[position].imgsrc)
         if (tecnologias[position].active) {
             holder.itemView.tecnologiaActivaDev.visibility = View.VISIBLE
         }

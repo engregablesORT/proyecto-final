@@ -1,65 +1,66 @@
 package com.example.hrit_app.repository
 
 import android.content.res.Resources
+import android.sax.RootElement
+import android.util.Log
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.utils.constants.Rol
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 import java.util.*
 
 object UserRepository {
 
-    var listaUsuarios: MutableList<User> = mutableListOf(
-            User("flor@gmail.com", "passwordflor", "Flor", "Garduno", Rol.AT, Arrays.asList(Tecnologia(R.drawable.angular, "Angular"),
-                    Tecnologia(R.drawable.java, "Java"), Tecnologia(R.drawable.python, "Python"))),
-            User("juli@gmail.com", "passwordjuli", "Julian", "Grilli", Rol.AT, Arrays.asList(Tecnologia(R.drawable.react, "React JS"), Tecnologia(R.drawable.java, "Java"))),
-            User("fede@gmail.com", "passwordfede", "Federico", "Mateucci", Rol.RH),
-            User("mati@gmail.com", "passwordmati", "Matias", "Romera", Rol.RH),
-            User("santi@hotmail.com", "passwordsanti", "Santiago", "Escuder", Rol.AT),
-            User("fran@hotmail.com", "passwordsfran", "Francisco", "Heili", Rol.AT),
-            User("fabian@hotmail.com", "passwordsfabian", "Fabian", "Pestchanker", Rol.AT),
-            User("julian-raspanti@hotmail.com", "passwordsraspanti", "Julian", "Raspanti", Rol.AT))
+    private val db = Firebase.firestore
+    val USERS_COLLECTION = "users";
+    val NAME = "name"
+    val LAST_NAME = "lastName"
+    val PASSWORD = "password"
+    val EMAIL = "email"
+    val TECNOLOGIAS = "tecnologias"
+    val ROL = "rol"
 
-    fun findByUsernameAndPassword(username: String, password: String): User {
-        val usuarioFiltrado = listaUsuarios.filter { userRepo ->
-            userRepo.email.equals(username) && userRepo.password.equals(password)
+
+    suspend fun obtenerRolDeUsuarioByEmail(email: String): User? {
+        val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(EMAIL, email).get().await()
+        val mapa = snapshot.documents?.get(0).data
+
+        val user = User(mapa?.get(EMAIL).toString(), mapa?.get(PASSWORD).toString(),
+            mapa?.get(NAME).toString(), mapa?.get(LAST_NAME).toString(), mapa?.get(ROL).toString())
+
+        if ((mapa?.get(TECNOLOGIAS) as ArrayList<Tecnologia>).size > 0){
+            // TODO resolver esto - preguntar al profesor
+            user.tecnologias = arrayListOf()
         }
-        return getResultFromFilter(usuarioFiltrado)
+
+        return user
     }
 
-    fun findByUsername(username: String): User {
-        val usuarioFiltrado = listaUsuarios.filter { userRepo ->
-            userRepo.email.equals(username)
+    fun crearUsuarioFirebase(user: User, uid: String) {
+        var userFirebase: User = User(user.email, user.password, user.name, user.lastName, user.rol)
+        db.collection("users").document(uid).set(userFirebase)
+    }
+
+    suspend fun findAllAT(): MutableList<User> {
+        var usersAT: MutableList<User> = arrayListOf()
+        try {
+            val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(ROL, Rol.AT).get().await()
+            for (documento in snapshot.documents) {
+                val user = obtenerUsuarioByDocumentoDeFirebase(documento.data as Map<String, Object>)
+                usersAT.add(user)
+            }
+            return usersAT
+        } catch (e: Exception) {
+            return arrayListOf()
         }
-        return getResultFromFilter(usuarioFiltrado)
     }
 
-    fun save(user: User) {
-        listaUsuarios.add(user)
-    }
-
-    fun delete(user: User) {
-        this.listaUsuarios.remove(user)
-    }
-
-    fun findAllAT(): MutableList<User> {
-        val asesoresTecnicos = listaUsuarios.filter { usuario -> usuario.rol.equals(Rol.AT) }
-        return asesoresTecnicos.toMutableList()
-    }
-
-    fun getResultFromFilter(usuarioFiltrado: List<User>): User {
-        if (usuarioFiltrado.size > 0) {
-            return usuarioFiltrado.get(0)
-        }
-        throw Resources.NotFoundException("User no encontrado")
-
-    }
-
-    fun findByTecnologia(text: String): MutableList<User> {
-        val usuariosFiltrados = listaUsuarios.filter { usuario ->
-            usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(text.toUpperCase()) ||
-                    usuario.lastName.toUpperCase().contains(text.toUpperCase()))
-        }
-        return usuariosFiltrados.toMutableList()
+    private fun obtenerUsuarioByDocumentoDeFirebase(mapa: Map<String, Object>): User {
+        return User(mapa?.get(EMAIL).toString(), mapa?.get(PASSWORD).toString(),
+                mapa?.get(NAME).toString(), mapa?.get(LAST_NAME).toString(), mapa?.get(ROL).toString())
     }
 }
