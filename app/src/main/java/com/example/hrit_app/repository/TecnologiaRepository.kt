@@ -23,7 +23,6 @@ object TecnologiaRepository {
             Tecnologia(R.drawable.nodejs, "Node JS"),
             Tecnologia(R.drawable.db, "Base de Datos"),
             Tecnologia(R.drawable.python, "Python")
-
     )
 
     suspend fun findAll(): MutableList<Tecnologia>{
