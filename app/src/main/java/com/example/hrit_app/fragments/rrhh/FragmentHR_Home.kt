@@ -81,6 +81,7 @@ class FragmentHR_Home : Fragment() {
                 return true
             }
 
+
             override fun onQueryTextChange(newText: String): Boolean {
                 val parentJob = Job()
                 val scope = CoroutineScope(Dispatchers.Default + parentJob)

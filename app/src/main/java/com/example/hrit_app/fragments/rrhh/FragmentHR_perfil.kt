@@ -1,6 +1,7 @@
 package com.example.hrit_app.fragments.rrhh
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,28 +18,45 @@ import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class FragmentHR_perfil : Fragment() {
 
     lateinit var v: View
-    lateinit var btnEditar: ImageView
-    lateinit var btnGuardar: Button
+    private lateinit var btnEditar: ImageView
+    private lateinit var btnGuardar: Button
 
     // Inputs de usuario HR
-    lateinit var inputFirstName: TextInputLayout
-    lateinit var inputFirstNameEdit: TextInputEditText
-    lateinit var inputLastName: TextInputLayout
-    lateinit var inputLastNameEdit: TextInputEditText
-    lateinit var inputPassword: TextInputLayout
-    lateinit var inputPasswordEdit: TextInputEditText
-    lateinit var inputEmail: TextInputLayout
-    lateinit var inputEmailEdit: TextInputEditText
+    private lateinit var inputFirstName: TextInputLayout
+    private lateinit var inputFirstNameEdit: TextInputEditText
+    private lateinit var inputLastName: TextInputLayout
+    private lateinit var inputLastNameEdit: TextInputEditText
+    private lateinit var inputPassword: TextInputLayout
+    private lateinit var inputPasswordEdit: TextInputEditText
+    private lateinit var inputEmail: TextInputLayout
+    private lateinit var inputEmailEdit: TextInputEditText
+
+    // Valores
+    private lateinit var textoFirstName: String
+    private lateinit var textoLastName: String
+    private lateinit var textoEmail: String
+    private lateinit var textoPassword: String
 
     // User
-    lateinit var user: User
-    var userService: UserService = UserService()
+    private lateinit var user: User
+    private var userService: UserService = UserService()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    // SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         v = inflater.inflate(R.layout.fragment_hr_perfil, container, false)
         btnEditar = v.findViewById(R.id.btnEditar)
 
@@ -52,56 +70,96 @@ class FragmentHR_perfil : Fragment() {
         inputEmailEdit = v.findViewById(R.id.inputEmailEdit)
         btnGuardar = v.findViewById(R.id.btnGuardar)
 
-        // Esto deberia ir en el xml... creo
-        inputPassword.isEnabled = false
-        inputLastName.isEnabled = false
-        inputEmail.isEnabled = false
-        inputFirstName.isEnabled = false
+        // Shared Preferences
+        sharedPreferences = requireContext().getSharedPreferences(
+            SharedPreferencesKey.PREF_NAME,
+            Context.MODE_PRIVATE
+        )
 
         return v
     }
 
     override fun onStart() {
         super.onStart()
-        val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
 
-        /*user = userService.findUserByUsername(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())
+        // Shared Preferences Keys
+        val emailKey = sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString()
+        val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
 
-        var textoFirstName = user.name.toString()
-        var textoLastName = user.lastName.toString()
-        var textoEmail = user.email.toString()
-        var textoPassword = user.password.toString()
-
-        inputFirstName.hint = textoFirstName
-        inputLastName.hint = textoLastName
-        inputPassword.hint = "**********"
-        inputEmail.hint = textoEmail
+        // Asincronismo
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+        scope.launch {
+            user = userService.findByEmail(emailKey)!!
+            getUserFieldValues()
+            activity?.runOnUiThread {
+                setUserHintValues()
+            }
+        }
 
         btnEditar.setOnClickListener {
-            inputFirstName.isEnabled = true
-            inputLastName.isEnabled = true
-            inputPassword.isEnabled = true
-            inputEmail.isEnabled = true
-
-            btnGuardar.visibility = View.VISIBLE
-
-            inputFirstNameEdit.setText(textoFirstName.toString())
-            inputLastNameEdit.setText(textoLastName.toString())
-            inputPasswordEdit.setText(textoPassword.toString())
-            inputEmailEdit.setText(textoEmail.toString())
-
-            inputFirstName.hint = "Nombre"
-            inputLastName.hint = "Apellido"
-            inputPassword.hint = "Password"
-            inputEmail.hint = "Email"
+            habilitarFormulario()
+            setUserInputValues()
         }
 
         btnGuardar.setOnClickListener {
-            var userNuevo = User(inputEmailEdit.text.toString(), inputPasswordEdit.text.toString(), inputFirstNameEdit.text.toString(), inputLastNameEdit.text.toString(), user.rol, user.tecnologias)
+            val userNuevo = User(
+                inputEmailEdit.text.toString(),
+                inputPasswordEdit.text.toString(),
+                inputFirstNameEdit.text.toString(),
+                inputLastNameEdit.text.toString(),
+                user.rol,
+                user.tecnologias
+            )
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
-            // userService.deleteUser(user)
-            // userService.createUser(userNuevo)
-        }*/
+            userService.updateUser(userNuevo, uidKey)
+            deshabilitarFormulario()
+        }
     }
 
+    private fun setUserHintValues() {
+        inputFirstNameEdit.setText(textoFirstName.toString())
+        inputLastNameEdit.setText(textoLastName.toString())
+        inputPasswordEdit.setText("*******")
+        inputEmailEdit.setText(textoEmail.toString())
+    }
+
+    private fun getUserFieldValues() {
+        textoFirstName = user.name
+        textoLastName = user.lastName
+        textoEmail = user.email
+        textoPassword = user.password
+    }
+
+    private fun setUserInputValues() {
+        inputFirstNameEdit.setText(textoFirstName.toString())
+        inputLastNameEdit.setText(textoLastName.toString())
+        inputPasswordEdit.setText(textoPassword.toString())
+        inputEmailEdit.setText(textoEmail.toString())
+    }
+
+    private fun habilitarFormulario() {
+        inputFirstName.isEnabled = true
+        inputLastName.isEnabled = true
+        inputPassword.isEnabled = true
+        inputEmail.isEnabled = true
+        inputFirstName.hint = "Nombre"
+        inputLastName.hint = "Apellido"
+        inputPassword.hint = "Password"
+        inputEmail.hint = "Email"
+        btnGuardar.visibility = View.VISIBLE
+    }
+
+    private fun deshabilitarFormulario() {
+        inputFirstName.isEnabled = false
+        inputLastName.isEnabled = false
+        inputPassword.isEnabled = false
+        inputEmail.isEnabled = false
+        inputPasswordEdit.setText("*******")
+        inputFirstName.hint = "Nombre"
+        inputLastName.hint = "Apellido"
+        inputPassword.hint = "Password"
+        inputEmail.hint = "Email"
+        btnGuardar.visibility = View.INVISIBLE
+    }
 }

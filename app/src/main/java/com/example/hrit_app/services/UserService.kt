@@ -12,10 +12,9 @@ class UserService {
 
     var userRepository: UserRepository = UserRepository
 
-
     suspend fun findByEmail(email: String): User? {
         try {
-            return userRepository.obtenerRolDeUsuarioByEmail(email)
+            return userRepository.obtenerUsuarioByEmail(email)
         } catch (e: Resources.NotFoundException) {
             System.out.println(" === ERROR :" + e.message.toString())
             throw e
@@ -37,6 +36,10 @@ class UserService {
 
     fun createUserFirebase(user: User, uid: String) {
         userRepository.crearUsuarioFirebase(user, uid)
+    }
+
+    fun updateUser(user: User, uid: String){
+        userRepository.update(user, uid)
     }
 
 }

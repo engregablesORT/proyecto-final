@@ -5,15 +5,19 @@ import android.os.Parcelable
 import java.util.*
 
 
-open class User(email: String, password: String, name: String, lastName: String, rol: String,
-                tecnologias: List<Tecnologia> = Collections.EMPTY_LIST as List<Tecnologia>){
+open class User(
+    email: String, password: String, name: String, lastName: String, rol: String,
+    tecnologias: List<String> = Collections.EMPTY_LIST as List<String>
+) {
+
+    constructor() : this("", "", "", "", "", emptyList())
 
     var email: String
     var password: String
     var name: String
     var lastName: String
     var rol: String
-    var tecnologias: List<Tecnologia>
+    var tecnologias: List<String>
 
 
     init {
@@ -24,7 +28,6 @@ open class User(email: String, password: String, name: String, lastName: String,
         this.rol = rol
         this.tecnologias = tecnologias
     }
-
 
 
 }

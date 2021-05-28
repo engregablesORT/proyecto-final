@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.example.hrit_app.R
 import com.example.hrit_app.adapters.TecnologiaListAdapter
 import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
+import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
@@ -31,8 +33,7 @@ class FragmentDev_perfil : Fragment() {
 
     lateinit var v: View
     lateinit var recTecnologias: RecyclerView
-    var tecnologias : MutableList<Tecnologia> = ArrayList<Tecnologia>()
-    var tecnologiaService: TecnologiaService = TecnologiaService()
+    var tecnologias: MutableList<Tecnologia> = ArrayList<Tecnologia>()
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var tecnologiaListAdapter: TecnologiaListAdapter
     lateinit var nombreEditText: EditText
@@ -43,14 +44,20 @@ class FragmentDev_perfil : Fragment() {
     lateinit var experienciaEditText: EditText
     lateinit var emailEditText: EditText
     lateinit var passwordEditText: EditText
-    lateinit var btnEditarDev : ImageView
-    lateinit var btnGuardarDevPerfil : Button
+    lateinit var btnEditarDev: ImageView
+    lateinit var btnGuardarDevPerfil: Button
+
     // User
     lateinit var user: User
+    var tecnologiaService: TecnologiaService = TecnologiaService()
     var userService: UserService = UserService()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         v = inflater.inflate(R.layout.fragment_dev_perfil, container, false)
         // Inflate the layout for this fragment
         recTecnologias = v.findViewById(R.id.recTecnologias)
@@ -70,7 +77,10 @@ class FragmentDev_perfil : Fragment() {
     override fun onStart() {
         super.onStart()
         v.visibility = View.INVISIBLE
-        val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences(
+            SharedPreferencesKey.PREF_NAME,
+            Context.MODE_PRIVATE
+        )
         // creamos recycler tecnologia
         recTecnologias.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -79,34 +89,45 @@ class FragmentDev_perfil : Fragment() {
         val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)
         scope.launch {
-            user = userService.findByEmail(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())!!
+            user = userService.findByEmail(
+                sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString()
+            )!!
             tecnologias = tecnologiaService.getAllTecnologias()
+            var userTecnologias = buscarTecnologias(tecnologias, user.tecnologias)
+
             activity?.runOnUiThread {
-                tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
+                tecnologiaListAdapter = TecnologiaListAdapter(
+                    userTecnologias
+                ) { x -> onTecnologiaClick(x) }
                 recTecnologias.layoutManager = linearLayoutManager
                 recTecnologias.adapter = tecnologiaListAdapter
                 setInitialValues(user)
-                activarTecnologias(user.tecnologias, tecnologias)
+
+                //activarTecnologias(user.tecnologias, tecnologias)
                 v.visibility = View.VISIBLE
             }
         }
 
-       btnGuardarDevPerfil.setOnClickListener {
+        btnGuardarDevPerfil.setOnClickListener {
             // TODO agregar validaciones ---------
-           // TODO VER COMO FUNCIONA EL UPDATE
+            // TODO VER COMO FUNCIONA EL UPDATE
             Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
         }
 
-        passwordEditText.setOnClickListener{
+        passwordEditText.setOnClickListener {
             passwordEditText.setText(user.password)
         }
 
     }
 
 
-    private fun activarTecnologias(tecnologiasDelUsuario: List<Tecnologia>, tecnologias: MutableList<Tecnologia>) {
+    private fun activarTecnologias(
+        tecnologiasDelUsuario: List<Tecnologia>,
+        tecnologias: MutableList<Tecnologia>
+    ) {
         for (tecUsu in tecnologiasDelUsuario) {
-            val tecFiltradas = tecnologias.filter { tecnologia -> tecnologia.text.equals(tecUsu.text) }
+            val tecFiltradas =
+                tecnologias.filter { tecnologia -> tecnologia.text.equals(tecUsu.text) }
             val tecFiltrada = tecFiltradas.get(0)
             if (tecFiltrada != null) {
                 tecFiltrada.active = true
@@ -125,17 +146,33 @@ class FragmentDev_perfil : Fragment() {
         passwordEditText.setText("*********")
     }
 
-    fun onTecnologiaClick (position: Int): Boolean {
+    fun onTecnologiaClick(position: Int): Boolean {
         // Actualizo estado
         val tecnologiaEnCuestion = tecnologias.get(position)
         val isTecActiva = !tecnologiaEnCuestion.active
         tecnologiaEnCuestion.active = isTecActiva
         // Lo reflejo en la lista
         val action: String = if (isTecActiva) "agregado." else "removido."
-        Snackbar.make(v, tecnologiaEnCuestion.text +" fue " + action, Snackbar.LENGTH_SHORT).show()
-        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
+        Snackbar.make(v, tecnologiaEnCuestion.text + " fue " + action, Snackbar.LENGTH_SHORT).show()
+        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, { x -> onTecnologiaClick(x) })
         recTecnologias.adapter = tecnologiaListAdapter
         return true
+    }
+
+    fun buscarTecnologias(
+        tecnologias: MutableList<Tecnologia>,
+        nombreTecnologias: List<String>
+    ): MutableList<Tecnologia> {
+        var userTecnologias = mutableListOf<Tecnologia>()
+        for (tecnologia in tecnologias) {
+            for (nombre in nombreTecnologias) {
+                if (tecnologia.text.trim() == nombre.trim()) {
+                    userTecnologias.add(tecnologia)
+                }
+            }
+        }
+
+        return userTecnologias
     }
 
 }
