@@ -126,7 +126,6 @@ class FragmentDev_perfil : Fragment() {
         tecnologias: MutableList<Tecnologia>
     ) {
         for (tecUsu in tecnologiasDelUsuario) {
-            Log.d("TEST", tecUsu.toString())
             val tecFiltradas =
                 tecnologias.filter { tecnologia -> tecnologia.text.equals(tecUsu.text) }
             val tecFiltrada = tecFiltradas.get(0)
