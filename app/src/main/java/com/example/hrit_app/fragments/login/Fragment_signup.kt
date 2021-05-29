@@ -136,6 +136,7 @@ class Fragment_signup : Fragment() {
                         emptyList(),
                         "",
                         "",
+                        "",
                         ""
                     )
                     userService.createUserFirebase(usuarioFirebase, uid)

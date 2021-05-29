@@ -43,6 +43,7 @@ object UserRepository {
                 emptyList(),
                 "",
                 "",
+                "",
                 ""
             )
         db.collection("users").document(uid).set(userFirebase)

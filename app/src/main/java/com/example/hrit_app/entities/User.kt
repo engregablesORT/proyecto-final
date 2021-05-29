@@ -15,10 +15,11 @@ open class User(
     tecnologias: List<String> = Collections.EMPTY_LIST as List<String>,
     descripcion: String,
     precio: String,
-    titulo: String
+    titulo: String,
+    empresa : String
 ) : Parcelable {
 
-    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "")
+    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "","")
 
     var id: String
     var email: String
@@ -30,7 +31,7 @@ open class User(
     var descripcion: String
     var precio: String
     var titulo: String
-
+    var empresa : String
     constructor(parcel: Parcel) : this() {
         id = parcel.readString().toString()
         email = parcel.readString().toString()
@@ -42,6 +43,7 @@ open class User(
         descripcion = parcel.readString().toString()
         precio = parcel.readString().toString()
         titulo = parcel.readString().toString()
+        empresa = parcel.readString().toString()
     }
 
     init {
@@ -55,6 +57,7 @@ open class User(
         this.descripcion = descripcion
         this.precio = precio
         this.titulo = titulo
+        this.empresa = empresa
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -68,6 +71,7 @@ open class User(
         parcel.writeString(descripcion)
         parcel.writeString(precio)
         parcel.writeString(titulo)
+        parcel.writeString(empresa)
     }
 
     override fun describeContents(): Int {
