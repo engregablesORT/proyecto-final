@@ -6,6 +6,7 @@ import java.util.*
 
 // TODO Agregar seniority, descripcion y precio
 open class User(
+    id: String,
     email: String,
     password: String,
     name: String,
@@ -16,10 +17,12 @@ open class User(
     precio: String,
     titulo: String,
     seniority: String
+    empresa : String
 ) : Parcelable {
 
-    constructor() : this("", "", "", "", "", emptyList(), "", "", "", "")
+    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "", "", "")
 
+    var id: String
     var email: String
     var password: String
     var name: String
@@ -30,8 +33,10 @@ open class User(
     var precio: String
     var titulo: String
     var seniority: String
+    var empresa : String
 
     constructor(parcel: Parcel) : this() {
+        id = parcel.readString().toString()
         email = parcel.readString().toString()
         password = parcel.readString().toString()
         name = parcel.readString().toString()
@@ -42,9 +47,11 @@ open class User(
         precio = parcel.readString().toString()
         titulo = parcel.readString().toString()
         seniority = parcel.readString().toString()
+        empresa = parcel.readString().toString()
     }
 
     init {
+        this.id = id
         this.email = email
         this.password = password
         this.name = name
@@ -55,9 +62,11 @@ open class User(
         this.precio = precio
         this.titulo = titulo
         this.seniority = seniority
+        this.empresa = empresa
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeString(email)
         parcel.writeString(password)
         parcel.writeString(name)
@@ -68,6 +77,7 @@ open class User(
         parcel.writeString(precio)
         parcel.writeString(titulo)
         parcel.writeString(seniority)
+        parcel.writeString(empresa)
     }
 
     override fun describeContents(): Int {

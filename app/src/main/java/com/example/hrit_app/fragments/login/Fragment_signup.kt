@@ -127,7 +127,7 @@ class Fragment_signup : Fragment() {
                     val user = auth.currentUser
                     val uid = user.uid
                     System.out.println(userName.text.toString() + " " + passWord.text.toString() + " " + name.text.toString() + " " + lastName.text.toString() + " " + spinner.selectedItem.toString() + " " + uid)
-                    val usuarioFirebase = User(
+                    val usuarioFirebase = User(uid,
                         userName.text.toString(),
                         passWord.text.toString(),
                         name.text.toString(),

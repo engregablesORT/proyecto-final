@@ -12,9 +12,9 @@
         android:id="@+id/btnContratar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/button_rounded2"
         android:text="Contratar"
         android:textAllCaps="false"
@@ -22,15 +22,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/txtSeniority" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recTecnologiasContratar"
-        android:layout_width="373dp"
-        android:layout_height="73dp"
+        android:layout_width="344dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.631"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
 
@@ -53,7 +52,7 @@
         android:id="@+id/imageView2"
         android:layout_width="122dp"
         android:layout_height="121dp"
-        android:layout_marginStart="46dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="36dp"
         android:src="@drawable/at_default"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +74,7 @@
         android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
         android:text="Titular"
         android:textColor="#737373"
@@ -84,12 +83,12 @@
 
     <TextView
         android:id="@+id/txtDescripcion"
-        android:layout_width="357dp"
-        android:layout_height="93dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="343dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
         android:text="Descripcion Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin justo nunc, sed laoreet tellus facilisis vel. Vestibulum quis ligula ut diam auctor efficitur. Nulla sit amet urna odio. Etiam consequat neque a mollis blandit."
-        android:textColor="#000000"
+        android:textColor="#1E1E1E"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
@@ -97,7 +96,7 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="14dp"
         android:text="Tecnologias"
         android:textColor="#000000"
@@ -108,8 +107,8 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="28dp"
         android:shadowColor="#FFFFFF"
         android:text="Seniority"
         android:textColor="#000000"
@@ -120,30 +119,31 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="28dp"
         android:text="Precio por Hora"
         android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/recTecnologiasContratar" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/txtSeniority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="18dp"
-        android:text="VSR"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="12dp"
+        android:text="SR"
         android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/btnVolver"
         android:layout_width="15dp"
         android:layout_height="14dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -152,11 +152,12 @@
         android:id="@+id/txtPrecio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="210dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="12dp"
         android:text="Precio"
         android:textColor="#000000"
-        app:layout_constraintStart_toEndOf="@+id/textView12"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/txtSeniority"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
