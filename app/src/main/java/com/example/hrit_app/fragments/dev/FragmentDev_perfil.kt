@@ -1,11 +1,7 @@
 package com.example.hrit_app.fragments.dev
 
-import android.app.AlertDialog
-import android.app.TimePickerDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +13,6 @@ import com.example.hrit_app.R
 import com.example.hrit_app.adapters.TecnologiaListAdapter
 import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
-import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.SharedPreferencesKey

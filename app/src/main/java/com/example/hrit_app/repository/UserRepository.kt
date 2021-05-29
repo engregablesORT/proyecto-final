@@ -32,7 +32,18 @@ object UserRepository {
     }
 
     fun crearUsuarioFirebase(user: User, uid: String) {
-        var userFirebase: User = User(user.email, user.password, user.name, user.lastName, user.rol)
+        var userFirebase: User =
+            User(
+                user.email,
+                user.password,
+                user.name,
+                user.lastName,
+                user.rol,
+                emptyList(),
+                "",
+                "",
+                ""
+            )
         db.collection("users").document(uid).set(userFirebase)
     }
 
@@ -41,9 +52,12 @@ object UserRepository {
         try {
             val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(ROL, Rol.AT).get().await()
             for (documento in snapshot.documents) {
-                val user =
-                    obtenerUsuarioByDocumentoDeFirebase(documento.data as Map<String, Object>)
-                usersAT.add(user)
+                // val user =
+                //     obtenerUsuarioByDocumentoDeFirebase(documento.data as Map<String, Object>)
+                val user = documento.toObject<User>()
+                if (user != null) {
+                    usersAT.add(user)
+                }
             }
             return usersAT
         } catch (e: Exception) {
@@ -51,12 +65,17 @@ object UserRepository {
         }
     }
 
-    private fun obtenerUsuarioByDocumentoDeFirebase(mapa: Map<String, Object>): User {
+/*   private fun obtenerUsuarioByDocumentoDeFirebase(mapa: Map<String, Object>): User {
         return User(
-            mapa?.get(EMAIL).toString(), mapa?.get(PASSWORD).toString(),
-            mapa?.get(NAME).toString(), mapa?.get(LAST_NAME).toString(), mapa?.get(ROL).toString()
+            mapa?.get(EMAIL).toString(),
+            mapa?.get(PASSWORD).toString(),
+            mapa?.get(NAME).toString(),
+            mapa?.get(LAST_NAME).toString(),
+            mapa?.get(ROL).toString(),
+            mapa?.get("descripcion").toString(),
+            mapa?.get("precio").toString()
         )
-    }
+    }*/
 
     fun update(user: User, uid: String) {
         db.collection(USERS_COLLECTION).document(uid)

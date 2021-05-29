@@ -9,7 +9,11 @@
         android:id="@+id/fragmentHR_Home"
         android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_Home"
         android:label="fragment_hr__home"
-        tools:layout="@layout/fragment_hr__home" />
+        tools:layout="@layout/fragment_hr__home">
+        <action
+            android:id="@+id/action_fragmentHR_Home_to_fragmentHRContratar"
+            app:destination="@id/fragmentHRContratar" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentHR_historial"
         android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_historial"
@@ -25,4 +29,14 @@
         android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_calendar"
         android:label="fragment_hr_calendar"
         tools:layout="@layout/fragment_hr_calendar" />
+    <fragment
+        android:id="@+id/fragmentHRContratar"
+        android:name="com.example.hrit_app.fragments.rrhh.FragmentHRContratar"
+        android:label="fragment_hr_contratar"
+        tools:layout="@layout/fragment_hr_contratar">
+        <argument
+            android:name="asesor"
+            app:argType="com.example.hrit_app.entities.User" />
+    </fragment>
+
 </navigation>

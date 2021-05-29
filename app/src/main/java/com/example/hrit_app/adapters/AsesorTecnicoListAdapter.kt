@@ -28,7 +28,7 @@ class AsesorTecnicoListAdapter(
         // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setName(asesores[position].name)
         holder.setApellido(asesores[position].lastName)
-        holder.getCardLayout().setOnLongClickListener() {
+        holder.getCardLayout().setOnClickListener() {
             onItemClick(position)
         }
     }
