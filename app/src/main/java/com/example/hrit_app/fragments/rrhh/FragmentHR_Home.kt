@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.constraintlayout.utils.widget.ImageFilterView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
@@ -17,10 +17,7 @@ import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 class FragmentHR_Home : Fragment() {
@@ -86,7 +83,7 @@ class FragmentHR_Home : Fragment() {
                 val parentJob = Job()
                 val scope = CoroutineScope(Dispatchers.Default + parentJob)
                 scope.launch {
-                    if (newText.replace(" ", "").length>0){
+                    if (newText.replace(" ", "").length > 0) {
                         asesoresTecnicos = userService.findByNombre(newText, asesoresTecnicos)
                     } else {
                         asesoresTecnicos = userService.findAllAsesoresTecnicos()
@@ -109,7 +106,7 @@ class FragmentHR_Home : Fragment() {
     }
 
     private fun setTecnolgias(tecnologias: MutableList<Tecnologia>) {
-        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, {x -> onTecnologiaClick(x)})
+        tecnologiaListAdapter = TecnologiaListAdapter(tecnologias, { x -> onTecnologiaClick(x) })
         recTecnologias.layoutManager = linearLayoutManager
         recTecnologias.adapter = tecnologiaListAdapter
 
@@ -123,11 +120,10 @@ class FragmentHR_Home : Fragment() {
         return true
     }
 
-    fun onAsesorClick(position: Int): Boolean {
-        /**
-         * TODO Crear contratacion fragment
-         *
-         * */
+    private fun onAsesorClick(position: Int): Boolean {
+        val asesor = asesoresTecnicos[position]
+        val action = FragmentHR_HomeDirections.actionFragmentHRHomeToFragmentHRContratar(asesor)
+        v.findNavController().navigate(action)
         return true
     }
 

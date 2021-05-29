@@ -3,14 +3,12 @@ package com.example.hrit_app.fragments.rrhh
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
@@ -109,7 +107,10 @@ class FragmentHR_perfil : Fragment() {
                 inputFirstNameEdit.text.toString(),
                 inputLastNameEdit.text.toString(),
                 user.rol,
-                user.tecnologias
+                user.tecnologias,
+                "",
+                "",
+                ""
             )
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
             userService.updateUser(userNuevo, uidKey)

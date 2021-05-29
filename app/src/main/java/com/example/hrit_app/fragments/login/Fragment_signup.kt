@@ -16,10 +16,7 @@ import com.example.hrit_app.utils.constants.Rol
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_signup.*
-import java.util.*
 
 class Fragment_signup : Fragment() {
     lateinit var v: View
@@ -35,8 +32,8 @@ class Fragment_signup : Fragment() {
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_signup, container, false)
         userName = v.findViewById(R.id.email_signin)
@@ -61,13 +58,17 @@ class Fragment_signup : Fragment() {
             if (verificarDatosObligatorios()) {
                 if (verificarPasswordIguales()) {
                     crearNuevoUsuario(
-                            userName.text.toString(),
-                            passWord.text.toString()
+                        userName.text.toString(),
+                        passWord.text.toString()
                     )
                     Snackbar.make(v, "El usuario ha sido creado", Snackbar.LENGTH_SHORT).show()
                     redirectToAction1()
                 } else {
-                    Snackbar.make(v, "Las password ingresadas deben ser iguales", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        v,
+                        "Las password ingresadas deben ser iguales",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             } else {
                 Snackbar.make(v, "Faltan completar algunos datos", Snackbar.LENGTH_SHORT).show()
@@ -75,18 +76,27 @@ class Fragment_signup : Fragment() {
         }
 
         var roles = arrayOf("Seleccionar un Rol ...", Rol.RH, Rol.AT)
-        spinner.adapter = ArrayAdapter<String>(requireActivity(), R.layout.support_simple_spinner_dropdown_item, roles)
+        spinner.adapter = ArrayAdapter<String>(
+            requireActivity(),
+            R.layout.support_simple_spinner_dropdown_item,
+            roles
+        )
 
         spinner.setSelection(0)
 
         spinner.onItemSelectedListener = object :
 
-                AdapterView.OnItemSelectedListener {
+            AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("Not yet implemented")
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 rolSeleccionado = roles[position]
             }
         }
@@ -110,23 +120,33 @@ class Fragment_signup : Fragment() {
 
     private fun crearNuevoUsuario(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success")
-                        val user = auth.currentUser
-                        val uid = user.uid
-                        System.out.println(userName.text.toString() + " " + passWord.text.toString() + " " + name.text.toString() + " " + lastName.text.toString() + " " + spinner.selectedItem.toString() + " " + uid)
-                        val usuarioFirebase = User(userName.text.toString(), passWord.text.toString(), name.text.toString(), lastName.text.toString(), spinner.selectedItem.toString())
-                        userService.createUserFirebase(usuarioFirebase, uid)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        //       Toast.makeText( "Authentication failed.",
-                        //        Toast.LENGTH_SHORT).show()
-                        //            updateUI(null)
-                    }
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+                    val uid = user.uid
+                    System.out.println(userName.text.toString() + " " + passWord.text.toString() + " " + name.text.toString() + " " + lastName.text.toString() + " " + spinner.selectedItem.toString() + " " + uid)
+                    val usuarioFirebase = User(
+                        userName.text.toString(),
+                        passWord.text.toString(),
+                        name.text.toString(),
+                        lastName.text.toString(),
+                        spinner.selectedItem.toString(),
+                        emptyList(),
+                        "",
+                        "",
+                        ""
+                    )
+                    userService.createUserFirebase(usuarioFirebase, uid)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    //       Toast.makeText( "Authentication failed.",
+                    //        Toast.LENGTH_SHORT).show()
+                    //            updateUI(null)
                 }
+            }
 
         // val user = User(userName.text.toString(), passWord.text.toString(), name.text.toString(), lastName.text.toString(), spinner.selectedItem.toString(), uid)
         //   userService.createUser(user)
