@@ -110,6 +110,7 @@ class FragmentHR_perfil : Fragment() {
                 user.tecnologias,
                 "",
                 "",
+                "",
                 ""
             )
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
