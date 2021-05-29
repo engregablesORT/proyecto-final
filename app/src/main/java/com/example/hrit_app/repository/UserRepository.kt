@@ -22,8 +22,14 @@ object UserRepository {
     val LAST_NAME = "lastName"
     val PASSWORD = "password"
     val EMAIL = "email"
-    val TECNOLOGIAS = "tecnologias"
     val ROL = "rol"
+    val DESCRIPCION = "descripcion"
+    val PRECIO = "precio"
+    val TITULO = "titulo"
+    val SENIORITY = "seniority"
+    val TECNOLOGIAS = "tecnologias"
+
+
 
 
     suspend fun obtenerUsuarioByEmail(email: String): User? {
@@ -67,18 +73,6 @@ object UserRepository {
         }
     }
 
-/*   private fun obtenerUsuarioByDocumentoDeFirebase(mapa: Map<String, Object>): User {
-        return User(
-            mapa?.get(EMAIL).toString(),
-            mapa?.get(PASSWORD).toString(),
-            mapa?.get(NAME).toString(),
-            mapa?.get(LAST_NAME).toString(),
-            mapa?.get(ROL).toString(),
-            mapa?.get("descripcion").toString(),
-            mapa?.get("precio").toString()
-        )
-    }*/
-
     fun update(user: User, uid: String) {
         db.collection(USERS_COLLECTION).document(uid)
             .update(
@@ -90,6 +84,22 @@ object UserRepository {
                 user.lastName,
                 "password",
                 user.password
+            )
+    }
+
+
+    fun updateAsesor(user: User, uid: String){
+        db.collection(USERS_COLLECTION).document(uid)
+            .update(
+                EMAIL, user.email,
+                NAME, user.name,
+                LAST_NAME, user.lastName,
+                PASSWORD, user.password,
+                DESCRIPCION, user.descripcion,
+                PRECIO, user.precio,
+                TITULO, user.titulo,
+                ROL, user.rol,
+                SENIORITY, user.seniority
             )
     }
 }

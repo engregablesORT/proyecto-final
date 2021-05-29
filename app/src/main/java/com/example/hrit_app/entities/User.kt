@@ -16,10 +16,11 @@ open class User(
     descripcion: String,
     precio: String,
     titulo: String,
+    seniority: String
     empresa : String
 ) : Parcelable {
 
-    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "","")
+    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "", "", "")
 
     var id: String
     var email: String
@@ -31,7 +32,9 @@ open class User(
     var descripcion: String
     var precio: String
     var titulo: String
+    var seniority: String
     var empresa : String
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString().toString()
         email = parcel.readString().toString()
@@ -43,6 +46,7 @@ open class User(
         descripcion = parcel.readString().toString()
         precio = parcel.readString().toString()
         titulo = parcel.readString().toString()
+        seniority = parcel.readString().toString()
         empresa = parcel.readString().toString()
     }
 
@@ -57,6 +61,7 @@ open class User(
         this.descripcion = descripcion
         this.precio = precio
         this.titulo = titulo
+        this.seniority = seniority
         this.empresa = empresa
     }
 
@@ -71,6 +76,7 @@ open class User(
         parcel.writeString(descripcion)
         parcel.writeString(precio)
         parcel.writeString(titulo)
+        parcel.writeString(seniority)
         parcel.writeString(empresa)
     }
 
