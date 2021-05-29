@@ -34,6 +34,7 @@ object UserRepository {
     fun crearUsuarioFirebase(user: User, uid: String) {
         var userFirebase: User =
             User(
+                user.id,
                 user.email,
                 user.password,
                 user.name,

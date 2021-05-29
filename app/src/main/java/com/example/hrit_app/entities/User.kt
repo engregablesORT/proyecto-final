@@ -6,6 +6,7 @@ import java.util.*
 
 // TODO Agregar seniority, descripcion y precio
 open class User(
+    id: String,
     email: String,
     password: String,
     name: String,
@@ -17,8 +18,9 @@ open class User(
     titulo: String
 ) : Parcelable {
 
-    constructor() : this("", "", "", "", "", emptyList(), "", "", "")
+    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "")
 
+    var id: String
     var email: String
     var password: String
     var name: String
@@ -30,6 +32,7 @@ open class User(
     var titulo: String
 
     constructor(parcel: Parcel) : this() {
+        id = parcel.readString().toString()
         email = parcel.readString().toString()
         password = parcel.readString().toString()
         name = parcel.readString().toString()
@@ -42,6 +45,7 @@ open class User(
     }
 
     init {
+        this.id = id
         this.email = email
         this.password = password
         this.name = name
@@ -54,6 +58,7 @@ open class User(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeString(email)
         parcel.writeString(password)
         parcel.writeString(name)

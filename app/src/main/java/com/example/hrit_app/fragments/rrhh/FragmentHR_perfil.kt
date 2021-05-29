@@ -101,7 +101,7 @@ class FragmentHR_perfil : Fragment() {
         }
 
         btnGuardar.setOnClickListener {
-            val userNuevo = User(
+            val userNuevo = User("",
                 inputEmailEdit.text.toString(),
                 inputPasswordEdit.text.toString(),
                 inputFirstNameEdit.text.toString(),
