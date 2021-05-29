@@ -1,15 +1,19 @@
 package com.example.hrit_app.fragments.rrhh
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.Dialog
+import android.app.ProgressDialog.show
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -18,16 +22,38 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
 import com.example.hrit_app.adapters.TecnologiaListAdapter
+import com.example.hrit_app.entities.Entrevista
 import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
+import com.example.hrit_app.fragments.dev.FragmentDev_Home.Companion.newInstance
 import com.example.hrit_app.services.TecnologiaService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
+import java.sql.Time
+import java.util.*
 
-class FragmentHRContratar : Fragment() {
+class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
+
+    var dialog = DialogEntrevistaConfirm()
+
+    // Date Time
+    // Hoy
+    private var day = 0
+    private var month = 0
+    private var year = 0
+    private var hour = 0
+    private var minutes = 0
+
+    // Entrevista
+    private lateinit var dayEntrevista: Number
+    private lateinit var monthEntrevista: Number
+    private lateinit var yearEntrevista: Number
+    private lateinit var hourEntrevista: Number
+    private lateinit var minutesEntrevista: Number
 
     // View y ViewModel
     // private lateinit var viewModel: FragmentHRContratarViewModel
@@ -38,6 +64,7 @@ class FragmentHRContratar : Fragment() {
     private lateinit var txtDescripcion: TextView
     private lateinit var txtTitulo: TextView
     private lateinit var txtPrecio: TextView
+    private lateinit var txtSeniority: TextView
     private lateinit var btnContratar: Button
     private lateinit var btnVolver: ImageView
 
@@ -49,8 +76,8 @@ class FragmentHRContratar : Fragment() {
     // Asesor
     private lateinit var asesor: User
 
-    var tecnologiaService: TecnologiaService = TecnologiaService()
-    var tecnologias: MutableList<Tecnologia> = mutableListOf()
+    private var tecnologiaService: TecnologiaService = TecnologiaService()
+    private var tecnologias: MutableList<Tecnologia> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +89,7 @@ class FragmentHRContratar : Fragment() {
         txtDescripcion = v.findViewById(R.id.txtDescripcion)
         txtPrecio = v.findViewById(R.id.txtPrecio)
         txtTitulo = v.findViewById(R.id.txtTitulo)
+        txtSeniority = v.findViewById(R.id.txtSeniority)
         btnContratar = v.findViewById(R.id.btnContratar)
         btnVolver = v.findViewById(R.id.btnVolver)
         recTecnologias = v.findViewById(R.id.recTecnologiasContratar)
@@ -82,8 +110,24 @@ class FragmentHRContratar : Fragment() {
         setUserData()
 
         btnVolver.setOnClickListener {
-            v.findNavController().navigate(FragmentHRContratarDirections.actionFragmentHRContratarToFragmentHRHome())
+            v.findNavController()
+                .navigate(FragmentHRContratarDirections.actionFragmentHRContratarToFragmentHRHome())
         }
+
+        btnContratar.setOnClickListener {
+            getDateTimeCalendar()
+            context?.let { it1 -> DatePickerDialog(it1, this, year, month, day).show() }
+
+        }
+    }
+
+    private fun getDateTimeCalendar() {
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minutes = cal.get(Calendar.MINUTE)
     }
 
     @SuppressLint("SetTextI18n")
@@ -94,7 +138,7 @@ class FragmentHRContratar : Fragment() {
         txtTitulo.text = asesor.titulo
     }
 
-    suspend fun setRecyclerView() {
+    private suspend fun setRecyclerView() {
         tecnologias = tecnologiaService.getAllTecnologias()
         recTecnologias.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -127,4 +171,45 @@ class FragmentHRContratar : Fragment() {
         return true
     }
 
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        dayEntrevista = dayOfMonth
+        monthEntrevista = month
+        yearEntrevista = year
+
+        getDateTimeCalendar()
+        TimePickerDialog(context, this, hour, minutes, true).show()
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        hourEntrevista = hourOfDay
+        minutesEntrevista = minute
+
+        Log.d(
+            "TEST",
+            dayEntrevista.toString() + monthEntrevista.toString() + hourEntrevista.toString()
+        )
+
+        dialog.show(childFragmentManager, DialogEntrevistaConfirm.TAG)
+    }
+
+    // Dialog confirmar entrevista
+    class DialogEntrevistaConfirm : DialogFragment() {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+            AlertDialog.Builder(requireContext())
+                .setTitle("Confirmar")
+                .setMessage("Desea confirmar la siguiente entrevista? \nDatos de la entrevista")
+                .setPositiveButton("Confirmar") { _, _ ->
+
+                    val entrevista =
+                        Entrevista(0, "flor", "accenture", 1, "fecha", 0, 0, "pendiente")
+                    Log.d("TEST", entrevista.nombreEmpresaHr)
+                }
+                .setNegativeButton("Cancelar") { _, _ -> }
+                .create()
+
+        companion object {
+            const val TAG = "PurchaseConfirmationDialog"
+        }
+    }
 }

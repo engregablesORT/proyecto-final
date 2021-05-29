@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/txtSeniority" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recTecnologiasContratar"
@@ -127,7 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recTecnologiasContratar" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/txtSeniority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
@@ -157,7 +157,7 @@
         android:text="Precio"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintStart_toEndOf="@+id/txtSeniority"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
