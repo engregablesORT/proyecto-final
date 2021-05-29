@@ -1,5 +1,6 @@
 package com.example.hrit_app.fragments.rrhh
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,15 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
 import com.example.hrit_app.adapters.TecnologiaListAdapter
+import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
+import com.example.hrit_app.services.TecnologiaService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 
 class FragmentHRContratar : Fragment() {
@@ -30,6 +39,7 @@ class FragmentHRContratar : Fragment() {
     private lateinit var txtTitulo: TextView
     private lateinit var txtPrecio: TextView
     private lateinit var btnContratar: Button
+    private lateinit var btnVolver: ImageView
 
     // RecyclerView
     private lateinit var recTecnologias: RecyclerView
@@ -38,6 +48,9 @@ class FragmentHRContratar : Fragment() {
 
     // Asesor
     private lateinit var asesor: User
+
+    var tecnologiaService: TecnologiaService = TecnologiaService()
+    var tecnologias: MutableList<Tecnologia> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +63,7 @@ class FragmentHRContratar : Fragment() {
         txtPrecio = v.findViewById(R.id.txtPrecio)
         txtTitulo = v.findViewById(R.id.txtTitulo)
         btnContratar = v.findViewById(R.id.btnContratar)
+        btnVolver = v.findViewById(R.id.btnVolver)
         recTecnologias = v.findViewById(R.id.recTecnologiasContratar)
 
         return v
@@ -58,18 +72,59 @@ class FragmentHRContratar : Fragment() {
     override fun onStart() {
         super.onStart()
         asesor = FragmentHRContratarArgs.fromBundle(requireArguments()).asesor
-        setUserData()
-        Log.d("TEST", asesor.email)
-        Log.d("TEST", asesor.descripcion)
 
-        recTecnologias.setHasFixedSize(true)
-        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+        scope.launch {
+            setRecyclerView()
+        }
+
+        setUserData()
+
+        btnVolver.setOnClickListener {
+            v.findNavController().navigate(FragmentHRContratarDirections.actionFragmentHRContratarToFragmentHRHome())
+        }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUserData() {
         txtNombreCompleto.text = asesor.name + " " + asesor.lastName
         txtDescripcion.text = asesor.descripcion
         txtPrecio.text = "$" + asesor.precio
         txtTitulo.text = asesor.titulo
     }
+
+    suspend fun setRecyclerView() {
+        tecnologias = tecnologiaService.getAllTecnologias()
+        recTecnologias.setHasFixedSize(true)
+        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val userTecnologias = buscarTecnologias(tecnologias, asesor.tecnologias)
+
+        activity?.runOnUiThread {
+            tecnologiaListAdapter = TecnologiaListAdapter(userTecnologias) { x -> onItemClick(x) }
+            recTecnologias.layoutManager = linearLayoutManager
+            recTecnologias.adapter = tecnologiaListAdapter
+        }
+    }
+
+    private fun buscarTecnologias(
+        tecnologias: MutableList<Tecnologia>,
+        nombreTecnologias: List<String>
+    ): MutableList<Tecnologia> {
+        val userTecnologias = mutableListOf<Tecnologia>()
+        for (tecnologia in tecnologias) {
+            for (nombre in nombreTecnologias) {
+                if (tecnologia.text.trim() == nombre.trim()) {
+                    userTecnologias.add(tecnologia)
+                }
+            }
+        }
+
+        return userTecnologias
+    }
+
+    private fun onItemClick(x: Int): Boolean {
+        return true
+    }
+
 }

@@ -37,6 +37,9 @@
         <argument
             android:name="asesor"
             app:argType="com.example.hrit_app.entities.User" />
+        <action
+            android:id="@+id/action_fragmentHRContratar_to_fragmentHR_Home"
+            app:destination="@id/fragmentHR_Home" />
     </fragment>
 
 </navigation>
