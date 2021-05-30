@@ -13,12 +13,29 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/button_rounded"
         android:text="Guardar"
         android:visibility="visible"
         app:backgroundTint="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordDevEditText" />
+
+    <Button
+        android:id="@+id/editarTecnologiasDev"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_rounded"
+        android:text="Editar Tecnologias"
+        android:visibility="visible"
+        app:backgroundTint="#2196F3"
+        app:layout_constraintBottom_toTopOf="@+id/btnGuardarDevPerfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,17 +64,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.035" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recTecnologias"
-        android:layout_width="373dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText">
-
-    </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
         android:id="@+id/imgDevPerfil"
@@ -92,7 +98,7 @@
         android:layout_height="54dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="45dp"
         android:background="@drawable/input_rounded"
         android:backgroundTint="#D2F4D1"
         android:hint="Nombre"
@@ -109,7 +115,7 @@
         android:layout_width="255dp"
         android:layout_height="46dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="2dp"
         android:background="@drawable/input_rounded"
         android:backgroundTint="#F6F5F5"
@@ -190,33 +196,21 @@
         app:layout_constraintTop_toBottomOf="@+id/txtEncabezado2" />
 
     <TextView
-        android:id="@+id/tecnologiasDevText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Tecnologias"
-        android:textColor="#131313"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
-
-    <TextView
         android:id="@+id/tecnologiasDevText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
         android:text="Seniority"
         android:textColor="#131313"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
 
     <TextView
         android:id="@+id/emailDevText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="35dp"
         android:text="Email: "
         android:textColor="#131313"
         app:layout_constraintStart_toStartOf="parent"
@@ -238,22 +232,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="15dp"
         android:text="Precio / Hora"
         android:textColor="#131313"
         app:layout_constraintStart_toEndOf="@+id/anioExpText"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
 
     <TextView
         android:id="@+id/anioExpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="88dp"
         android:text="|"
         android:textColor="#131313"
         app:layout_constraintStart_toEndOf="@+id/tecnologiasDevText2"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
 
     <Spinner
         android:id="@+id/spinnerSeniority"
