@@ -16,8 +16,8 @@ open class User(
     descripcion: String,
     precio: String,
     titulo: String,
-    seniority: String
-    empresa : String
+    seniority: String,
+    empresa: String
 ) : Parcelable {
 
     constructor() : this("", "", "", "", "", "", emptyList(), "", "", "", "", "")
@@ -33,7 +33,7 @@ open class User(
     var precio: String
     var titulo: String
     var seniority: String
-    var empresa : String
+    var empresa: String
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString().toString()

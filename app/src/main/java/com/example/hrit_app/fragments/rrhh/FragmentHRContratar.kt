@@ -136,6 +136,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         txtDescripcion.text = asesor.descripcion
         txtPrecio.text = "$" + asesor.precio
         txtTitulo.text = asesor.titulo
+        txtSeniority.text = asesor.seniority
     }
 
     private suspend fun setRecyclerView() {

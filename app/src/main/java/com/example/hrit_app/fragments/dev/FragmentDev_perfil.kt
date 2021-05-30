@@ -114,6 +114,7 @@ class FragmentDev_perfil : Fragment() {
         }
         btnGuardarDevPerfil.setOnClickListener {
             val userNuevo = User(
+                uidKey,
                 emailEditText.text.toString(),
                 passwordEditText.text.toString(),
                 nombreEditText.text.toString(),
@@ -123,7 +124,8 @@ class FragmentDev_perfil : Fragment() {
                 descripcionEditText.text.toString(),
                 precioHoraEdit.text.toString(),
                 titleEditText.text.toString(),
-                senioritySeleccionado
+                senioritySeleccionado,
+                ""
             )
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
             userService.updateAsesorTecnico(userNuevo, uidKey)
