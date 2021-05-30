@@ -117,7 +117,6 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         btnContratar.setOnClickListener {
             getDateTimeCalendar()
             context?.let { it1 -> DatePickerDialog(it1, this, year, month, day).show() }
-
         }
     }
 
