@@ -1,28 +1,40 @@
 package com.example.hrit_app.fragments.dev
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
 import com.example.hrit_app.adapters.EntrevistaListAdapter
 import com.example.hrit_app.entities.Entrevista
+import com.example.hrit_app.services.EntrevistaService
+import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class FragmentDev_Home : Fragment() {
 
-    lateinit var v: View
 
+    lateinit var v: View
+    lateinit var uidKey: String
     lateinit var recEntrevistasPendientes : RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var emptyView : TextView
 
 
     var entrevistasPendientes : MutableList<Entrevista> = ArrayList<Entrevista>()
     private lateinit var entrevistaListAdapter: EntrevistaListAdapter
+    var entrevistaService: EntrevistaService = EntrevistaService()
 
     companion object {
         fun newInstance() = FragmentDev_Home()
@@ -34,6 +46,7 @@ class FragmentDev_Home : Fragment() {
     ): View? {
         v =  inflater.inflate(R.layout.fragment_dev_home, container, false)
         recEntrevistasPendientes = v.findViewById(R.id.rec_entrevistasPendientes)
+        emptyView = v.findViewById(R.id.empty_view)
         return v
     }
 
@@ -45,16 +58,27 @@ class FragmentDev_Home : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        entrevistasPendientes.add(Entrevista( 1, "Valentina Gonzalez" , "Snoop Consulting", 2 , "10 de Abril - 18:00hs ", 2,5, Entrevista.Constants.estadoPendienteRespuesta))
-        entrevistasPendientes.add(Entrevista( 2, "Victoria Lopez" , "Accenture", 3 , "10 de Abril - 18:00hs ", 2,5, Entrevista.Constants.estadoPendienteRespuesta))
-        entrevistasPendientes.add(Entrevista( 3, "Martin Guzman" , "web.com", 6 , "10 de Abril - 18:00hs ", 1,5, Entrevista.Constants.estadoPendienteRespuesta))
-        entrevistasPendientes.add(Entrevista( 3, "Juan Perez" , "web.com", 6 , "10 de Abril - 18:00hs ", 2,5, Entrevista.Constants.estadoRechazada))
+        val sharedPreferences = requireContext().getSharedPreferences(
+            SharedPreferencesKey.PREF_NAME,
+            Context.MODE_PRIVATE
+        )
 
-        entrevistasPendientes = findAllPendientes()
+        uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
 
         recEntrevistasPendientes.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context)
         recEntrevistasPendientes.layoutManager = linearLayoutManager
+
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+        scope.launch {
+            entrevistasPendientes = entrevistaService.findAllEntrevistasPendientesByDev(uidKey)
+            activity?.runOnUiThread {
+                actualizarEntrevistas(entrevistasPendientes)
+            }
+
+        }
+
 
         entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes, { x ->
             onAceptarEntrevistaClick(x)
@@ -62,27 +86,41 @@ class FragmentDev_Home : Fragment() {
             x -> onRechazarEntrevistaClick(x)
         })
 
-
-      //    entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes )
-
         recEntrevistasPendientes.adapter = entrevistaListAdapter
 
     }
 
 
     fun confirmarAccion(texto: String, x : Int, estado : String ){
+        val input = EditText(this.context)
+        input.visibility = View.INVISIBLE
         val mAlertDialog = AlertDialog.Builder(this.context);
+        input.hint = "Ingrese sus comentarios"
+        mAlertDialog.setView(input)
         mAlertDialog.setTitle("Confirmar accion");
         mAlertDialog.setMessage(texto);
         mAlertDialog.setIcon(R.mipmap.ic_launcher);
+        if(estado == Entrevista.Constants.estadoRechazada) {
+            input.visibility = View.VISIBLE
+        }
         mAlertDialog.setPositiveButton("Cancelar") { dialog, id ->
             Snackbar.make(v, "Accion cancelada", Snackbar.LENGTH_SHORT).show()
         }
         mAlertDialog.setNegativeButton("Aceptar") { dialog, id ->
             Snackbar.make(v, "Accion aceptada", Snackbar.LENGTH_SHORT).show()
-            entrevistasPendientes[x].estado = estado;
-            entrevistasPendientes = findAllPendientes()
-            actualizarEntrevistas(entrevistasPendientes)
+            entrevistaService.updateEntrevistaEstado(entrevistasPendientes[x].id, estado)
+            if(estado == Entrevista.Constants.estadoRechazada) {
+                entrevistaService.updateEntrevistaComentarios(entrevistasPendientes[x].id, input.text.toString())
+            }
+            val parentJob = Job()
+            val scope = CoroutineScope(Dispatchers.Default + parentJob)
+            scope.launch {
+                entrevistasPendientes = entrevistaService.findAllEntrevistasPendientesByDev(uidKey)
+                activity?.runOnUiThread {
+                    actualizarEntrevistas(entrevistasPendientes)
+                }
+
+            }
         }
         mAlertDialog.show();
 
@@ -103,11 +141,6 @@ class FragmentDev_Home : Fragment() {
         return true
     }
 
-    fun findAllPendientes(): MutableList<Entrevista>{
-        val entrevistasPendientes = entrevistasPendientes.filter { entrevista -> entrevista.estado.equals(Entrevista.Constants.estadoPendienteRespuesta) }
-        return entrevistasPendientes.toMutableList()
-    }
-
     private fun actualizarEntrevistas(entrevistasPendientes: MutableList<Entrevista>){
         entrevistaListAdapter = EntrevistaListAdapter(entrevistasPendientes, { x ->
             onAceptarEntrevistaClick(x)
@@ -115,6 +148,14 @@ class FragmentDev_Home : Fragment() {
             x -> onRechazarEntrevistaClick(x)
         })
         recEntrevistasPendientes.adapter = entrevistaListAdapter
+        if (entrevistasPendientes.isEmpty()) {
+            emptyView.visibility = View.VISIBLE
+            emptyView.setTextColor((0xff000000).toInt())
+            recEntrevistasPendientes.visibility = View.INVISIBLE
+        } else {
+            emptyView.visibility = View.INVISIBLE
+            recEntrevistasPendientes.visibility = View.VISIBLE
+        }
     }
 
 

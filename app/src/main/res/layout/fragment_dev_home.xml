@@ -15,4 +15,17 @@
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="242dp" />
 
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="No hay entrevistas pendientes"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/rec_entrevistasPendientes"
+        app:layout_constraintEnd_toEndOf="@+id/rec_entrevistasPendientes"
+        app:layout_constraintStart_toStartOf="@+id/rec_entrevistasPendientes"
+        app:layout_constraintTop_toTopOf="@+id/rec_entrevistasPendientes" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
