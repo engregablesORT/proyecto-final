@@ -1,24 +1,20 @@
 package com.example.hrit_app.entities
 
-class Entrevista (id: Int, nombreUserHr: String , nombreEmpresaHr: String, idUserDev: Int , fecha : String, duracion: Int, valoracion: Int?, estado: String?) {
+import com.google.firebase.Timestamp
 
-    var id: Int = 0
+class Entrevista (id: String, nombreUserHr: String , nombreEmpresaHr: String, idUserDev: String , fecha : String, duracion: Int, valoracion: Int?, estado: String?, comentarios: String?) {
 
-    var nombreUserHr: String = ""
+    constructor() : this("", "", "", "", "", 0, 0, "", "")
 
-    var nombreEmpresaHr: String = ""
-
-    var idUserDev: Int = 0
-
-    var fecha: String = ""
-
-    var duracion: Int = 0
-
-    var urlImage: String = ""
-
-    var valoracion: Int = 0
-
-    var estado: String = ""
+    var id: String
+    var nombreUserHr: String
+    var nombreEmpresaHr: String
+    var idUserDev: String
+    var fecha : String
+    var duracion: Int
+    var valoracion: Int
+    var estado: String
+    var comentarios: String
 
 
     class Constants {
@@ -37,8 +33,8 @@ class Entrevista (id: Int, nombreUserHr: String , nombreEmpresaHr: String, idUse
         this.idUserDev= idUserDev!!
         this.fecha= fecha!!
         this.duracion= duracion!!
-        this.urlImage= urlImage!!
         this.valoracion= valoracion!!
         this.estado= estado!!
+        this.comentarios= comentarios!!
     }
 }
