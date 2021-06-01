@@ -1,7 +1,6 @@
 package com.example.hrit_app.fragments.dev
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -97,42 +96,16 @@ class FragmentDev_perfil : Fragment() {
                 senioritySeleccionado,
                 ""
             )
-            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).setTextColor(Color.GREEN).show()
             userService.updateAsesorTecnico(userNuevo, uidKey)
-            Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT).setTextColor(Color.GREEN).show()
         }
 
         editarTecnologias.setOnClickListener {
             redireccionarAEditarTecnologiasFragment(user)
         }
 
-        var seniorities = arrayOf("Seleccionar...", Seniority.JR, Seniority.SSR, Seniority.SR, Seniority.TL)
-        spinner.adapter = ArrayAdapter<String>(
-            requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
-            seniorities
-        )
-
-        spinner.setSelection(0)
-
-        spinner.setBackgroundColor(Color.GREEN)
-
-        spinner.onItemSelectedListener = object :
-
-            AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                senioritySeleccionado = seniorities[position]
-            }
-        }
+        displaySpinner()
     }
 
     private fun redireccionarAEditarTecnologiasFragment(user: User) {
@@ -140,7 +113,6 @@ class FragmentDev_perfil : Fragment() {
         v.findNavController().navigate(action)
 
     }
-
 
     private fun setInitialValues(user: User) {
         nombreEditText.setText(user.name)
@@ -155,6 +127,33 @@ class FragmentDev_perfil : Fragment() {
             spinner.setSelection(posicionSeleccionada)
         } else {
             spinner.setSelection(0)
+        }
+    }
+
+    private fun displaySpinner(){
+        var seniorities = arrayOf("Seleccionar...", Seniority.JR, Seniority.SSR, Seniority.SR, Seniority.TL)
+        spinner.adapter = ArrayAdapter<String>(
+            requireActivity(),
+            R.layout.support_simple_spinner_dropdown_item,
+            seniorities
+        )
+
+        spinner.setSelection(0)
+
+        spinner.setBackgroundColor(Color.GREEN)
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (parent?.getChildAt(0) != null){
+                    val spinnerTextView = parent.getChildAt(0) as TextView
+                    spinnerTextView.setTextColor(Color.DKGRAY)
+                }
+                senioritySeleccionado = seniorities[position]
+            }
         }
     }
 

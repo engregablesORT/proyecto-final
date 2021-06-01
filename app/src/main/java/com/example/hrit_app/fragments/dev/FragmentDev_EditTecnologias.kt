@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
@@ -38,7 +36,7 @@ class FragmentDev_EditTecnologias : Fragment() {
     var tecnologiaService: TecnologiaService = TecnologiaService()
     private lateinit var user: User
     lateinit var btnTecnologias: Button
-    // SharedPreferences
+    lateinit var spinner: Spinner
     private lateinit var sharedPreferences: SharedPreferences
     var userService: UserService = UserService()
 
@@ -50,6 +48,7 @@ class FragmentDev_EditTecnologias : Fragment() {
         v = inflater.inflate(R.layout.fragment_dev__edit_tecnologias, container, false)
         recTecnologias = v.findViewById(R.id.recTecnologias)
         btnTecnologias = v.findViewById(R.id.btnEditarTecnologias)
+        spinner = v.findViewById(R.id.spinnerCategoriaTecnologia)
 
         // Shared Preferences
         sharedPreferences = requireContext().getSharedPreferences(
@@ -84,8 +83,12 @@ class FragmentDev_EditTecnologias : Fragment() {
             val tecnologiasActivasDelUsuario: List<String> = obtenerTecnologiasActivas(tecnologiasParaAdapter)
             val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
             userService.updateTecnologiasUser(tecnologiasActivasDelUsuario , uidKey)
+            Snackbar.make(v, "Las tecnologias del usuario han sido actualizadas.", Snackbar.LENGTH_SHORT).setTextColor(Color.GREEN).show()
         }
+
+        displaySpinner()
     }
+
 
     private fun obtenerTecnologiasActivas(tecnologiasParaAdapter: MutableList<Tecnologia>): List<String> {
         return tecnologiasParaAdapter.filter { tecnologia -> tecnologia.active }.map { tecActiva -> tecActiva.text }
@@ -112,6 +115,30 @@ class FragmentDev_EditTecnologias : Fragment() {
         tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter, { x -> onTecnologiaClick(x) })
         recTecnologias.adapter = tecnologiaListAdapter
         return true
+    }
+
+    private fun displaySpinner(){
+        var categorias = arrayOf("Seleccionar Categoria...", "Backend", "Frontend", "Mobile", "Seguridad Informatica", "Redes")
+        spinner.adapter = ArrayAdapter<String>(
+            requireActivity(),
+            R.layout.support_simple_spinner_dropdown_item,
+            categorias
+        )
+        spinner.setSelection(0)
+
+        spinner.onItemSelectedListener = object :  AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (parent?.getChildAt(0) != null){
+                    val spinnerTextView = parent.getChildAt(0) as TextView
+                    spinnerTextView.setTextColor(Color.DKGRAY)
+                }
+                // TODO implementar en siguiente historia de usuario.
+            }
+        }
     }
 
 }
