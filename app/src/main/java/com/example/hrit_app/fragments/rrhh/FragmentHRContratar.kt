@@ -3,7 +3,6 @@ package com.example.hrit_app.fragments.rrhh
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
@@ -25,14 +24,12 @@ import com.example.hrit_app.services.EntrevistaService
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
 
-// TODO Duracion entrevista
 class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
@@ -50,6 +47,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private lateinit var yearEntrevista: Number
     private lateinit var hourEntrevista: Number
     private lateinit var minutesEntrevista: Number
+    private lateinit var duracion: Number
 
     // View y ViewModel
     // private lateinit var viewModel: FragmentHRContratarViewModel
@@ -77,14 +75,15 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private var tecnologiaService = TecnologiaService()
     private var userService = UserService()
     private var entrevistaService = EntrevistaService()
-
-    // Dialog
-    private lateinit var dialogContratar: AlertDialog.Builder
     private var tecnologias: MutableList<Tecnologia> = mutableListOf()
+
+    // Dialogs
+    private lateinit var dialogContratar: AlertDialog.Builder
+    private lateinit var dialogDuracion: AlertDialog.Builder
 
     // Asincronismo
     private val parentJob = Job()
-    val scope = CoroutineScope(Dispatchers.Default + parentJob)
+    private val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -148,6 +147,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         txtSeniority.text = asesor.seniority
     }
 
+    // Metodos para el Recycler View
     private suspend fun setRecyclerView() {
         tecnologias = tecnologiaService.getAllTecnologias()
         recTecnologias.setHasFixedSize(true)
@@ -203,24 +203,47 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         hourEntrevista = hourOfDay
         minutesEntrevista = minute
-        val entrevista = Entrevista(
-            "",
-            (userHr.name + " " + userHr.lastName),
-            userHr.empresa,
-            asesor.id,
-            userHr.id,
-            "$dayEntrevista/$monthEntrevista/$yearEntrevista $hourEntrevista:$minutesEntrevista",
-            0,
-            0,
-            Entrevista.Constants.estadoPendienteRespuesta,
-            ""
-        )
-        dialogConfirmarEntrevista(entrevista)
+        dialogDuracion()
     }
 
-    // Metodos de Dialog
-    private fun crearDialog(entrevista: Entrevista) {
-        val stringEntrevista = "Dia: ${entrevista.fecha} \nDuracion: ${entrevista.duracion} \nPrecio"
+    // Metodos de Dialog Duracion
+    private fun dialogDuracion() {
+        crearDialogDuracion()
+        dialogDuracion.show()
+    }
+
+    private fun crearDialogDuracion() {
+        dialogDuracion = AlertDialog.Builder(context)
+        val dialogView: View = layoutInflater.inflate(R.layout.dialog_number_picker, null)
+
+        dialogDuracion.setTitle("Duración")
+        dialogDuracion.setMessage("Seleccione la duración en horas para la entrevista")
+        dialogDuracion.setView(dialogView)
+
+        // TODO En horas o minutos
+        // TODO Precio
+        val numberPicker: NumberPicker = dialogView.findViewById(R.id.number_picker)
+        numberPicker.maxValue = 3
+        numberPicker.minValue = 1
+        numberPicker.wrapSelectorWheel = false
+
+        dialogDuracion.setPositiveButton("Confirmar") { _, _ ->
+            duracion = numberPicker.value
+            dialogConfirmarEntrevista()
+        }
+        dialogDuracion.setNegativeButton("Cancelar") { _, _ -> }
+    }
+
+    // Metodos de Dialog Entrevista
+    private fun dialogConfirmarEntrevista() {
+        val entrevista = crearEntrevista()
+        crearDialogConfirmar(entrevista)
+        dialogContratar.show()
+    }
+
+    private fun crearDialogConfirmar(entrevista: Entrevista) {
+        val stringEntrevista =
+            "Dia: ${entrevista.fecha} \nDuración: ${entrevista.duracion} HS \nPrecio"
         dialogContratar = AlertDialog.Builder(this.context);
         dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
         dialogContratar.setMessage(stringEntrevista);
@@ -233,10 +256,19 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         }
     }
 
-    private fun dialogConfirmarEntrevista(entrevista: Entrevista) {
-        crearDialog(entrevista)
-        dialogContratar.show()
-    }
-
     // Metodos de Entrevista
+    private fun crearEntrevista(): Entrevista {
+        return Entrevista(
+            "",
+            (userHr.name + " " + userHr.lastName),
+            userHr.empresa,
+            asesor.id,
+            userHr.id,
+            "$dayEntrevista/$monthEntrevista/$yearEntrevista $hourEntrevista:$minutesEntrevista",
+            duracion as Int,
+            0,
+            Entrevista.Constants.estadoPendienteRespuesta,
+            ""
+        )
+    }
 }
