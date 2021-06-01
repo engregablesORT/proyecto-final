@@ -22,7 +22,7 @@
         android:gravity="center"
         android:text="No hay entrevistas pendientes"
         android:textSize="18sp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/rec_entrevistasPendientes"
         app:layout_constraintEnd_toEndOf="@+id/rec_entrevistasPendientes"
         app:layout_constraintStart_toStartOf="@+id/rec_entrevistasPendientes"

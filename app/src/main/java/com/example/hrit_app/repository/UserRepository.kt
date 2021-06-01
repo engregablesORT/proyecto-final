@@ -22,6 +22,7 @@ object UserRepository {
     val LAST_NAME = "lastName"
     val PASSWORD = "password"
     val EMAIL = "email"
+    val ID = "id"
     val ROL = "rol"
     val DESCRIPCION = "descripcion"
     val PRECIO = "precio"
@@ -34,6 +35,11 @@ object UserRepository {
 
     suspend fun obtenerUsuarioByEmail(email: String): User? {
         val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(EMAIL, email).get().await()
+        return snapshot.documents[0].toObject<User>()
+    }
+
+    suspend fun obtenerUsuarioByID(idUser: String): User? {
+        val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(ID, idUser).get().await()
         return snapshot.documents[0].toObject<User>()
     }
 

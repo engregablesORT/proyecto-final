@@ -4,20 +4,16 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.ProgressDialog.show
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
@@ -25,20 +21,20 @@ import com.example.hrit_app.adapters.TecnologiaListAdapter
 import com.example.hrit_app.entities.Entrevista
 import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
-import com.example.hrit_app.fragments.dev.FragmentDev_Home.Companion.newInstance
+import com.example.hrit_app.services.EntrevistaService
 import com.example.hrit_app.services.TecnologiaService
+import com.example.hrit_app.services.UserService
+import com.example.hrit_app.utils.constants.SharedPreferencesKey
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
-import java.sql.Time
 import java.util.*
 
+// TODO Duracion entrevista
 class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
-
-    var dialog = DialogEntrevistaConfirm()
 
     // Date Time
     // Hoy
@@ -73,11 +69,22 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var tecnologiaListAdapter: TecnologiaListAdapter
 
-    // Asesor
+    // Users
     private lateinit var asesor: User
+    private lateinit var userHr: User
 
-    private var tecnologiaService: TecnologiaService = TecnologiaService()
+    // Services
+    private var tecnologiaService = TecnologiaService()
+    private var userService = UserService()
+    private var entrevistaService = EntrevistaService()
+
+    // Dialog
+    private lateinit var dialogContratar: AlertDialog.Builder
     private var tecnologias: MutableList<Tecnologia> = mutableListOf()
+
+    // Asincronismo
+    private val parentJob = Job()
+    val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,6 +92,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     ): View? {
         v = inflater.inflate(R.layout.fragment_hr_contratar, container, false)
 
+        // Elementos de la vista
         txtNombreCompleto = v.findViewById(R.id.txtNombreCompleto)
         txtDescripcion = v.findViewById(R.id.txtDescripcion)
         txtPrecio = v.findViewById(R.id.txtPrecio)
@@ -99,16 +107,26 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onStart() {
         super.onStart()
+        // Get del asesor mediante argumentos
         asesor = FragmentHRContratarArgs.fromBundle(requireArguments()).asesor
 
-        val parentJob = Job()
-        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+        // Shared Preferences para buscar el user hr en sesion
+        val sharedPreferences = requireContext().getSharedPreferences(
+            SharedPreferencesKey.PREF_NAME,
+            Context.MODE_PRIVATE
+        )
+        val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
+
+        // Asincronismo
         scope.launch {
+            userHr = userService.findByID(uidKey)!!
             setRecyclerView()
         }
 
+        // Llenamos la vista de los datos del usuario dev
         setUserData()
 
+        // Listeners de los botones
         btnVolver.setOnClickListener {
             v.findNavController()
                 .navigate(FragmentHRContratarDirections.actionFragmentHRContratarToFragmentHRHome())
@@ -120,15 +138,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         }
     }
 
-    private fun getDateTimeCalendar() {
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR)
-        minutes = cal.get(Calendar.MINUTE)
-    }
-
+    // Metodos de vista
     @SuppressLint("SetTextI18n")
     private fun setUserData() {
         txtNombreCompleto.text = asesor.name + " " + asesor.lastName
@@ -171,6 +181,15 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         return true
     }
 
+    // Metodos de Dia y Hora
+    private fun getDateTimeCalendar() {
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minutes = cal.get(Calendar.MINUTE)
+    }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         dayEntrevista = dayOfMonth
@@ -184,32 +203,40 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         hourEntrevista = hourOfDay
         minutesEntrevista = minute
-
-        Log.d(
-            "TEST",
-            dayEntrevista.toString() + monthEntrevista.toString() + hourEntrevista.toString()
+        val entrevista = Entrevista(
+            "",
+            (userHr.name + " " + userHr.lastName),
+            userHr.empresa,
+            asesor.id,
+            userHr.id,
+            "$dayEntrevista/$monthEntrevista/$yearEntrevista $hourEntrevista:$minutesEntrevista",
+            0,
+            0,
+            Entrevista.Constants.estadoPendienteRespuesta,
+            ""
         )
-
-        dialog.show(childFragmentManager, DialogEntrevistaConfirm.TAG)
+        dialogConfirmarEntrevista(entrevista)
     }
 
-    // Dialog confirmar entrevista
-    class DialogEntrevistaConfirm : DialogFragment() {
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-            AlertDialog.Builder(requireContext())
-                .setTitle("Confirmar")
-                .setMessage("Desea confirmar la siguiente entrevista? \nDatos de la entrevista")
-                .setPositiveButton("Confirmar") { _, _ ->
-
-                    val entrevista =
-                        Entrevista("", "flor", "accenture", "", "fecha", 0, 0, "pendiente", "")
-                    Log.d("TEST", entrevista.nombreEmpresaHr)
-                }
-                .setNegativeButton("Cancelar") { _, _ -> }
-                .create()
-
-        companion object {
-            const val TAG = "PurchaseConfirmationDialog"
+    // Metodos de Dialog
+    private fun crearDialog(entrevista: Entrevista) {
+        val stringEntrevista = "Dia: ${entrevista.fecha} \nDuracion: ${entrevista.duracion} \nPrecio"
+        dialogContratar = AlertDialog.Builder(this.context);
+        dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
+        dialogContratar.setMessage(stringEntrevista);
+        dialogContratar.setPositiveButton("Confirmar") { _, _ ->
+            scope.launch {
+                entrevistaService.crearEntrevista(entrevista)
+            }
+        }
+        dialogContratar.setNegativeButton("Cancelar") { _, _ ->
         }
     }
+
+    private fun dialogConfirmarEntrevista(entrevista: Entrevista) {
+        crearDialog(entrevista)
+        dialogContratar.show()
+    }
+
+    // Metodos de Entrevista
 }

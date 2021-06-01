@@ -2,15 +2,27 @@ package com.example.hrit_app.entities
 
 import com.google.firebase.Timestamp
 
-class Entrevista (id: String, nombreUserHr: String , nombreEmpresaHr: String, idUserDev: String , fecha : String, duracion: Int, valoracion: Int?, estado: String?, comentarios: String?) {
+class Entrevista(
+    id: String,
+    nombreUserHr: String,
+    nombreEmpresaHr: String,
+    idUserDev: String,
+    idUserHr: String,
+    fecha: String,
+    duracion: Int,
+    valoracion: Int?,
+    estado: String?,
+    comentarios: String?
+) {
 
-    constructor() : this("", "", "", "", "", 0, 0, "", "")
+    constructor() : this("", "", "", "", "", "", 0, 0, "", "")
 
     var id: String
     var nombreUserHr: String
     var nombreEmpresaHr: String
     var idUserDev: String
-    var fecha : String
+    var idUserHr: String
+    var fecha: String
     var duracion: Int
     var valoracion: Int
     var estado: String
@@ -27,14 +39,15 @@ class Entrevista (id: String, nombreUserHr: String , nombreEmpresaHr: String, id
     }
 
     init {
-        this.id = id!!
-        this.nombreUserHr = nombreUserHr!!
+        this.id = id
+        this.nombreUserHr = nombreUserHr
         this.nombreEmpresaHr = nombreEmpresaHr
-        this.idUserDev= idUserDev!!
-        this.fecha= fecha!!
-        this.duracion= duracion!!
-        this.valoracion= valoracion!!
-        this.estado= estado!!
-        this.comentarios= comentarios!!
+        this.idUserDev = idUserDev
+        this.idUserHr = idUserHr
+        this.fecha = fecha
+        this.duracion = duracion
+        this.valoracion = valoracion!!
+        this.estado = estado!!
+        this.comentarios = comentarios!!
     }
 }

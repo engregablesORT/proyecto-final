@@ -1,6 +1,7 @@
 package com.example.hrit_app.services
 
 import android.content.res.Resources
+import android.util.Log
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.repository.TecnologiaRepository
 import com.example.hrit_app.repository.UserRepository
@@ -17,6 +18,15 @@ class UserService {
             return userRepository.obtenerUsuarioByEmail(email)
         } catch (e: Resources.NotFoundException) {
             System.out.println(" === ERROR :" + e.message.toString())
+            throw e
+        }
+    }
+
+    suspend fun findByID(idUser: String): User? {
+        try {
+            return userRepository.obtenerUsuarioByID(idUser)
+        } catch (e: Resources.NotFoundException) {
+            Log.d("TEST", e.message.toString())
             throw e
         }
     }

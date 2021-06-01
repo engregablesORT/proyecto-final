@@ -6,7 +6,11 @@ import com.example.hrit_app.repository.EntrevistaRepository
 
 class EntrevistaService {
 
-    var entrevistaRepository: EntrevistaRepository = EntrevistaRepository
+    private var entrevistaRepository: EntrevistaRepository = EntrevistaRepository
+
+    suspend fun crearEntrevista(entrevista: Entrevista){
+        entrevistaRepository.crearEntrevista(entrevista)
+    }
 
     suspend fun findAllEntrevistasPendientesByDev(devId: String): MutableList<Entrevista> {
         try {

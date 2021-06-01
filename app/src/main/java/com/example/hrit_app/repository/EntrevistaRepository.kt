@@ -1,8 +1,9 @@
 package com.example.hrit_app.repository
 
+import android.util.Log
 import com.example.hrit_app.entities.Entrevista
-import com.example.hrit_app.entities.User
-import com.example.hrit_app.utils.constants.Rol
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -11,31 +12,40 @@ import kotlinx.coroutines.tasks.await
 object EntrevistaRepository {
 
     private val db = Firebase.firestore
-    const val ENTREVISTAS_COLLECTION = "entrevistas";
+    private const val ENTREVISTAS_COLLECTION = "entrevistas";
     const val DURACION = "duracion_horas";
-    const val ESTADO = "estado";
+    private const val ID = "id"
+    private const val ESTADO = "estado";
     const val FECHA = "fecha";
     const val EMPRESA = "nombreEmpresaHR";
     const val VALORACION = "valoracion";
-    const val COMENTARIOS = "comentarios";
-    const val ID_DEV = "idUserDev";
+    private const val COMENTARIOS = "comentarios";
+    private const val ID_DEV = "idUserDev";
+
+    suspend fun crearEntrevista(entrevista: Entrevista) {
+        val entrevistaFirebase = db.collection(ENTREVISTAS_COLLECTION).add(entrevista)
+        entrevistaFirebase.addOnSuccessListener { documentReference ->
+            db.collection(ENTREVISTAS_COLLECTION).document(documentReference.id)
+                .update(ID, documentReference.id)
+        }
+    }
 
     suspend fun findAllEntrevistasPorDev(devId: String): MutableList<Entrevista> {
-        var entrevistas: MutableList<Entrevista> = arrayListOf()
-        try {
+        val entrevistas: MutableList<Entrevista> = mutableListOf()
+        return try {
             val snapshot = db.collection(ENTREVISTAS_COLLECTION).whereEqualTo(
-                ESTADO, Entrevista.Constants.estadoPendienteRespuesta).whereEqualTo(
-                ID_DEV, devId)
+                ESTADO, Entrevista.Constants.estadoPendienteRespuesta
+            ).whereEqualTo(
+                ID_DEV, devId
+            )
                 .get().await()
             for (documento in snapshot.documents) {
-                val entrevista = documento.toObject<Entrevista>()
-                if (entrevista != null) {
-                    entrevistas.add(entrevista)
-                }
+                documento.toObject<Entrevista>()?.let { entrevistas.add(it) }
             }
-            return entrevistas
+            entrevistas
         } catch (e: Exception) {
-            return arrayListOf()
+            Log.d("ERROR", e.message.toString())
+            arrayListOf()
         }
     }
 

@@ -10,7 +10,6 @@
         android:icon="@drawable/metrics"
         android:title="Historial"
         />
-
     <item
         android:id="@+id/fragmentHR_calendar"
         android:icon="@drawable/calendar_icon"
