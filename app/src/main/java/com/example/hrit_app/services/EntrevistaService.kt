@@ -1,12 +1,13 @@
 package com.example.hrit_app.services
 
 import android.content.res.Resources
+import android.util.Log
 import com.example.hrit_app.entities.Entrevista
 import com.example.hrit_app.repository.EntrevistaRepository
 
 class EntrevistaService {
 
-    private var entrevistaRepository: EntrevistaRepository = EntrevistaRepository
+    private var entrevistaRepository = EntrevistaRepository
 
     suspend fun crearEntrevista(entrevista: Entrevista){
         entrevistaRepository.crearEntrevista(entrevista)
@@ -16,7 +17,7 @@ class EntrevistaService {
         try {
             return entrevistaRepository.findAllEntrevistasPorDev(devId)
         } catch (e: Resources.NotFoundException) {
-            System.out.println(" === ERROR :" + e.message.toString())
+            Log.d("ERROR", e.message.toString())
             throw e
         }
     }

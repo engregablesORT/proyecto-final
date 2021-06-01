@@ -13,16 +13,16 @@ object EntrevistaRepository {
 
     private val db = Firebase.firestore
     private const val ENTREVISTAS_COLLECTION = "entrevistas";
-    const val DURACION = "duracion_horas";
+    private const val DURACION = "duracion";
     private const val ID = "id"
     private const val ESTADO = "estado";
-    const val FECHA = "fecha";
-    const val EMPRESA = "nombreEmpresaHR";
-    const val VALORACION = "valoracion";
+    private const val FECHA = "fecha";
+    private const val EMPRESA = "nombreEmpresaHR";
+    private const val VALORACION = "valoracion";
     private const val COMENTARIOS = "comentarios";
     private const val ID_DEV = "idUserDev";
 
-    suspend fun crearEntrevista(entrevista: Entrevista) {
+    fun crearEntrevista(entrevista: Entrevista) {
         val entrevistaFirebase = db.collection(ENTREVISTAS_COLLECTION).add(entrevista)
         entrevistaFirebase.addOnSuccessListener { documentReference ->
             db.collection(ENTREVISTAS_COLLECTION).document(documentReference.id)

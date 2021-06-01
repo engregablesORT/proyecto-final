@@ -24,6 +24,7 @@ import com.example.hrit_app.services.EntrevistaService
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -48,6 +49,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private lateinit var hourEntrevista: Number
     private lateinit var minutesEntrevista: Number
     private lateinit var duracion: Number
+    private lateinit var precio: Number
 
     // View y ViewModel
     // private lateinit var viewModel: FragmentHRContratarViewModel
@@ -220,8 +222,8 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         dialogDuracion.setMessage("Seleccione la duración en horas para la entrevista")
         dialogDuracion.setView(dialogView)
 
-        // TODO En horas o minutos
-        // TODO Precio
+        // TODO Fecha como la quieren?
+        // TODO Horas o minutos?
         val numberPicker: NumberPicker = dialogView.findViewById(R.id.number_picker)
         numberPicker.maxValue = 3
         numberPicker.minValue = 1
@@ -229,6 +231,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
 
         dialogDuracion.setPositiveButton("Confirmar") { _, _ ->
             duracion = numberPicker.value
+            precio = duracion as Int * asesor.precio.toInt()
             dialogConfirmarEntrevista()
         }
         dialogDuracion.setNegativeButton("Cancelar") { _, _ -> }
@@ -243,16 +246,18 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private fun crearDialogConfirmar(entrevista: Entrevista) {
         val stringEntrevista =
-            "Dia: ${entrevista.fecha} \nDuración: ${entrevista.duracion} HS \nPrecio"
+            "Dia: ${entrevista.fecha} \nDuración: ${entrevista.duracion} HS \nPrecio: \$${precio}"
         dialogContratar = AlertDialog.Builder(this.context);
         dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
         dialogContratar.setMessage(stringEntrevista);
         dialogContratar.setPositiveButton("Confirmar") { _, _ ->
             scope.launch {
                 entrevistaService.crearEntrevista(entrevista)
+                Snackbar.make(v, "Entrevista Confirmada", Snackbar.LENGTH_SHORT).show()
             }
         }
         dialogContratar.setNegativeButton("Cancelar") { _, _ ->
+            Snackbar.make(v, "Entrevista Cancelada", Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -260,13 +265,14 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private fun crearEntrevista(): Entrevista {
         return Entrevista(
             "",
-            (userHr.name + " " + userHr.lastName),
+            "${userHr.name} ${userHr.lastName}",
             userHr.empresa,
             asesor.id,
             userHr.id,
             "$dayEntrevista/$monthEntrevista/$yearEntrevista $hourEntrevista:$minutesEntrevista",
             duracion as Int,
             0,
+            precio as Int,
             Entrevista.Constants.estadoPendienteRespuesta,
             ""
         )
