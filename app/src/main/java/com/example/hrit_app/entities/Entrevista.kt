@@ -33,10 +33,10 @@ class Entrevista(
 
     class Constants {
         companion object {
-            val estadoAceptado = "ACEPTADO"
-            val estadoPendienteRespuesta = "PENDIENTE"
-            val estadoRechazada = "RECHAZADA"
-            val estadoFinalizada = "FINALIZADA"
+            const val estadoAceptado = "ACEPTADO"
+            const val estadoPendienteRespuesta = "PENDIENTE"
+            const val estadoRechazada = "RECHAZADA"
+            const val estadoFinalizada = "FINALIZADA"
         }
     }
 
@@ -65,7 +65,6 @@ class Entrevista(
         estado = parcel.readString().toString()
         comentarios = parcel.readString().toString()
     }
-
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)

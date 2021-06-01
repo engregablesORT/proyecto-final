@@ -6,7 +6,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -205,6 +204,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         hourEntrevista = hourOfDay
         minutesEntrevista = minute
+        // TODO Validar fecha posterior a hoy
         dialogDuracion()
     }
 

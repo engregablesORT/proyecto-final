@@ -2,8 +2,6 @@ package com.example.hrit_app.repository
 
 import android.util.Log
 import com.example.hrit_app.entities.Entrevista
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
