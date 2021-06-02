@@ -11,30 +11,32 @@
         android:id="@+id/btnGuardarDevPerfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="72dp"
         android:background="@drawable/button_rounded"
         android:text="Guardar"
+        android:textAllCaps="false"
         android:visibility="visible"
-        app:backgroundTint="#00BCD4"
+        app:backgroundTint="#296871"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordDevEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/editarTecnologiasDev" />
 
     <Button
         android:id="@+id/editarTecnologiasDev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/button_rounded"
         android:text="Editar Tecnologias"
+        android:textAllCaps="false"
         android:visibility="visible"
-        app:backgroundTint="#2196F3"
+        app:backgroundTint="#64B5C1"
         app:layout_constraintBottom_toTopOf="@+id/btnGuardarDevPerfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -67,11 +69,13 @@
 
     <ImageView
         android:id="@+id/imgDevPerfil"
-        android:layout_width="129dp"
+        android:layout_width="0dp"
         android:layout_height="127dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="68dp"
+        android:layout_marginEnd="245dp"
         android:src="@drawable/at_default"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,28 +98,30 @@
 
     <EditText
         android:id="@+id/precioPorHoraEditText"
-        android:layout_width="127dp"
+        android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_marginHorizontal="15dp"
+        android:layout_marginStart="220dp"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="45dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/input_rounded"
-        android:backgroundTint="#D2F4D1"
+        android:backgroundTint="#64B5C1"
         android:hint="Precio"
         android:paddingLeft="70px"
-        android:textColor="#4CAF50"
-        android:textColorHint="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText4" />
 
     <EditText
         android:id="@+id/emailDevEditText"
-        android:layout_width="255dp"
+        android:layout_width="0dp"
         android:layout_height="46dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/input_rounded"
         android:backgroundTint="#F6F5F5"
         android:paddingLeft="20px"
@@ -123,17 +129,16 @@
         android:textColorHint="#4CAF50"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.127"
-        app:layout_constraintStart_toEndOf="@+id/emailDevText"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/precioPorHoraEditText" />
 
     <EditText
         android:id="@+id/passwordDevEditText"
-        android:layout_width="256dp"
+        android:layout_width="0dp"
         android:layout_height="52dp"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="140dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/input_rounded"
         android:backgroundTint="#F6F5F5"
         android:paddingLeft="20px"
@@ -141,8 +146,7 @@
         android:textColorHint="#000000"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/passwordDevText"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailDevEditText" />
 
     <EditText
@@ -161,12 +165,12 @@
 
     <EditText
         android:id="@+id/descripcionDev"
-        android:layout_width="372dp"
+        android:layout_width="0dp"
         android:layout_height="72dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/input_rounded"
         android:backgroundTint="#F6F5F5"
         android:hint="Descripcion"
@@ -196,9 +200,9 @@
 
     <TextView
         android:id="@+id/tecnologiasDevText2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:text="Seniority"
         android:textColor="#131313"
@@ -207,9 +211,9 @@
 
     <TextView
         android:id="@+id/emailDevText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="35dp"
         android:text="Email: "
         android:textColor="#131313"
@@ -218,9 +222,9 @@
 
     <TextView
         android:id="@+id/passwordDevText"
-        android:layout_width="68dp"
+        android:layout_width="0dp"
         android:layout_height="22dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="40dp"
         android:text="Password: "
         android:textColor="#131313"
@@ -240,14 +244,16 @@
 
     <Spinner
         android:id="@+id/spinnerSeniority"
-        android:layout_width="146dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="25dp"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="230dp"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="#D2F4D1"
-        android:textColor="#4CAF50"
-        android:textColorHint="#4CAF50"
+        android:backgroundTint="#64B5C1"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText2" />
 

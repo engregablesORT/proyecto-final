@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private lateinit var minutesEntrevista: Number
     private lateinit var duracion: Number
     private lateinit var precio: Number
+    private lateinit var tecnologiasConsultadas: List<String>
 
     // View y ViewModel
     // private lateinit var viewModel: FragmentHRContratarViewModel
@@ -71,12 +73,13 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     // Users
     private lateinit var asesor: User
     private lateinit var userHr: User
+    private var tecnologias: MutableList<Tecnologia> = mutableListOf()
+    private var userTecnologias: MutableList<Tecnologia> = mutableListOf()
 
     // Services
     private var tecnologiaService = TecnologiaService()
     private var userService = UserService()
     private var entrevistaService = EntrevistaService()
-    private var tecnologias: MutableList<Tecnologia> = mutableListOf()
 
     // Dialogs
     private lateinit var dialogContratar: AlertDialog.Builder
@@ -117,6 +120,8 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         )
         val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
 
+        recTecnologias.setHasFixedSize(true)
+        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         // Asincronismo
         scope.launch {
             userHr = userService.findByID(uidKey)!!
@@ -134,6 +139,10 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
 
         btnContratar.setOnClickListener {
             getDateTimeCalendar()
+            tecnologiasConsultadas = obtenerTecnologiasActivas(userTecnologias)
+            if (tecnologiasConsultadas.isEmpty()) {
+                Log.d("TEST", "lista vacia")
+            }
             context?.let { it1 -> DatePickerDialog(it1, this, year, month, day).show() }
         }
     }
@@ -151,12 +160,10 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     // Metodos para el Recycler View
     private suspend fun setRecyclerView() {
         tecnologias = tecnologiaService.getAllTecnologias()
-        recTecnologias.setHasFixedSize(true)
-        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val userTecnologias = buscarTecnologias(tecnologias, asesor.tecnologias)
-
+        userTecnologias = buscarTecnologias(tecnologias, asesor.tecnologias)
         activity?.runOnUiThread {
-            tecnologiaListAdapter = TecnologiaListAdapter(userTecnologias) { x -> onItemClick(x) }
+            tecnologiaListAdapter =
+                TecnologiaListAdapter(userTecnologias) { x -> onTecnologiaClick(x) }
             recTecnologias.layoutManager = linearLayoutManager
             recTecnologias.adapter = tecnologiaListAdapter
         }
@@ -178,8 +185,21 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         return userTecnologias
     }
 
-    private fun onItemClick(x: Int): Boolean {
+    private fun onTecnologiaClick(position: Int): Boolean {
+        val tecnologiaEnCuestion = userTecnologias[position]
+        val isTecActiva = !tecnologiaEnCuestion.active
+        tecnologiaEnCuestion.active = isTecActiva
+        val action: String = if (isTecActiva) "agregado." else "removido."
+        Snackbar.make(v, tecnologiaEnCuestion.text + " fue " + action, Snackbar.LENGTH_SHORT).show()
+        tecnologiaListAdapter =
+            TecnologiaListAdapter(userTecnologias) { x -> onTecnologiaClick(x) }
+        recTecnologias.adapter = tecnologiaListAdapter
         return true
+    }
+
+    private fun obtenerTecnologiasActivas(tecUser: MutableList<Tecnologia>): List<String> {
+        return tecUser.filter { tecnologia -> tecnologia.active }
+            .map { tecActiva -> tecActiva.text }
     }
 
     // Metodos de Dia y Hora
@@ -223,7 +243,6 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         dialogDuracion.setView(dialogView)
 
         // TODO Fecha como la quieren?
-        // TODO Horas o minutos?
         val numberPicker: NumberPicker = dialogView.findViewById(R.id.number_picker)
         numberPicker.maxValue = 3
         numberPicker.minValue = 1
@@ -274,7 +293,8 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
             0,
             precio as Int,
             Entrevista.Constants.estadoPendienteRespuesta,
-            ""
+            "",
+            tecnologiasConsultadas
         )
     }
 }

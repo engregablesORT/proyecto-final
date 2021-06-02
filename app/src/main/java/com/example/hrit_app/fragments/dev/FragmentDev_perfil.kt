@@ -150,7 +150,7 @@ class FragmentDev_perfil : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (parent?.getChildAt(0) != null){
                     val spinnerTextView = parent.getChildAt(0) as TextView
-                    spinnerTextView.setTextColor(Color.DKGRAY)
+                    spinnerTextView.setTextColor(Color.WHITE)
                 }
                 senioritySeleccionado = seniorities[position]
             }

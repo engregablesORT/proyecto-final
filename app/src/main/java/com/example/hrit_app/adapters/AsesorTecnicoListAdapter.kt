@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
+import org.w3c.dom.Text
 
 class AsesorTecnicoListAdapter(
     private var asesores: MutableList<User>,
@@ -28,6 +29,7 @@ class AsesorTecnicoListAdapter(
         // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setName(asesores[position].name)
         holder.setApellido(asesores[position].lastName)
+        holder.setTitulo(asesores[position].titulo)
         holder.getCardLayout().setOnClickListener() {
             onItemClick(position)
         }
@@ -50,6 +52,11 @@ class AsesorTecnicoListAdapter(
         fun setApellido(apellido: String) {
             val lastName: TextView = view.findViewById(R.id.text_item_at_2)
             lastName.text = apellido
+        }
+
+        fun setTitulo(titulo: String) {
+            val tituloVista: TextView = view.findViewById(R.id.text_item_at_3)
+            tituloVista.text = titulo
         }
 
         fun getCardLayout(): CardView {
