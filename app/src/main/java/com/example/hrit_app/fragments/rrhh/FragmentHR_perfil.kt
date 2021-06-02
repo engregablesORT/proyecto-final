@@ -36,12 +36,18 @@ class FragmentHR_perfil : Fragment() {
     private lateinit var inputPasswordEdit: TextInputEditText
     private lateinit var inputEmail: TextInputLayout
     private lateinit var inputEmailEdit: TextInputEditText
+    private lateinit var inputTitular: TextInputLayout
+    private lateinit var inputTitularEdit: TextInputEditText
+    private lateinit var inputEmpresa: TextInputLayout
+    private lateinit var inputEmpresaEdit: TextInputEditText
 
     // Valores
     private lateinit var textoFirstName: String
     private lateinit var textoLastName: String
     private lateinit var textoEmail: String
     private lateinit var textoPassword: String
+    private lateinit var textoTitular: String
+    private lateinit var textoEmpresa: String
 
     // User
     private lateinit var user: User
@@ -66,6 +72,10 @@ class FragmentHR_perfil : Fragment() {
         inputPasswordEdit = v.findViewById(R.id.inputPasswordEdit)
         inputEmail = v.findViewById(R.id.txtFieldEmail)
         inputEmailEdit = v.findViewById(R.id.inputEmailEdit)
+        inputTitular = v.findViewById(R.id.txtFieldTitular)
+        inputTitularEdit = v.findViewById(R.id.inputTitularEdit)
+        inputEmpresa = v.findViewById(R.id.txtFieldEmpresa)
+        inputEmpresaEdit = v.findViewById(R.id.inputEmpresaEdit)
         btnGuardar = v.findViewById(R.id.btnGuardar)
 
         // Shared Preferences
@@ -101,7 +111,8 @@ class FragmentHR_perfil : Fragment() {
         }
 
         btnGuardar.setOnClickListener {
-            val userNuevo = User("",
+            val userNuevo = User(
+                "",
                 inputEmailEdit.text.toString(),
                 inputPasswordEdit.text.toString(),
                 inputFirstNameEdit.text.toString(),
@@ -110,21 +121,23 @@ class FragmentHR_perfil : Fragment() {
                 user.tecnologias,
                 "",
                 "",
+                inputTitularEdit.text.toString(),
                 "",
-                "",
-                ""
+                inputEmpresaEdit.text.toString()
             )
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
-            userService.updateUser(userNuevo, uidKey)
+            userService.updateUserHR(userNuevo, uidKey)
             deshabilitarFormulario()
         }
     }
 
     private fun setUserHintValues() {
-        inputFirstNameEdit.setText(textoFirstName.toString())
-        inputLastNameEdit.setText(textoLastName.toString())
+        inputFirstNameEdit.setText(textoFirstName)
+        inputLastNameEdit.setText(textoLastName)
+        inputEmailEdit.setText(textoEmail)
+        inputEmpresaEdit.setText(textoEmpresa)
+        inputTitularEdit.setText(textoTitular)
         inputPasswordEdit.setText("*******")
-        inputEmailEdit.setText(textoEmail.toString())
     }
 
     private fun getUserFieldValues() {
@@ -132,13 +145,17 @@ class FragmentHR_perfil : Fragment() {
         textoLastName = user.lastName
         textoEmail = user.email
         textoPassword = user.password
+        textoEmpresa = user.empresa
+        textoTitular = user.titulo
     }
 
     private fun setUserInputValues() {
-        inputFirstNameEdit.setText(textoFirstName.toString())
-        inputLastNameEdit.setText(textoLastName.toString())
-        inputPasswordEdit.setText(textoPassword.toString())
-        inputEmailEdit.setText(textoEmail.toString())
+        inputFirstNameEdit.setText(textoFirstName)
+        inputLastNameEdit.setText(textoLastName)
+        inputPasswordEdit.setText(textoPassword)
+        inputEmailEdit.setText(textoEmail)
+        inputTitularEdit.setText(textoTitular)
+        inputEmpresaEdit.setText(textoEmpresa)
     }
 
     private fun habilitarFormulario() {
@@ -146,10 +163,14 @@ class FragmentHR_perfil : Fragment() {
         inputLastName.isEnabled = true
         inputPassword.isEnabled = true
         inputEmail.isEnabled = true
+        inputEmpresa.isEnabled = true
+        inputTitular.isEnabled = true
         inputFirstName.hint = "Nombre"
         inputLastName.hint = "Apellido"
         inputPassword.hint = "Password"
         inputEmail.hint = "Email"
+        inputEmpresa.hint = "Empresa"
+        inputTitular.hint = "Titular"
         btnGuardar.visibility = View.VISIBLE
     }
 
@@ -158,6 +179,8 @@ class FragmentHR_perfil : Fragment() {
         inputLastName.isEnabled = false
         inputPassword.isEnabled = false
         inputEmail.isEnabled = false
+        inputEmpresa.isEnabled = false
+        inputTitular.isEnabled = false
         inputPasswordEdit.setText("*******")
         inputFirstName.hint = "Nombre"
         inputLastName.hint = "Apellido"

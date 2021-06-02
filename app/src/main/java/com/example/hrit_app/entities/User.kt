@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
 
-// TODO Agregar seniority, descripcion y precio
 open class User(
     id: String,
     email: String,

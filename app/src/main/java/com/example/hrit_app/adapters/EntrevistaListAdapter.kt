@@ -82,7 +82,7 @@ class EntrevistaListAdapter (
 
     override fun onBindViewHolder(holder: EntrevistaHolder, position: Int) {
         holder.setFecha(entrevistasList[position].fecha)
-        holder.setHora(entrevistasList[position].duracion)
+        holder.setHora(entrevistasList[position].duracion as Int)
         holder.setNombreHr(entrevistasList[position].nombreUserHr)
         holder.setEmpresaHr(entrevistasList[position].nombreEmpresaHr)
         holder.getbotonAceptar().setOnClickListener(){

@@ -42,14 +42,14 @@ class Fragment_login : Fragment() {
         btnRegistrar = v.findViewById(R.id.btn_signup)
         userName = v.findViewById(R.id.userName)
         passWord = v.findViewById(R.id.passWord)
-        welcomeMessage = v.findViewById(R.id.welcomeMessage)
+        //welcomeMessage = v.findViewById(R.id.welcomeMessage)
         auth = Firebase.auth
         return v
     }
 
     override fun onStart() {
         super.onStart()
-        welcomeMessage.setText("Bienvenido a < HR&IT />")
+        //welcomeMessage.setText("Bienvenido a < HR&IT />")
 
         val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

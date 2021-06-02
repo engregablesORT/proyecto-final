@@ -11,4 +11,5 @@
     <color name="bg_center">#0072AF</color>
     <color name="bg_bottom">#043E6C</color>
     <color name="bg_singup">#FF094F87</color>
+    <color name="hrit_primary">#296871</color>
 </resources>
