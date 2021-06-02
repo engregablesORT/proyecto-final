@@ -141,9 +141,14 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
             getDateTimeCalendar()
             tecnologiasConsultadas = obtenerTecnologiasActivas(userTecnologias)
             if (tecnologiasConsultadas.isEmpty()) {
-                Log.d("TEST", "lista vacia")
+                Snackbar.make(
+                    v,
+                    "Debe seleccionar al menos una tecnologia por la cual solicita al Asesor Tecnico",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                context?.let { it1 -> DatePickerDialog(it1, this, year, month, day).show() }
             }
-            context?.let { it1 -> DatePickerDialog(it1, this, year, month, day).show() }
         }
     }
 
@@ -265,7 +270,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private fun crearDialogConfirmar(entrevista: Entrevista) {
         val stringEntrevista =
-            "Dia: ${entrevista.fecha} \nDuración: ${entrevista.duracion} HS \nPrecio: \$${precio}"
+            "Dia: ${entrevista.fecha} \nDuración: ${entrevista.duracion} HS \nPrecio: \$${precio} \nTecnologias consultadas:${listarTecnologias()} "
         dialogContratar = AlertDialog.Builder(this.context);
         dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
         dialogContratar.setMessage(stringEntrevista);
@@ -278,6 +283,14 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         dialogContratar.setNegativeButton("Cancelar") { _, _ ->
             Snackbar.make(v, "Entrevista cancelada.", Snackbar.LENGTH_SHORT).show()
         }
+    }
+
+    private fun listarTecnologias(): String {
+        var stringTecnologias: String = ""
+        for (tec in tecnologiasConsultadas) {
+            stringTecnologias = "$stringTecnologias\n - $tec"
+        }
+        return stringTecnologias
     }
 
     // Metodos de Entrevista
