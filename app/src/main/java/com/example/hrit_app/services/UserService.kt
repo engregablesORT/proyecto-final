@@ -42,6 +42,10 @@ class UserService {
         userRepository.update(user, uid)
     }
 
+    fun updateTecnologiasUser(tecnologias: List<String>, uid: String){
+        userRepository.updateTecnologiasAsesor(tecnologias, uid)
+    }
+
     fun updateAsesorTecnico(user: User, uid: String){
         userRepository.updateAsesor(user, uid);
     }

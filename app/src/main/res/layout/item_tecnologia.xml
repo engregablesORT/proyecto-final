@@ -41,8 +41,8 @@
 
         <ImageView
             android:id="@+id/tecnologiaActivaDev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="21dp"
+            android:layout_height="19dp"
             android:layout_marginEnd="3dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"

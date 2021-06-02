@@ -103,4 +103,11 @@ object UserRepository {
                 SENIORITY, user.seniority
             )
     }
+
+    fun updateTecnologiasAsesor(tecnologias: List<String>, uid: String){
+        db.collection(USERS_COLLECTION).document(uid)
+            .update(
+                TECNOLOGIAS, tecnologias
+            )
+    }
 }

@@ -13,12 +13,29 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/button_rounded"
         android:text="Guardar"
         android:visibility="visible"
         app:backgroundTint="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordDevEditText" />
+
+    <Button
+        android:id="@+id/editarTecnologiasDev"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_rounded"
+        android:text="Editar Tecnologias"
+        android:visibility="visible"
+        app:backgroundTint="#2196F3"
+        app:layout_constraintBottom_toTopOf="@+id/btnGuardarDevPerfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,17 +64,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.035" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recTecnologias"
-        android:layout_width="373dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText">
-
-    </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
         android:id="@+id/imgDevPerfil"
@@ -90,14 +96,13 @@
         android:id="@+id/precioPorHoraEditText"
         android:layout_width="127dp"
         android:layout_height="54dp"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="15dp"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="45dp"
         android:background="@drawable/input_rounded"
         android:backgroundTint="#D2F4D1"
-        android:hint="Nombre"
+        android:hint="Precio"
         android:paddingLeft="70px"
-        android:text="TextView"
         android:textColor="#4CAF50"
         android:textColorHint="#4CAF50"
         android:textSize="18sp"
@@ -109,7 +114,7 @@
         android:layout_width="255dp"
         android:layout_height="46dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="2dp"
         android:background="@drawable/input_rounded"
         android:backgroundTint="#F6F5F5"
@@ -190,33 +195,22 @@
         app:layout_constraintTop_toBottomOf="@+id/txtEncabezado2" />
 
     <TextView
-        android:id="@+id/tecnologiasDevText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Tecnologias"
-        android:textColor="#131313"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
-
-    <TextView
         android:id="@+id/tecnologiasDevText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
         android:text="Seniority"
         android:textColor="#131313"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
 
     <TextView
         android:id="@+id/emailDevText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="35dp"
         android:text="Email: "
         android:textColor="#131313"
         app:layout_constraintStart_toStartOf="parent"
@@ -227,7 +221,7 @@
         android:layout_width="68dp"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:text="Password: "
         android:textColor="#131313"
         app:layout_constraintStart_toStartOf="parent"
@@ -237,32 +231,23 @@
         android:id="@+id/tecnologiasDevText4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="90dp"
         android:text="Precio / Hora"
         android:textColor="#131313"
-        app:layout_constraintStart_toEndOf="@+id/anioExpText"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
-
-    <TextView
-        android:id="@+id/anioExpText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
-        android:text="|"
-        android:textColor="#131313"
-        app:layout_constraintStart_toEndOf="@+id/tecnologiasDevText2"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descripcionDev" />
 
     <Spinner
         android:id="@+id/spinnerSeniority"
         android:layout_width="146dp"
         android:layout_height="51dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/bg_center"
-        android:foregroundTint="#FFFFFFFF"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/button_rounded"
+        android:backgroundTint="#D2F4D1"
+        android:textColor="#4CAF50"
+        android:textColorHint="#4CAF50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tecnologiasDevText2" />
 
