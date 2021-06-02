@@ -253,11 +253,11 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         dialogContratar.setPositiveButton("Confirmar") { _, _ ->
             scope.launch {
                 entrevistaService.crearEntrevista(entrevista)
-                Snackbar.make(v, "Entrevista Confirmada", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(v, "Entrevista confirmada.", Snackbar.LENGTH_SHORT).show()
             }
         }
         dialogContratar.setNegativeButton("Cancelar") { _, _ ->
-            Snackbar.make(v, "Entrevista Cancelada", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(v, "Entrevista cancelada.", Snackbar.LENGTH_SHORT).show()
         }
     }
 

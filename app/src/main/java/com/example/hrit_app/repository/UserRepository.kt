@@ -1,37 +1,29 @@
 package com.example.hrit_app.repository
 
-import android.content.res.Resources
-import android.sax.RootElement
 import android.util.Log
-import com.example.hrit_app.R
-import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.utils.constants.Rol
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
-import java.util.*
 
 object UserRepository {
 
     private val db = Firebase.firestore
-    val USERS_COLLECTION = "users";
-    val NAME = "name"
-    val LAST_NAME = "lastName"
-    val PASSWORD = "password"
-    val EMAIL = "email"
-    val ID = "id"
-    val ROL = "rol"
-    val DESCRIPCION = "descripcion"
-    val PRECIO = "precio"
-    val TITULO = "titulo"
-    val SENIORITY = "seniority"
-    val TECNOLOGIAS = "tecnologias"
-
-
-
+    private const val USERS_COLLECTION = "users";
+    private const val NAME = "name"
+    private const val LAST_NAME = "lastName"
+    private const val PASSWORD = "password"
+    private const val EMAIL = "email"
+    private const val ID = "id"
+    private const val ROL = "rol"
+    private const val DESCRIPCION = "descripcion"
+    private const val PRECIO = "precio"
+    private const val TITULO = "titulo"
+    private const val EMPRESA = "empresa"
+    private const val SENIORITY = "seniority"
+    private const val TECNOLOGIAS = "tecnologias"
 
     suspend fun obtenerUsuarioByEmail(email: String): User? {
         val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(EMAIL, email).get().await()
@@ -63,39 +55,38 @@ object UserRepository {
     }
 
     suspend fun findAllAT(): MutableList<User> {
-        var usersAT: MutableList<User> = arrayListOf()
-        try {
+        val usersAT: MutableList<User> = arrayListOf()
+        return try {
             val snapshot = db.collection(USERS_COLLECTION).whereEqualTo(ROL, Rol.AT).get().await()
             for (documento in snapshot.documents) {
-                // val user =
-                //     obtenerUsuarioByDocumentoDeFirebase(documento.data as Map<String, Object>)
-                val user = documento.toObject<User>()
-                if (user != null) {
-                    usersAT.add(user)
-                }
+                documento.toObject<User>()?.let { usersAT.add(it) }
             }
-            return usersAT
+            usersAT
         } catch (e: Exception) {
-            return arrayListOf()
+            Log.d("ERROR", e.message.toString())
+            arrayListOf()
         }
     }
 
-    fun update(user: User, uid: String) {
+    fun updateUserHR(user: User, uid: String) {
         db.collection(USERS_COLLECTION).document(uid)
             .update(
-                "email",
-                user.email,
-                "name",
+                NAME,
                 user.name,
-                "lastName",
+                LAST_NAME,
                 user.lastName,
-                "password",
-                user.password
+                PASSWORD,
+                user.password,
+                EMAIL,
+                user.email,
+                TITULO,
+                user.titulo,
+                EMPRESA,
+                user.empresa
             )
     }
 
-
-    fun updateAsesor(user: User, uid: String){
+    fun updateAsesor(user: User, uid: String) {
         db.collection(USERS_COLLECTION).document(uid)
             .update(
                 EMAIL, user.email,

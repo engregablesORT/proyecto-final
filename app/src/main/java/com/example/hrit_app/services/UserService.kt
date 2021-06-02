@@ -48,8 +48,8 @@ class UserService {
         userRepository.crearUsuarioFirebase(user, uid)
     }
 
-    fun updateUser(user: User, uid: String){
-        userRepository.update(user, uid)
+    fun updateUserHR(user: User, uid: String){
+        userRepository.updateUserHR(user, uid)
     }
 
     fun updateAsesorTecnico(user: User, uid: String){
