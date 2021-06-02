@@ -3,7 +3,7 @@
     <style name="Theme.HRITApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/hrit_secondary</item>
-        <item name="colorPrimaryVariant">@color/hrit_primary</item>
+        <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
