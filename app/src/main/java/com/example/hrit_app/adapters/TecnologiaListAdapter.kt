@@ -16,6 +16,16 @@ class TecnologiaListAdapter(
         val onItemClick: (Int) -> Boolean
 ) : RecyclerView.Adapter<TecnologiaListAdapter.TecnologiaHolder>() {
 
+    val mapImgById: Map<Int, Int> = mapOf(
+        Pair(700005, R.drawable.java),
+        Pair(700093, R.drawable.nodejs),
+        Pair(700136, R.drawable.python),
+        Pair(700123, R.drawable.react),
+        Pair(700167, R.drawable.php),
+        Pair(700150, R.drawable.js),
+        Pair(700140, R.drawable.angular)
+    )
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TecnologiaHolder {
         // Aca es donde referencio los items hijos del parent
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tecnologia, parent, false)
@@ -27,9 +37,12 @@ class TecnologiaListAdapter(
     }
 
     override fun onBindViewHolder(holder: TecnologiaHolder, position: Int) {
-        // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
+        // Necesitamos hacer esto para obtener el id exacto del la imagen en /drawable
         holder.setText(tecnologias[position].text)
-        holder.setImg(tecnologias[position].imgsrc)
+        val idDrawable: Int? = mapImgById?.get(tecnologias[position].imgsrc)
+        if (idDrawable != null) {
+            holder.setImg(idDrawable)
+        }
         if (tecnologias[position].active) {
             holder.itemView.tecnologiaActivaDev.visibility = View.VISIBLE
         }
