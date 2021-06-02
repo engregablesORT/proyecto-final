@@ -38,13 +38,12 @@
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="31dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
         android:backgroundTint="@color/black"
         android:text="Editar Tecnologias"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerCategoriaTecnologia"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

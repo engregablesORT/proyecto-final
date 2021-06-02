@@ -38,23 +38,22 @@
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
         android:text="Detalles del Asesor"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="122dp"
         android:layout_height="121dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="36dp"
-        android:src="@drawable/at_default"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/user_at"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -140,10 +139,10 @@
 
     <ImageView
         android:id="@+id/btnVolver"
-        android:layout_width="15dp"
-        android:layout_height="14dp"
+        android:layout_width="17dp"
+        android:layout_height="18dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="33dp"
         android:src="@drawable/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

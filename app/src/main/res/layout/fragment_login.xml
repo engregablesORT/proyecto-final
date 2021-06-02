@@ -40,12 +40,13 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="201dp"
-        android:layout_height="229dp"
-        android:layout_marginStart="96dp"
+        android:layout_width="256dp"
+        android:layout_height="171dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="27dp"
         android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/userName"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <Button
         android:id="@+id/btn_login"
@@ -66,9 +67,9 @@
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/button_rounded"
         android:text="Registrarse"
@@ -76,24 +77,29 @@
         android:visibility="visible"
         app:backgroundTint="#296871"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="52dp"
         android:src="@drawable/path1"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/path2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_signup" />
 
