@@ -14,10 +14,11 @@ class Entrevista(
     valoracion: Int,
     precio: Int,
     estado: String,
-    comentarios: String
+    comentarios: String,
+    tecnologias: List<String>
 ) : Parcelable {
 
-    constructor() : this("", "", "", "", "", "", 0, 0, 0, "", "")
+    constructor() : this("", "", "", "", "", "", 0, 0, 0, "", "", emptyList())
 
     var id: String
     var nombreUserHr: String
@@ -30,6 +31,8 @@ class Entrevista(
     var precio: Int
     var estado: String
     var comentarios: String
+    var tecnologias: List<String>
+
 
     class Constants {
         companion object {
@@ -52,6 +55,7 @@ class Entrevista(
         this.precio = precio
         this.estado = estado
         this.comentarios = comentarios
+        this.tecnologias = tecnologias
     }
 
     constructor(parcel: Parcel) : this() {

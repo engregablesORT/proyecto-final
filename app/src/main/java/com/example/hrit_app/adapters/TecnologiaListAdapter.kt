@@ -47,7 +47,7 @@ class TecnologiaListAdapter(
             holder.itemView.tecnologiaActivaDev.visibility = View.VISIBLE
         }
 
-        holder.getCardLayout().setOnLongClickListener(){
+        holder.getCardLayout().setOnClickListener(){
             onItemClick(position)
         }
     }
