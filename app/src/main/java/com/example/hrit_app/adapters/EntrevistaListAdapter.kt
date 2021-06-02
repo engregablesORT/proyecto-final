@@ -72,7 +72,6 @@ class EntrevistaListAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntrevistaHolder {
-        // Aca es donde referencio los items
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entrevista_pendiente, parent, false)
         return (EntrevistaListAdapter.EntrevistaHolder(view))
     }
@@ -82,7 +81,6 @@ class EntrevistaListAdapter (
     }
 
     override fun onBindViewHolder(holder: EntrevistaHolder, position: Int) {
-        // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setFecha(entrevistasList[position].fecha)
         holder.setHora(entrevistasList[position].duracion)
         holder.setNombreHr(entrevistasList[position].nombreUserHr)

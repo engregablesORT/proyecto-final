@@ -203,7 +203,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
                 .setPositiveButton("Confirmar") { _, _ ->
 
                     val entrevista =
-                        Entrevista(0, "flor", "accenture", 1, "fecha", 0, 0, "pendiente")
+                        Entrevista("", "flor", "accenture", "", "fecha", 0, 0, "pendiente", "")
                     Log.d("TEST", entrevista.nombreEmpresaHr)
                 }
                 .setNegativeButton("Cancelar") { _, _ -> }
