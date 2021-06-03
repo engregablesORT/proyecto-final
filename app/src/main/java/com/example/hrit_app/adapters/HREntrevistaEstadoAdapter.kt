@@ -30,15 +30,12 @@ class HREntrevistaEstadoAdapter(
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_calendariohr_estado, parent, false)
 
-        if (!esEntrevistaAceptada()) {
-            view.findViewById<ImageButton>(R.id.calendarhr_contacto).visibility = View.INVISIBLE
-        }
-
-        if (!esEntrevistaRechazada()) {
-            view.findViewById<TextView>(R.id.calendarhr_comentarios).visibility = View.INVISIBLE
+        if (esEntrevistaAceptada()) {
+            view.findViewById<ImageButton>(R.id.calendarhr_contacto).visibility = View.VISIBLE
         }
 
         if (esEntrevistaRechazada()) {
+            view.findViewById<TextView>(R.id.calendarhr_comentarios).visibility = View.VISIBLE
             view.findViewById<TextView>(R.id.calendarhr_duracion).visibility = View.INVISIBLE
         }
 

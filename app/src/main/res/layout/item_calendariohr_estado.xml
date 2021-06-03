@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_calendariohr_pendiente"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="110dp"
     android:layout_margin="8dp"
     app:cardBackgroundColor="#D5D5D6"
     app:cardCornerRadius="20dp"
@@ -64,17 +64,18 @@
             android:layout_marginTop="8dp"
             android:text="Duracion"
             android:textColor="#000000"
+            android:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/img_item_hor"
             app:layout_constraintTop_toBottomOf="@+id/calendarhr_nombreDev" />
 
         <TextView
             android:id="@+id/calendarhr_comentarios"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_width="205dp"
+            android:layout_height="33dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
             android:text="Comentarios"
             android:textColor="#000000"
+            android:visibility="invisible"
             app:layout_constraintStart_toEndOf="@+id/img_item_hor"
             app:layout_constraintTop_toBottomOf="@+id/calendarhr_nombreDev" />
 
@@ -84,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="16dp"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_dialog_email" />
