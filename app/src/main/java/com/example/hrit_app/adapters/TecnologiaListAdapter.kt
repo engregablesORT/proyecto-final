@@ -38,7 +38,7 @@ class TecnologiaListAdapter(
 
     override fun onBindViewHolder(holder: TecnologiaHolder, position: Int) {
         // Necesitamos hacer esto para obtener el id exacto del la imagen en /drawable
-        holder.setText(tecnologias[position].text)
+        //holder.setText(tecnologias[position].text)
         val idDrawable: Int? = mapImgById?.get(tecnologias[position].imgsrc)
         if (idDrawable != null) {
             holder.setImg(idDrawable)
@@ -59,11 +59,6 @@ class TecnologiaListAdapter(
 
         init {
             this.view = v
-        }
-
-        fun setText(text: String){
-            val txt: TextView = view.findViewById(R.id.text_item_disponibilidad)
-            txt.text = text
         }
 
         fun setImg(id: Int){
