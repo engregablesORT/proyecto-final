@@ -14,4 +14,5 @@
     <color name="hrit_primary">#296871</color>
     <color name="hrit_secondary">#33D0D5</color>
     <color name="hrit_third">#64B5C1</color>
+    <color name="hrit_gray">#1E1E1E</color>
 </resources>

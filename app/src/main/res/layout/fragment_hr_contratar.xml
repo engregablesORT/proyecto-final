@@ -91,6 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="Selecciona las tecnologías por las cuales solicitas la entrevista."
+        android:textColor="@color/hrit_gray"
         android:textSize="12sp"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
