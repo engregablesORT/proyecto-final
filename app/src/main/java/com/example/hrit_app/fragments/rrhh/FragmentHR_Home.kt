@@ -1,12 +1,13 @@
 package com.example.hrit_app.fragments.rrhh
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +18,11 @@ import com.example.hrit_app.entities.Tecnologia
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
-import kotlinx.coroutines.*
-import kotlin.collections.ArrayList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
 
 class FragmentHR_Home : Fragment() {
 
@@ -46,6 +50,7 @@ class FragmentHR_Home : Fragment() {
         recTecnologias = v.findViewById(R.id.recTecnologias)
         recAsesores = v.findViewById(R.id.recAsesoresTecnicos)
         searchView = v.findViewById(R.id.searchView)
+
         return v
     }
 

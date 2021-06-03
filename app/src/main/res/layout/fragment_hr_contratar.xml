@@ -8,32 +8,15 @@
     android:background="#FFFFFF"
     tools:context=".fragments.rrhh.FragmentHRContratar">
 
-    <Button
-        android:id="@+id/btnContratar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/button_rounded2"
-        android:text="Contratar"
-        android:textAllCaps="false"
-        app:backgroundTint="#296871"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <ImageView
+        android:id="@+id/btnVolver"
+        android:layout_width="17dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="33dp"
+        android:src="@drawable/back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSeniority" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recTecnologiasContratar"
-        android:layout_width="344dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView5"
@@ -83,10 +66,10 @@
     <TextView
         android:id="@+id/txtDescripcion"
         android:layout_width="343dp"
-        android:layout_height="96dp"
+        android:layout_height="80dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
-        android:text="Descripcion Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin justo nunc, sed laoreet tellus facilisis vel. Vestibulum quis ligula ut diam auctor efficitur. Nulla sit amet urna odio. Etiam consequat neque a mollis blandit."
+        android:text="Descripcion Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin justo nunc, sed laoreet tellus facilisis vel. Vestibulum quis ligula ut diam auctor efficitur. Nulla sit amet urna odio."
         android:textColor="#1E1E1E"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -102,11 +85,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescripcion" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recTecnologiasContratar"
+        android:layout_width="344dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="83dp"
         android:layout_marginTop="28dp"
         android:shadowColor="#FFFFFF"
         android:text="Seniority"
@@ -114,19 +108,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recTecnologiasContratar" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="28dp"
-        android:text="Precio por Hora"
-        android:textColor="#000000"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologiasContratar" />
+    <Button
+        android:id="@+id/txtSeniority"
+        android:layout_width="160dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/hrit_third"
+        android:enabled="true"
+        android:text="Button"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
-        android:id="@+id/txtSeniority"
+        android:id="@+id/txtSeniority2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="74dp"
@@ -137,18 +132,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-    <ImageView
-        android:id="@+id/btnVolver"
-        android:layout_width="17dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="33dp"
-        android:src="@drawable/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="65dp"
+        android:text="Precio por Hora"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recTecnologiasContratar" />
+
+    <Button
+        android:id="@+id/txtPrecio"
+        android:layout_width="160dp"
+        android:layout_height="49dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/hrit_third"
+        android:enabled="true"
+        android:text="Button"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/txtPrecio"
+        android:id="@+id/txtPrecio2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -158,5 +166,20 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <Button
+        android:id="@+id/btnContratar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
+        android:text="Contratar"
+        android:textAllCaps="false"
+        app:backgroundTint="#296871"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSeniority2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
