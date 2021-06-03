@@ -18,6 +18,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:navGraph="@navigation/nav_hr" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,7 +27,10 @@
         android:layout_height="wrap_content"
         app:itemBackground="@color/hrit_primary"
         app:itemHorizontalTranslationEnabled="false"
-        app:labelVisibilityMode="auto"
+        app:itemIconTint="@color/white"
+        app:itemRippleColor="#FFFFFF"
+        app:itemTextColor="#FFFFFF"
+        app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
