@@ -6,7 +6,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,8 +59,8 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private lateinit var txtNombreCompleto: TextView
     private lateinit var txtDescripcion: TextView
     private lateinit var txtTitulo: TextView
-    private lateinit var txtPrecio: TextView
-    private lateinit var txtSeniority: TextView
+    private lateinit var txtPrecio: Button
+    private lateinit var txtSeniority: Button
     private lateinit var btnContratar: Button
     private lateinit var btnVolver: ImageView
 
@@ -219,7 +218,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         dayEntrevista = dayOfMonth
-        monthEntrevista = month
+        monthEntrevista = month + 1
         yearEntrevista = year
 
         getDateTimeCalendar()

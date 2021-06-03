@@ -76,7 +76,6 @@ class FragmentDev_Home : Fragment() {
             activity?.runOnUiThread {
                 actualizarEntrevistas(entrevistasPendientes)
             }
-
         }
 
 
@@ -96,11 +95,10 @@ class FragmentDev_Home : Fragment() {
         input.visibility = View.INVISIBLE
         val mAlertDialog = AlertDialog.Builder(this.context);
         input.hint = "Ingrese sus comentarios"
-        mAlertDialog.setView(input)
         mAlertDialog.setTitle("Confirmar accion");
         mAlertDialog.setMessage(texto);
-        mAlertDialog.setIcon(R.mipmap.ic_launcher);
         if(estado == Entrevista.Constants.estadoRechazada) {
+            mAlertDialog.setView(input)
             input.visibility = View.VISIBLE
         }
         mAlertDialog.setPositiveButton("Cancelar") { dialog, id ->
