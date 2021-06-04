@@ -93,4 +93,6 @@ class FragmentHRCalendarioEstado(entrevistas: MutableList<Entrevista>) : Fragmen
         user = userService.findByID(idUser)!!
         return user
     }
+
+    // TODO tarjeta de rechazadas: boton de ver comentarios? pendientes: descartar entrevista, color distinto segun categoria
 }

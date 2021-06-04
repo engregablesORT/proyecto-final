@@ -1,6 +1,9 @@
 package com.example.hrit_app.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.Entrevista
@@ -37,6 +43,7 @@ class HREntrevistaEstadoAdapter(
         if (esEntrevistaRechazada()) {
             view.findViewById<TextView>(R.id.calendarhr_comentarios).visibility = View.VISIBLE
             view.findViewById<TextView>(R.id.calendarhr_duracion).visibility = View.INVISIBLE
+            view.findViewById<ConstraintLayout>(R.id.calendarhr_cl).background = ContextCompat.getDrawable(parent.context, R.drawable.bg_color)
         }
 
         return (HREntrevistaAceptadaAdapterHolder(view))

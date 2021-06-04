@@ -34,6 +34,7 @@ import java.time.LocalTime
 import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
@@ -330,7 +331,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
             userHr.id,
             fechaHoraEntrevista.format(formatter).toString(),
             duracion as Int,
-            0,
+            (0..5).random(),
             precio as Int,
             Entrevista.Constants.estadoPendienteRespuesta,
             "",
