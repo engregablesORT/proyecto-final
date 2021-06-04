@@ -34,7 +34,7 @@ class FragmentHRCalendarioEstado(entrevistas: MutableList<Entrevista>) : Fragmen
     private lateinit var entrevistaListAdapter: HREntrevistaEstadoAdapter
 
     // Dialog
-    private lateinit var dialog: AlertDialog.Builder
+    private lateinit var dialogContacto: AlertDialog.Builder
 
     // Services
     private var userService = UserService()
@@ -70,10 +70,9 @@ class FragmentHRCalendarioEstado(entrevistas: MutableList<Entrevista>) : Fragmen
         val entrevista = entrevistasList[x]
         scope.launch {
             userDev = buscarUsuario(entrevista.idUserDev)
-            Log.d("TEST", userDev.id)
             activity?.runOnUiThread {
                 crearDialog(userDev)
-                dialog.show()
+                dialogContacto.show()
             }
         }
         return true
@@ -81,11 +80,11 @@ class FragmentHRCalendarioEstado(entrevistas: MutableList<Entrevista>) : Fragmen
 
     private fun crearDialog(userDev: User) {
         val stringDialog =
-            "Podras contactarte con ${userDev.name} ${userDev.lastName} al mail:\n- ${userDev.email}"
-        dialog = AlertDialog.Builder(this.context);
-        dialog.setTitle("Datos de contacto");
-        dialog.setMessage(stringDialog);
-        dialog.setPositiveButton("Ok") { _, _ ->
+            "Podras contactarte con ${userDev.name} ${userDev.lastName} al correo electronico:\n- ${userDev.email}"
+        dialogContacto = AlertDialog.Builder(this.context);
+        dialogContacto.setTitle("Datos de contacto");
+        dialogContacto.setMessage(stringDialog);
+        dialogContacto.setPositiveButton("Ok") { _, _ ->
         }
     }
 
