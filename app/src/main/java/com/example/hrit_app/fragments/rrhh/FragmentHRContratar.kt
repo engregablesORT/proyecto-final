@@ -6,7 +6,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -290,7 +289,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private fun crearDialogConfirmar(entrevista: Entrevista) {
         val stringEntrevista =
             "Dia: ${entrevista.fecha} \nDuración: ${entrevista.duracion} HS \nPrecio: \$${precio} \nTecnologias consultadas:${listarTecnologias()} "
-        dialogContratar = AlertDialog.Builder(this.context);
+        dialogContratar = AlertDialog.Builder(this.context)
         dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
         dialogContratar.setMessage(stringEntrevista);
         dialogContratar.setPositiveButton("Confirmar") { _, _ ->
@@ -315,7 +314,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     // Metodos de Dialog Error
     private fun crearDialogError(mensaje: String) {
         dialogError = AlertDialog.Builder(this.context);
-        dialogError.setTitle("Hay un problema...");
+        dialogError.setTitle("Hay un problema...")
         dialogError.setMessage(mensaje);
         dialogError.setPositiveButton("Ok") { _, _ ->
         }
