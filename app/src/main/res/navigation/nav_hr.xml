@@ -25,11 +25,6 @@
         android:label="fragment_hr_perfil"
         tools:layout="@layout/fragment_hr_perfil" />
     <fragment
-        android:id="@+id/fragmentHR_calendar"
-        android:name="com.example.hrit_app.fragments.rrhh.FragmentHR_calendar"
-        android:label="fragment_hr_calendar"
-        tools:layout="@layout/fragment_hr_calendar" />
-    <fragment
         android:id="@+id/fragmentHRContratar"
         android:name="com.example.hrit_app.fragments.rrhh.FragmentHRContratar"
         android:label="fragment_hr_contratar"
@@ -41,5 +36,9 @@
             android:id="@+id/action_fragmentHRContratar_to_fragmentHR_Home"
             app:destination="@id/fragmentHR_Home" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentHRCalendario"
+        android:name="com.example.hrit_app.fragments.rrhh.FragmentHRCalendario"
+        android:label="FragmentHRCalendario" />
 
 </navigation>

@@ -28,7 +28,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.Month
+import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
@@ -42,11 +48,10 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private var minutes = 0
 
     // Entrevista
-    private lateinit var dayEntrevista: Number
-    private lateinit var monthEntrevista: Number
-    private lateinit var yearEntrevista: Number
-    private lateinit var hourEntrevista: Number
-    private lateinit var minutesEntrevista: Number
+    private val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
+    private lateinit var fechaEntrevista: LocalDate
+    private lateinit var horaEntrevista: LocalTime
+    private lateinit var fechaHoraEntrevista: LocalDateTime
     private lateinit var duracion: Number
     private lateinit var precio: Number
     private lateinit var tecnologiasConsultadas: List<String>
@@ -83,6 +88,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     // Dialogs
     private lateinit var dialogContratar: AlertDialog.Builder
     private lateinit var dialogDuracion: AlertDialog.Builder
+    private lateinit var dialogError: AlertDialog.Builder
 
     // Asincronismo
     private val parentJob = Job()
@@ -217,19 +223,34 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dayEntrevista = dayOfMonth
-        monthEntrevista = month + 1
-        yearEntrevista = year
+        fechaEntrevista = LocalDate.of(year, Month.of(month + 1), dayOfMonth)
 
-        getDateTimeCalendar()
-        TimePickerDialog(context, this, hour, minutes, true).show()
+        if (fechaEntrevista.isBefore(LocalDate.now().plusDays(1))) {
+            crearDialogError("Debe seleccionar una fecha posterior a hoy para realizar la solicitud de entrevista.")
+            dialogError.show()
+        } else {
+            getDateTimeCalendar()
+            TimePickerDialog(context, this, hour, minutes, true).show()
+        }
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        hourEntrevista = hourOfDay
-        minutesEntrevista = minute
-        // TODO Validar fecha posterior a hoy
-        dialogDuracion()
+        horaEntrevista = LocalTime.of(hourOfDay, minute)
+
+        horaEntrevista.isAfter(LocalTime.of(7, 0))
+        if (horaEntrevista.isAfter(LocalTime.of(7, 0)) && horaEntrevista.isBefore(
+                LocalTime.of(
+                    20,
+                    0
+                )
+            )
+        ) {
+            fechaHoraEntrevista = LocalDateTime.of(fechaEntrevista, horaEntrevista)
+            dialogDuracion()
+        } else {
+            crearDialogError("Debe seleccionar un horario entre las 7:00 AM y 20:00 PM para realizar la solicitud de entrevista.")
+            dialogError.show()
+        }
     }
 
     // Metodos de Dialog Duracion
@@ -246,7 +267,6 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         dialogDuracion.setMessage("Seleccione la duración en horas para la entrevista")
         dialogDuracion.setView(dialogView)
 
-        // TODO Fecha como la quieren?
         val numberPicker: NumberPicker = dialogView.findViewById(R.id.number_picker)
         numberPicker.maxValue = 3
         numberPicker.minValue = 1
@@ -270,7 +290,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private fun crearDialogConfirmar(entrevista: Entrevista) {
         val stringEntrevista =
             "Dia: ${entrevista.fecha} \nDuración: ${entrevista.duracion} HS \nPrecio: \$${precio} \nTecnologias consultadas:${listarTecnologias()} "
-        dialogContratar = AlertDialog.Builder(this.context);
+        dialogContratar = AlertDialog.Builder(this.context)
         dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
         dialogContratar.setMessage(stringEntrevista);
         dialogContratar.setPositiveButton("Confirmar") { _, _ ->
@@ -292,6 +312,15 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
         return stringTecnologias
     }
 
+    // Metodos de Dialog Error
+    private fun crearDialogError(mensaje: String) {
+        dialogError = AlertDialog.Builder(this.context);
+        dialogError.setTitle("Hay un problema...")
+        dialogError.setMessage(mensaje);
+        dialogError.setPositiveButton("Ok") { _, _ ->
+        }
+    }
+
     // Metodos de Entrevista
     private fun crearEntrevista(): Entrevista {
         return Entrevista(
@@ -300,9 +329,9 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
             userHr.empresa,
             asesor.id,
             userHr.id,
-            "$dayEntrevista/$monthEntrevista/$yearEntrevista $hourEntrevista:$minutesEntrevista",
+            fechaHoraEntrevista.format(formatter).toString(),
             duracion as Int,
-            0,
+            (0..5).random(),
             precio as Int,
             Entrevista.Constants.estadoPendienteRespuesta,
             "",

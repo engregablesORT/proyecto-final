@@ -5,14 +5,16 @@
     android:id="@+id/frameLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.rrhh.FragmentHR_calendar">
+    tools:context=".fragments.rrhh.FragmentHRCalendarioEstado">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/txtFullName"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rec_calendariohr_pendientes"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="CalendarioHR"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

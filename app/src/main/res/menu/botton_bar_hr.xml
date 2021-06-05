@@ -11,7 +11,7 @@
         android:title="Historial"
         />
     <item
-        android:id="@+id/fragmentHR_calendar"
+        android:id="@+id/fragmentHRCalendario"
         android:icon="@drawable/calendar_icon"
         android:title="Calendario" />
 

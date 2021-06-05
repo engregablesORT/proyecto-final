@@ -8,26 +8,11 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.HRITApp">
-        <activity
-            android:windowSoftInputMode="adjustNothing"
-            android:name=".activities.Activity_Dev">
-        </activity>
-
-        <uses-library
-            android:name="com.google.android.wearable"
-            android:required="false" />
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
 
         <activity android:name=".activities.MainActivity">
             <intent-filter>
@@ -36,16 +21,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:windowSoftInputMode="adjustNothing"
-            android:name=".activities.Activity_HR"
-            android:label="@string/title_activity__h_r">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".activities.Activity_HR"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".activities.Activity_Dev"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="false" />
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
     </application>
 
 </manifest>

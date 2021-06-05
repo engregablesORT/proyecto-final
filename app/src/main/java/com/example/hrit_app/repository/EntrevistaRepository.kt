@@ -19,6 +19,7 @@ object EntrevistaRepository {
     private const val VALORACION = "valoracion";
     private const val COMENTARIOS = "comentarios";
     private const val ID_DEV = "idUserDev";
+    private const val ID_HR = "idUserHr";
 
     fun crearEntrevista(entrevista: Entrevista) {
         val entrevistaFirebase = db.collection(ENTREVISTAS_COLLECTION).add(entrevista)
@@ -46,6 +47,24 @@ object EntrevistaRepository {
             arrayListOf()
         }
     }
+
+    suspend fun findAllEntrevistasPorHR(hrId: String): MutableList<Entrevista> {
+        val entrevistas: MutableList<Entrevista> = mutableListOf()
+        return try {
+            val snapshot =
+                db.collection(ENTREVISTAS_COLLECTION).whereEqualTo(ID_HR, hrId).get().await()
+
+            for (documento in snapshot.documents) {
+                documento.toObject<Entrevista>()?.let { entrevistas.add(it) }
+            }
+            
+            entrevistas
+        } catch (e: Exception) {
+            Log.d("ERROR", e.message.toString())
+            arrayListOf()
+        }
+    }
+
 
     fun updateEntrevistaEstado(entrevistaId: String, estado: String) {
         db.collection(ENTREVISTAS_COLLECTION).document(entrevistaId)
