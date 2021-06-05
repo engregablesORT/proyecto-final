@@ -25,8 +25,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recTecnologias"
-        android:layout_width="0dp"
-        android:layout_height="97dp"
+        android:layout_width="350dp"
+        android:layout_height="112dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="204dp"
         android:layout_marginEnd="32dp"

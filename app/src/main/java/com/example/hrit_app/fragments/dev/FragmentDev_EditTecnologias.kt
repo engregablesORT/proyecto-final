@@ -18,9 +18,13 @@ import com.example.hrit_app.entities.User
 import com.example.hrit_app.fragments.rrhh.FragmentHRContratarArgs
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
+import com.example.hrit_app.utils.constants.Categoria
+import com.example.hrit_app.utils.constants.Rol
 import com.example.hrit_app.utils.constants.Seniority
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
+import com.google.android.gms.common.util.CollectionUtils
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_hr__home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,6 +35,7 @@ class FragmentDev_EditTecnologias : Fragment() {
     lateinit var v: View
     lateinit var recTecnologias: RecyclerView
     var tecnologiasParaAdapter: MutableList<Tecnologia> = ArrayList<Tecnologia>()
+    var tecnologiasFiltradasPorCategoria: MutableList<Tecnologia> = ArrayList<Tecnologia>()
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var tecnologiaListAdapter: TecnologiaListAdapter
     var tecnologiaService: TecnologiaService = TecnologiaService()
@@ -39,6 +44,14 @@ class FragmentDev_EditTecnologias : Fragment() {
     lateinit var spinner: Spinner
     private lateinit var sharedPreferences: SharedPreferences
     var userService: UserService = UserService()
+    lateinit var categoriaSeleccionada: String
+
+
+    val mapCategoriaTecnologia: Map<Int, String> = mapOf( Pair(1, Categoria.BE),
+        Pair(2, Categoria.FE),
+        Pair(3, Categoria.MOBILE),
+        Pair(4, Categoria.BD ));
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,27 +117,53 @@ class FragmentDev_EditTecnologias : Fragment() {
         }
     }
 
+    private fun displayTecnologiasByCategoriaOnRecyclerView(categoria: String) {
+        tecnologiasFiltradasPorCategoria = tecnologiasParaAdapter.filter { tecnologia -> categoria.equals(tecnologia.categoria)}.toMutableList()
+        tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasFiltradasPorCategoria as MutableList<Tecnologia>, { x -> onTecnologiaClick(x) })
+        recTecnologias.adapter = tecnologiaListAdapter
+    }
+
     fun onTecnologiaClick(position: Int): Boolean {
         // Actualizo estado
-        val tecnologiaEnCuestion = tecnologiasParaAdapter.get(position)
+        var tecnologiaEnCuestion: Tecnologia
+        if (tecnologiasFiltradasPorCategoria.size == 0) {
+            tecnologiaEnCuestion = tecnologiasParaAdapter.get(position)
+        } else {
+            tecnologiaEnCuestion = tecnologiasFiltradasPorCategoria.get(position)
+        }
         val isTecActiva = !tecnologiaEnCuestion.active
         tecnologiaEnCuestion.active = isTecActiva
         // Lo reflejo en la lista
         val action: String = if (isTecActiva) "agregado." else "removido."
         Snackbar.make(v, tecnologiaEnCuestion.text + " fue " + action, Snackbar.LENGTH_SHORT).show()
-        tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter, { x -> onTecnologiaClick(x) })
-        recTecnologias.adapter = tecnologiaListAdapter
+        if (categoriaSeleccionada.length>0){
+            displayTecnologiasByCategoriaOnRecyclerView(tecnologiaEnCuestion.categoria)
+        } else {
+            displayAllCategorias()
+        }
+
         return true
     }
 
+    private fun displayAllCategorias(){
+        tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter as MutableList<Tecnologia>, { x -> onTecnologiaClick(x) })
+        recTecnologias.adapter = tecnologiaListAdapter
+    }
+
     private fun displaySpinner(){
-        var categorias = arrayOf("Seleccionar Categoria...", "Backend", "Frontend", "Mobile", "Seguridad Informatica", "Redes")
+        var categorias = arrayOf("Seleccionar Categoria...", Categoria.BE, Categoria.FE, Categoria.MOBILE, Categoria.BD)
         spinner.adapter = ArrayAdapter<String>(
             requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
             categorias
         )
-        spinner.setSelection(0)
+
+        /*val position = mapCategoriaTecnologia.get(tecnologiasParaAdapter.get(0).categoria)
+        if (position != null) {
+            spinner.setSelection(position)
+        } else {
+            spinner.setSelection(0)
+        }*/
 
         spinner.onItemSelectedListener = object :  AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -136,7 +175,15 @@ class FragmentDev_EditTecnologias : Fragment() {
                     val spinnerTextView = parent.getChildAt(0) as TextView
                     spinnerTextView.setTextColor(Color.WHITE)
                 }
-                // TODO implementar en siguiente historia de usuario.
+                categoriaSeleccionada = ""
+                val categoria= mapCategoriaTecnologia.get(position);
+                if (categoria != null) {
+                    displayTecnologiasByCategoriaOnRecyclerView(categoria)
+                    categoriaSeleccionada = categoria
+                } else {
+                    displayAllCategorias()
+                }
+
             }
         }
     }
