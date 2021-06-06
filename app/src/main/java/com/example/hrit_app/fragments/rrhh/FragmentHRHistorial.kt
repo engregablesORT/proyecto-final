@@ -72,6 +72,9 @@ class FragmentHRHistorial : Fragment() {
     private lateinit var asesoresAdapter: HRHistorialAsesoresAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
+    // Dialog Loading
+    private lateinit var dialogLoading: LoadingDialog
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -99,7 +102,8 @@ class FragmentHRHistorial : Fragment() {
         )
 
         // Cargando
-        activity?.let { LoadingDialog(it).startLoading() }
+        dialogLoading = activity?.let { LoadingDialog(it) }!!
+        dialogLoading.cargando()
 
         return v
     }
@@ -120,6 +124,7 @@ class FragmentHRHistorial : Fragment() {
                 setTextosEntrevistas()
                 setRecyclerAsesores()
                 setTecnologias()
+                dialogLoading.terminarCargando()
             }
         }
     }

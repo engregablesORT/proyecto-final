@@ -55,7 +55,6 @@ class FragmentHRCalendarioEstado(entrevistas: MutableList<Entrevista>) : Fragmen
         v = inflater.inflate(R.layout.fragment_hr_calendario_estado, container, false)
         recEntrevistas = v.findViewById(R.id.rec_calendariohr_pendientes)
         recListaVacia = v.findViewById(R.id.rec_calendariohr_empty)
-        activity?.let { LoadingDialog(it).startLoading() }
         return v
     }
 
