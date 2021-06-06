@@ -49,7 +49,8 @@ object UserRepository {
                 "",
                 "",
                 "",
-                ""
+                "",
+                0.0
             )
         db.collection("users").document(uid).set(userFirebase)
     }

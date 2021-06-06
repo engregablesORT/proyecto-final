@@ -16,7 +16,6 @@ class AsesorTecnicoListAdapter(
 ) : RecyclerView.Adapter<AsesorTecnicoListAdapter.AsesorTecnicoHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsesorTecnicoHolder {
-        // Aca es donde referencio los items hijos del parent
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_at, parent, false)
         return (AsesorTecnicoListAdapter.AsesorTecnicoHolder(view))
     }
@@ -26,7 +25,6 @@ class AsesorTecnicoListAdapter(
     }
 
     override fun onBindViewHolder(holder: AsesorTecnicoHolder, position: Int) {
-        // Aca mi informacion que seria el nombre de la pelicula, impacta en el holder y lo muestro
         holder.setName(asesores[position].name)
         holder.setApellido(asesores[position].lastName)
         holder.setTitulo(asesores[position].titulo)
@@ -36,8 +34,6 @@ class AsesorTecnicoListAdapter(
     }
 
     class AsesorTecnicoHolder(v: View) : RecyclerView.ViewHolder(v) {
-        // Contiene acciones y referencias con respecto a la vista
-        // Conexion entre adapter y xml del item
         private var view: View
 
         init {
@@ -60,7 +56,6 @@ class AsesorTecnicoListAdapter(
         }
 
         fun getCardLayout(): CardView {
-            // Me posiciono sobre el click especifico de la card
             return view.findViewById(R.id.card_package_item)
         }
 

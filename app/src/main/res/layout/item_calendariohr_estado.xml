@@ -8,14 +8,14 @@
     android:layout_margin="8dp"
     app:cardBackgroundColor="#D5D5D6"
     app:cardCornerRadius="20dp"
-    app:cardElevation="8dp">
+    app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/calendarhr_cl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#D5D5D6">
-
+        android:animateLayoutChanges="true"
+        android:background="#E8F5E9">
 
         <ImageView
             android:id="@+id/img_item_hor"
@@ -81,14 +81,28 @@
 
         <ImageButton
             android:id="@+id/calendarhr_contacto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_width="53dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="16dp"
+            android:backgroundTint="@android:color/transparent"
             android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_dialog_email" />
+
+        <ImageButton
+            android:id="@+id/calendarhr_cancelar"
+            android:layout_width="53dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@android:color/transparent"
+            android:hapticFeedbackEnabled="false"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
