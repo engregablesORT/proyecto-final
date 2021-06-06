@@ -154,9 +154,9 @@ class FragmentDev_EditTecnologias : Fragment() {
 
     private fun crearDialogConfirmar(tecnologiasSeleccionadas: List<String>) {
         val stringTecnologias =
-            "Estás por agregar las siguientes tecnologias: ${listarTecnologias(tecnologiasSeleccionadas)} "
+            "Tus tecnologías ahora van a ser: ${listarTecnologias(tecnologiasSeleccionadas)} "
         dialogContratar = AlertDialog.Builder(this.context)
-        dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
+        dialogContratar.setTitle("¿Deseas actualizar tus tecnologías?");
         dialogContratar.setMessage(stringTecnologias);
         dialogContratar.setPositiveButton("Confirmar") { _, _ ->
             val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
