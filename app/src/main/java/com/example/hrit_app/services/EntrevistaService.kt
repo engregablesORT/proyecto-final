@@ -31,6 +31,15 @@ class EntrevistaService {
         }
     }
 
+    suspend fun findAllEntrevistas(): MutableList<Entrevista> {
+        try {
+            return entrevistaRepository.findAllEntrevistas()
+        } catch (e: Resources.NotFoundException) {
+            Log.d("ERROR", e.message.toString())
+            throw e
+        }
+    }
+
     fun updateEntrevistaEstado(idEntrevista: String, estado: String) {
         entrevistaRepository.updateEntrevistaEstado(idEntrevista, estado)
     }

@@ -40,6 +40,7 @@ class Entrevista(
             const val estadoPendienteRespuesta = "PENDIENTE"
             const val estadoRechazada = "RECHAZADA"
             const val estadoFinalizada = "FINALIZADA"
+            const val estadoCancelada = "CANCELADA"
         }
     }
 

@@ -48,6 +48,15 @@ object EntrevistaRepository {
         }
     }
 
+    suspend fun findAllEntrevistas(): MutableList<Entrevista> {
+        val entrevistas: MutableList<Entrevista> = mutableListOf()
+        val snapshot = db.collection(ENTREVISTAS_COLLECTION).get().await()
+        for (document in snapshot.documents) {
+            document.toObject<Entrevista>()?.let { entrevistas.add(it) }
+        }
+        return entrevistas
+    }
+
     suspend fun findAllEntrevistasPorHR(hrId: String): MutableList<Entrevista> {
         val entrevistas: MutableList<Entrevista> = mutableListOf()
         return try {
@@ -57,7 +66,7 @@ object EntrevistaRepository {
             for (documento in snapshot.documents) {
                 documento.toObject<Entrevista>()?.let { entrevistas.add(it) }
             }
-            
+
             entrevistas
         } catch (e: Exception) {
             Log.d("ERROR", e.message.toString())

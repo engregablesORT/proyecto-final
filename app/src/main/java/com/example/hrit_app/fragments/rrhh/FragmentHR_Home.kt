@@ -1,11 +1,9 @@
 package com.example.hrit_app.fragments.rrhh
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -45,7 +43,7 @@ class FragmentHR_Home : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        v = inflater.inflate(R.layout.fragment_hr__home, container, false)
+        v = inflater.inflate(R.layout.fragment_hr_home, container, false)
         // Inflate the layout for this fragment
         recTecnologias = v.findViewById(R.id.recTecnologias)
         recAsesores = v.findViewById(R.id.recAsesoresTecnicos)

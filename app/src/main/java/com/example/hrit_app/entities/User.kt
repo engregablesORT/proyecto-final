@@ -16,10 +16,11 @@ open class User(
     precio: String,
     titulo: String,
     seniority: String,
-    empresa: String
+    empresa: String,
+    valoracion: Double
 ) : Parcelable {
 
-    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", emptyList(), "", "", "", "", "", 0.0)
 
     var id: String
     var email: String
@@ -33,6 +34,7 @@ open class User(
     var titulo: String
     var seniority: String
     var empresa: String
+    var valoracion: Double
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString().toString()
@@ -62,6 +64,7 @@ open class User(
         this.titulo = titulo
         this.seniority = seniority
         this.empresa = empresa
+        this.valoracion = valoracion
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -77,6 +80,7 @@ open class User(
         parcel.writeString(titulo)
         parcel.writeString(seniority)
         parcel.writeString(empresa)
+        parcel.writeDouble(valoracion)
     }
 
     override fun describeContents(): Int {

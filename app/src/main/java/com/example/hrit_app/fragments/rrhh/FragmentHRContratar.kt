@@ -48,7 +48,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
     private var minutes = 0
 
     // Entrevista
-    private val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
+    private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
     private lateinit var fechaEntrevista: LocalDate
     private lateinit var horaEntrevista: LocalTime
     private lateinit var fechaHoraEntrevista: LocalDateTime
@@ -331,7 +331,7 @@ class FragmentHRContratar : Fragment(), DatePickerDialog.OnDateSetListener,
             userHr.id,
             fechaHoraEntrevista.format(formatter).toString(),
             duracion as Int,
-            (0..5).random(),
+            (1..5).random(),
             precio as Int,
             Entrevista.Constants.estadoPendienteRespuesta,
             "",
