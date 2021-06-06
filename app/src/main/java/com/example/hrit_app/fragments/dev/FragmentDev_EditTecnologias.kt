@@ -1,5 +1,6 @@
 package com.example.hrit_app.fragments.dev
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -45,6 +46,7 @@ class FragmentDev_EditTecnologias : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     var userService: UserService = UserService()
     lateinit var categoriaSeleccionada: String
+    private lateinit var dialogContratar: AlertDialog.Builder
 
 
     val mapCategoriaTecnologia: Map<Int, String> = mapOf( Pair(1, Categoria.BE),
@@ -94,11 +96,16 @@ class FragmentDev_EditTecnologias : Fragment() {
 
         btnTecnologias.setOnClickListener {
             val tecnologiasActivasDelUsuario: List<String> = obtenerTecnologiasActivas(tecnologiasParaAdapter)
-            val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
-            userService.updateTecnologiasUser(tecnologiasActivasDelUsuario , uidKey)
-            Snackbar.make(v, "Las tecnologias del usuario han sido actualizadas.", Snackbar.LENGTH_SHORT).setTextColor(Color.GREEN).show()
+            if (tecnologiasActivasDelUsuario.isEmpty()) {
+                Snackbar.make(
+                    v,
+                    "Debe seleccionar al menos una tecnologia para poder actualizar",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                crearDialogConfirmar(tecnologiasActivasDelUsuario);
+            }
         }
-
         displaySpinner()
     }
 
@@ -145,6 +152,31 @@ class FragmentDev_EditTecnologias : Fragment() {
         return true
     }
 
+    private fun crearDialogConfirmar(tecnologiasSeleccionadas: List<String>) {
+        val stringTecnologias =
+            "Estás por agregar las siguientes tecnologias: ${listarTecnologias(tecnologiasSeleccionadas)} "
+        dialogContratar = AlertDialog.Builder(this.context)
+        dialogContratar.setTitle("Desea confirmar la siguiente entrevista?");
+        dialogContratar.setMessage(stringTecnologias);
+        dialogContratar.setPositiveButton("Confirmar") { _, _ ->
+            val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
+            userService.updateTecnologiasUser(tecnologiasSeleccionadas , uidKey)
+            Snackbar.make(v, "Las tecnologias del usuario han sido actualizadas.", Snackbar.LENGTH_SHORT).show()
+        }
+        dialogContratar.setNegativeButton("Cancelar") { _, _ ->
+            Snackbar.make(v, "Las tecnologias del usuario no han sido actualizadas.", Snackbar.LENGTH_SHORT).show()
+        }
+        dialogContratar.show()
+    }
+
+    private fun listarTecnologias(tecnologiasSeleccionadas: List<String>): String {
+        var stringTecnologias: String = ""
+        for (tec in tecnologiasSeleccionadas) {
+            stringTecnologias = "$stringTecnologias\n - $tec"
+        }
+        return stringTecnologias
+    }
+
     private fun displayAllCategorias(){
         tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter as MutableList<Tecnologia>, { x -> onTecnologiaClick(x) })
         recTecnologias.adapter = tecnologiaListAdapter
@@ -157,13 +189,6 @@ class FragmentDev_EditTecnologias : Fragment() {
             R.layout.support_simple_spinner_dropdown_item,
             categorias
         )
-
-        /*val position = mapCategoriaTecnologia.get(tecnologiasParaAdapter.get(0).categoria)
-        if (position != null) {
-            spinner.setSelection(position)
-        } else {
-            spinner.setSelection(0)
-        }*/
 
         spinner.onItemSelectedListener = object :  AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -178,10 +203,11 @@ class FragmentDev_EditTecnologias : Fragment() {
                 categoriaSeleccionada = ""
                 val categoria= mapCategoriaTecnologia.get(position);
                 if (categoria != null) {
+                    recTecnologias.visibility = View.VISIBLE
                     displayTecnologiasByCategoriaOnRecyclerView(categoria)
                     categoriaSeleccionada = categoria
                 } else {
-                    displayAllCategorias()
+                    recTecnologias.visibility = View.INVISIBLE
                 }
 
             }
