@@ -55,7 +55,6 @@ class Fragment_login : Fragment() {
     override fun onStart() {
         super.onStart()
         //welcomeMessage.setText("Bienvenido a < HR&IT />")
-
         val sharedPreferences = requireContext().getSharedPreferences(SharedPreferencesKey.PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
@@ -78,7 +77,6 @@ class Fragment_login : Fragment() {
                             redirectToDevActivityOrHrActivity(user)
                         }
                     }
-                }else{
                     dialogCargando.terminarCargando();
                 }
             }
