@@ -77,8 +77,10 @@ class Fragment_login : Fragment() {
                             redirectToDevActivityOrHrActivity(user)
                         }
                     }
-                    dialogCargando.terminarCargando();
+                } else {
+                    Snackbar.make(v, "Credenciales Incorrectas", Snackbar.LENGTH_SHORT).show()
                 }
+                dialogCargando.terminarCargando();
             }
         }
         btnRegistrar.setOnClickListener {
