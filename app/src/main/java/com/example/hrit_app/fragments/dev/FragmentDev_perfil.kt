@@ -94,7 +94,8 @@ class FragmentDev_perfil : Fragment() {
                 precioHoraEdit.text.toString(),
                 titleEditText.text.toString(),
                 senioritySeleccionado,
-                ""
+                "",
+                0.0
             )
             Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).setTextColor(Color.GREEN).show()
             userService.updateAsesorTecnico(userNuevo, uidKey)

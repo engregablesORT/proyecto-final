@@ -1,17 +1,11 @@
 package com.example.hrit_app.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class HREntrevistaEstadoAdapter(
     private var entrevistasList: MutableList<Entrevista>,
-    val onContactoClick: (Int) -> Boolean
+    val onClick: (Int) -> Boolean
 ) : RecyclerView.Adapter<HREntrevistaEstadoAdapter.HREntrevistaAceptadaAdapterHolder>() {
 
     override fun onCreateViewHolder(
@@ -36,14 +30,21 @@ class HREntrevistaEstadoAdapter(
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_calendariohr_estado, parent, false)
 
-        if (esEntrevistaAceptada()) {
-            view.findViewById<ImageButton>(R.id.calendarhr_contacto).visibility = View.VISIBLE
-        }
-
-        if (esEntrevistaRechazada()) {
-            view.findViewById<TextView>(R.id.calendarhr_comentarios).visibility = View.VISIBLE
-            view.findViewById<TextView>(R.id.calendarhr_duracion).visibility = View.INVISIBLE
-            view.findViewById<ConstraintLayout>(R.id.calendarhr_cl).background = ContextCompat.getDrawable(parent.context, R.drawable.bg_color)
+        when (entrevistasList[0].estado) {
+            Entrevista.Constants.estadoAceptado -> {
+                view.findViewById<ImageButton>(R.id.calendarhr_contacto).visibility = View.VISIBLE
+            }
+            Entrevista.Constants.estadoRechazada -> {
+                view.findViewById<TextView>(R.id.calendarhr_duracion).visibility = View.INVISIBLE
+                view.findViewById<TextView>(R.id.calendarhr_comentarios).visibility = View.VISIBLE
+                view.findViewById<ConstraintLayout>(R.id.calendarhr_cl).background =
+                    ContextCompat.getDrawable(parent.context, R.drawable.bg_color)
+            }
+            Entrevista.Constants.estadoPendienteRespuesta -> {
+                view.findViewById<ImageButton>(R.id.calendarhr_cancelar).visibility = View.VISIBLE
+                view.findViewById<ConstraintLayout>(R.id.calendarhr_cl).background =
+                    ContextCompat.getDrawable(parent.context, R.drawable.bg_color2)
+            }
         }
 
         return (HREntrevistaAceptadaAdapterHolder(view))
@@ -51,28 +52,24 @@ class HREntrevistaEstadoAdapter(
 
     override fun onBindViewHolder(holder: HREntrevistaAceptadaAdapterHolder, position: Int) {
         holder.setFecha(entrevistasList[position].fecha)
-        holder.setHora(entrevistasList[position].duracion as Int)
+        holder.setHora(entrevistasList[position].duracion)
         holder.setNombreDev(entrevistasList[position].idUserDev)
 
-        if (esEntrevistaAceptada()) {
-            holder.botonContacto(entrevistasList[position].idUserDev).setOnClickListener {
-                onContactoClick(position)
+        when (entrevistasList[0].estado) {
+            Entrevista.Constants.estadoAceptado -> {
+                holder.botonContacto().setOnClickListener { onClick(position) }
             }
-        } else if (esEntrevistaRechazada()) {
-            holder.setComentarios(entrevistasList[position].comentarios)
+            Entrevista.Constants.estadoRechazada -> {
+                holder.setComentarios(entrevistasList[position].comentarios)
+            }
+            Entrevista.Constants.estadoPendienteRespuesta -> {
+                holder.botonCancelar().setOnClickListener { onClick(position) }
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return entrevistasList.size
-    }
-
-    private fun esEntrevistaAceptada(): Boolean {
-        return entrevistasList[0].estado == Entrevista.Constants.estadoAceptado
-    }
-
-    private fun esEntrevistaRechazada(): Boolean {
-        return entrevistasList[0].estado == Entrevista.Constants.estadoRechazada
     }
 
     // Holder
@@ -92,8 +89,12 @@ class HREntrevistaEstadoAdapter(
             view.findViewById<TextView>(R.id.calendarhr_comentarios).text = comentarios
         }
 
-        fun botonContacto(idDev: String): ImageButton {
+        fun botonContacto(): ImageButton {
             return view.findViewById(R.id.calendarhr_contacto)
+        }
+
+        fun botonCancelar(): ImageButton {
+            return view.findViewById(R.id.calendarhr_cancelar)
         }
 
         @SuppressLint("SetTextI18n")

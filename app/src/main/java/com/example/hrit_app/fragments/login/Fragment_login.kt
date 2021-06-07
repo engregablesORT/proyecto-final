@@ -65,8 +65,8 @@ class Fragment_login : Fragment() {
                     val scope = CoroutineScope(Dispatchers.Default + parentJob)
                     scope.launch {
                         val user =  verificarSiElUsuarioExiste(userName.text.toString())
-                        val uid = currentUser.uid
                         if (user != null) {
+                            val uid = user.id
                             editor.putString(SharedPreferencesKey.EMAIL, userName.text.toString())
                             editor.putString(SharedPreferencesKey.UID, uid)
                             editor.apply()

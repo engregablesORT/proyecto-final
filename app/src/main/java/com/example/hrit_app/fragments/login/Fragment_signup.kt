@@ -138,7 +138,8 @@ class Fragment_signup : Fragment() {
                         "",
                         "",
                         "",
-                        ""
+                        "",
+                        0.0
                     )
                     userService.createUserFirebase(usuarioFirebase, uid)
                 } else {
