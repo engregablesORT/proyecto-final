@@ -15,7 +15,16 @@ class EntrevistaService {
 
     suspend fun findAllEntrevistasPendientesByDev(devId: String): MutableList<Entrevista> {
         try {
-            return entrevistaRepository.findAllEntrevistasPorDev(devId)
+            return entrevistaRepository.findAllEntrevistasPendientesPorDev(devId)
+        } catch (e: Resources.NotFoundException) {
+            Log.d("ERROR", e.message.toString())
+            throw e
+        }
+    }
+
+    suspend fun findAllEntrevistasFinalizadasByDev(devId: String): MutableList<Entrevista> {
+        try {
+            return entrevistaRepository.findAllEntrevistasFinalizadasPorDev(devId)
         } catch (e: Resources.NotFoundException) {
             Log.d("ERROR", e.message.toString())
             throw e
@@ -25,6 +34,15 @@ class EntrevistaService {
     suspend fun findAllEntrevistasByHR(hrId: String): MutableList<Entrevista> {
         try {
             return entrevistaRepository.findAllEntrevistasPorHR(hrId)
+        } catch (e: Resources.NotFoundException) {
+            Log.d("ERROR", e.message.toString())
+            throw e
+        }
+    }
+
+    suspend fun findAllEntrevistasByDEV(devId: String): MutableList<Entrevista> {
+        try {
+            return entrevistaRepository.findAllEntrevistasPorDEV(devId)
         } catch (e: Resources.NotFoundException) {
             Log.d("ERROR", e.message.toString())
             throw e

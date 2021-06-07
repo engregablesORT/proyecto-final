@@ -29,11 +29,30 @@ object EntrevistaRepository {
         }
     }
 
-    suspend fun findAllEntrevistasPorDev(devId: String): MutableList<Entrevista> {
+    suspend fun findAllEntrevistasPendientesPorDev(devId: String): MutableList<Entrevista> {
         val entrevistas: MutableList<Entrevista> = mutableListOf()
         return try {
             val snapshot = db.collection(ENTREVISTAS_COLLECTION).whereEqualTo(
                 ESTADO, Entrevista.Constants.estadoPendienteRespuesta
+            ).whereEqualTo(
+                ID_DEV, devId
+            )
+                .get().await()
+            for (documento in snapshot.documents) {
+                documento.toObject<Entrevista>()?.let { entrevistas.add(it) }
+            }
+            entrevistas
+        } catch (e: Exception) {
+            Log.d("ERROR", e.message.toString())
+            arrayListOf()
+        }
+    }
+
+    suspend fun findAllEntrevistasFinalizadasPorDev(devId: String): MutableList<Entrevista> {
+        val entrevistas: MutableList<Entrevista> = mutableListOf()
+        return try {
+            val snapshot = db.collection(ENTREVISTAS_COLLECTION).whereEqualTo(
+                ESTADO, Entrevista.Constants.estadoFinalizada
             ).whereEqualTo(
                 ID_DEV, devId
             )
@@ -62,6 +81,23 @@ object EntrevistaRepository {
         return try {
             val snapshot =
                 db.collection(ENTREVISTAS_COLLECTION).whereEqualTo(ID_HR, hrId).get().await()
+
+            for (documento in snapshot.documents) {
+                documento.toObject<Entrevista>()?.let { entrevistas.add(it) }
+            }
+
+            entrevistas
+        } catch (e: Exception) {
+            Log.d("ERROR", e.message.toString())
+            arrayListOf()
+        }
+    }
+
+    suspend fun findAllEntrevistasPorDEV(devId: String): MutableList<Entrevista> {
+        val entrevistas: MutableList<Entrevista> = mutableListOf()
+        return try {
+            val snapshot =
+                db.collection(ENTREVISTAS_COLLECTION).whereEqualTo(ID_DEV, devId).get().await()
 
             for (documento in snapshot.documents) {
                 documento.toObject<Entrevista>()?.let { entrevistas.add(it) }
