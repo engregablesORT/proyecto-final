@@ -23,7 +23,13 @@ class TecnologiaListAdapter(
         Pair(700123, R.drawable.react),
         Pair(700167, R.drawable.php),
         Pair(700150, R.drawable.js),
-        Pair(700140, R.drawable.angular)
+        Pair(700140, R.drawable.angular),
+        Pair(700555, R.drawable.oracle),
+        Pair(700666, R.drawable.vue),
+        Pair(700888, R.drawable.mongo),
+        Pair(700999, R.drawable.ios),
+        Pair(700235, R.drawable.android)
+
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TecnologiaHolder {
