@@ -115,17 +115,20 @@ class FragmentHRHistorial : Fragment() {
         val uid = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
 
         scope.launch {
-            entrevistasUser = entrevistaService.findAllEntrevistasByHR(uid)
+            //entrevistasUser = entrevistaService.findAllEntrevistasByHR(uid)
             usersAsesores = userService.findAllAsesoresTecnicos()
             entrevistas = entrevistaService.findAllEntrevistas()
+            entrevistasUser = entrevistas.filter{it.idUserHr == uid}.toMutableList()
+
             calcularTecnologiasMasSolicitadas()
 
             activity?.runOnUiThread {
                 setTextosEntrevistas()
                 setRecyclerAsesores()
                 setTecnologias()
-                dialogLoading.terminarCargando()
+
             }
+            dialogLoading.terminarCargando();
         }
     }
 

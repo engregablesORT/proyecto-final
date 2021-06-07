@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
+import com.example.hrit_app.utils.LoadingDialog
 import com.example.hrit_app.utils.constants.Rol
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
@@ -34,6 +35,9 @@ class Fragment_login : Fragment() {
     private lateinit var auth: FirebaseAuth
 
     // Shared Preferences name const
+    // Dialog
+
+    private lateinit var dialogCargando: LoadingDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -44,6 +48,7 @@ class Fragment_login : Fragment() {
         passWord = v.findViewById(R.id.passWord)
         //welcomeMessage = v.findViewById(R.id.welcomeMessage)
         auth = Firebase.auth
+        dialogCargando = activity?.let { LoadingDialog(it) } !!
         return v
     }
 
@@ -59,6 +64,7 @@ class Fragment_login : Fragment() {
             //update
         }
         btnLogin.setOnClickListener {
+            dialogCargando.cargando();
             auth.signInWithEmailAndPassword(userName.text.toString(), passWord.text.toString()).addOnCompleteListener(requireActivity()){task ->
                 if (task.isSuccessful){
                     val parentJob = Job()
@@ -67,12 +73,13 @@ class Fragment_login : Fragment() {
                         val user =  verificarSiElUsuarioExiste(userName.text.toString())
                         if (user != null) {
                             val uid = user.id
-                            editor.putString(SharedPreferencesKey.EMAIL, userName.text.toString())
                             editor.putString(SharedPreferencesKey.UID, uid)
                             editor.apply()
                             redirectToDevActivityOrHrActivity(user)
                         }
                     }
+                }else{
+                    dialogCargando.terminarCargando();
                 }
             }
         }
