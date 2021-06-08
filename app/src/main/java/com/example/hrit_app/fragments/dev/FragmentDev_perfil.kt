@@ -35,11 +35,13 @@ class FragmentDev_perfil : Fragment() {
     lateinit var spinner: Spinner
     lateinit var senioritySeleccionado: String
     lateinit var editarTecnologias: Button
+
     // User
     lateinit var user: User
     var userService: UserService = UserService()
 
-    val mapSeniorityPosicion: Map<String, Int> = mapOf( Pair(Seniority.JR, 1),
+    val mapSeniorityPosicion: Map<String, Int> = mapOf(
+        Pair(Seniority.JR, 1),
         Pair(Seniority.SSR, 2),
         Pair(Seniority.SR, 3),
         Pair(Seniority.TL, 4)
@@ -76,7 +78,7 @@ class FragmentDev_perfil : Fragment() {
         val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)
         scope.launch {
-            user = userService.findByEmail(sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString())!!
+            user = userService.findByID(uidKey)!!
             activity?.runOnUiThread {
                 setInitialValues(user)
             }
@@ -97,9 +99,11 @@ class FragmentDev_perfil : Fragment() {
                 "",
                 0.0
             )
-            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).setTextColor(Color.GREEN).show()
+            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT)
+                .setTextColor(Color.GREEN).show()
             userService.updateAsesorTecnico(userNuevo, uidKey)
-            Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT).setTextColor(Color.GREEN).show()
+            Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT)
+                .setTextColor(Color.GREEN).show()
         }
 
         editarTecnologias.setOnClickListener {
@@ -110,7 +114,8 @@ class FragmentDev_perfil : Fragment() {
     }
 
     private fun redireccionarAEditarTecnologiasFragment(user: User) {
-        val action = FragmentDev_perfilDirections.actionFragmentDevPerfilToFragmentDevEditTecnologias(user)
+        val action =
+            FragmentDev_perfilDirections.actionFragmentDevPerfilToFragmentDevEditTecnologias(user)
         v.findNavController().navigate(action)
 
     }
@@ -131,8 +136,9 @@ class FragmentDev_perfil : Fragment() {
         }
     }
 
-    private fun displaySpinner(){
-        var seniorities = arrayOf("Seleccionar...", Seniority.JR, Seniority.SSR, Seniority.SR, Seniority.TL)
+    private fun displaySpinner() {
+        var seniorities =
+            arrayOf("Seleccionar...", Seniority.JR, Seniority.SSR, Seniority.SR, Seniority.TL)
         spinner.adapter = ArrayAdapter<String>(
             requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
@@ -148,8 +154,13 @@ class FragmentDev_perfil : Fragment() {
                 TODO("Not yet implemented")
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (parent?.getChildAt(0) != null){
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (parent?.getChildAt(0) != null) {
                     val spinnerTextView = parent.getChildAt(0) as TextView
                     spinnerTextView.setTextColor(Color.WHITE)
                 }

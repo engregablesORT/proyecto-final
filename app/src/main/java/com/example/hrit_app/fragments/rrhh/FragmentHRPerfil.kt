@@ -91,14 +91,13 @@ class FragmentHRPerfil : Fragment() {
         super.onStart()
 
         // Shared Preferences Keys
-        val emailKey = sharedPreferences.getString(SharedPreferencesKey.EMAIL, "").toString()
         val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
 
         // Asincronismo
         val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)
         scope.launch {
-            user = userService.findByEmail(emailKey)!!
+            user = userService.findByID(uidKey)!!
             getUserFieldValues()
             activity?.runOnUiThread {
                 setUserHintValues()
