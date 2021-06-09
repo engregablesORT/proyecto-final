@@ -20,12 +20,8 @@ import com.example.hrit_app.fragments.rrhh.FragmentHRContratarArgs
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Categoria
-import com.example.hrit_app.utils.constants.Rol
-import com.example.hrit_app.utils.constants.Seniority
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
-import com.google.android.gms.common.util.CollectionUtils
 import com.google.android.material.snackbar.Snackbar
-//import kotlinx.android.synthetic.main.fragment_hr__home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -87,9 +83,9 @@ class FragmentDev_EditTecnologias : Fragment() {
             activity?.runOnUiThread {
                 activarTecnologias(user.tecnologias, tecnologiasParaAdapter)
                 activity?.runOnUiThread {
-                tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter) { x -> onTecnologiaClick(x) }
-                recTecnologias.layoutManager = linearLayoutManager
-                recTecnologias.adapter = tecnologiaListAdapter
+                    tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter) { x -> onTecnologiaClick(x) }
+                    recTecnologias.layoutManager = linearLayoutManager
+                    recTecnologias.adapter = tecnologiaListAdapter
                 }
             }
         }
