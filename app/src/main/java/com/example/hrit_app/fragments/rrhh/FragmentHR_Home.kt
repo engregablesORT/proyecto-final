@@ -46,6 +46,7 @@ class FragmentHR_Home : Fragment() {
     lateinit var categoriaSeleccionada: String
     var userFilter = User()
 
+
     val mapCategoriaTecnologia: Map<Int, String> = mapOf( Pair(1, Categoria.BE),
         Pair(2, Categoria.FE),
         Pair(3, Categoria.MOBILE),
