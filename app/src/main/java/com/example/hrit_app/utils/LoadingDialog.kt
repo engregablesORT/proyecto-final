@@ -14,7 +14,7 @@ class LoadingDialog(private val act: Activity) {
     fun cargando() {
         val inflater = act.layoutInflater
         val dialogView = inflater.inflate(R.layout.item_loading, null)
-        val builder = AlertDialog.Builder(act, R.style.dialog)
+        val builder = AlertDialog.Builder(act, R.style.LoadingTheme)
         builder.setView(dialogView)
         builder.setCancelable(false)
         dialog = builder.create()
