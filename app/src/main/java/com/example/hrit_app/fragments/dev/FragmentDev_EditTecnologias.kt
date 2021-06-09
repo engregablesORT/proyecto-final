@@ -83,9 +83,9 @@ class FragmentDev_EditTecnologias : Fragment() {
             activity?.runOnUiThread {
                 activarTecnologias(user.tecnologias, tecnologiasParaAdapter)
                 activity?.runOnUiThread {
-                tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter) { x -> onTecnologiaClick(x) }
-                recTecnologias.layoutManager = linearLayoutManager
-                recTecnologias.adapter = tecnologiaListAdapter
+                    tecnologiaListAdapter = TecnologiaListAdapter(tecnologiasParaAdapter) { x -> onTecnologiaClick(x) }
+                    recTecnologias.layoutManager = linearLayoutManager
+                    recTecnologias.adapter = tecnologiaListAdapter
                 }
             }
         }
