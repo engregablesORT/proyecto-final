@@ -3,6 +3,7 @@ package com.example.hrit_app.repository
 import android.util.Log
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.utils.constants.Rol
+import com.example.hrit_app.utils.constants.Seniority
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -53,6 +54,31 @@ object UserRepository {
                 0.0
             )
         db.collection("users").document(uid).set(userFirebase)
+    }
+
+    suspend fun findByUsuarioFilter(usuarioFilter: User): MutableList<User>{
+        val usuariosFiltrados: MutableList<User> = arrayListOf()
+        var userRef = db.collection(USERS_COLLECTION)
+                            .whereEqualTo(ROL, Rol.AT)
+        if (usuarioFilter.precio.isNotBlank()){
+            userRef = userRef.whereLessThanOrEqualTo(PRECIO, usuarioFilter.precio)
+        }
+        if (usuarioFilter.seniority.isNotBlank()){
+            userRef = userRef.whereEqualTo(SENIORITY, usuarioFilter.seniority)
+        }
+        if (usuarioFilter.tecnologias.isNotEmpty()){
+            userRef = userRef.whereArrayContainsAny(TECNOLOGIAS, usuarioFilter.tecnologias)
+        }
+        return try {
+            val snapshot = userRef.get().await()
+            for (documento in snapshot.documents) {
+                documento.toObject<User>()?.let { usuariosFiltrados.add(it) }
+            }
+            usuariosFiltrados
+        } catch (e: Exception) {
+            Log.d("ERROR", e.message.toString())
+            arrayListOf()
+        }
     }
 
     suspend fun findAllAT(): MutableList<User> {
