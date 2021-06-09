@@ -66,15 +66,16 @@ object UserRepository {
         if (usuarioFilter.seniority.isNotBlank()){
             userRef = userRef.whereEqualTo(SENIORITY, usuarioFilter.seniority)
         }
-        if (usuarioFilter.tecnologias.isNotEmpty()){
+        /*if (usuarioFilter.tecnologias.isNotEmpty()){
+            // TODO preguntar al profe de taller
             userRef = userRef.whereArrayContainsAny(TECNOLOGIAS, usuarioFilter.tecnologias)
-        }
+        }*/
         return try {
             val snapshot = userRef.get().await()
             for (documento in snapshot.documents) {
                 documento.toObject<User>()?.let { usuariosFiltrados.add(it) }
             }
-            usuariosFiltrados
+            usuariosFiltrados.filter { usuario -> usuario.tecnologias.containsAll(usuarioFilter.tecnologias) }.toMutableList()
         } catch (e: Exception) {
             Log.d("ERROR", e.message.toString())
             arrayListOf()

@@ -1,5 +1,6 @@
 package com.example.hrit_app.fragments.rrhh
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Categoria
+import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +47,9 @@ class FragmentHR_Home : Fragment() {
     lateinit var spinnerCategorias : Spinner
     lateinit var categoriaSeleccionada: String
     var userFilter = User()
+    lateinit var textTecnologia: TextView
+    lateinit var trash: ImageView
+    private lateinit var dialogLimpiarFiltros: AlertDialog.Builder
 
 
     val mapCategoriaTecnologia: Map<Int, String> = mapOf( Pair(1, Categoria.BE),
@@ -63,6 +68,8 @@ class FragmentHR_Home : Fragment() {
         recAsesores = v.findViewById(R.id.recAsesoresTecnicos)
         searchView = v.findViewById(R.id.searchView)
         spinnerCategorias = v.findViewById(R.id.homeHrCategoriasTec)
+        textTecnologia = v.findViewById(R.id.home_hr_text_tecnologias)
+        trash = v.findViewById(R.id.trashFilter)
 
         return v
     }
@@ -116,6 +123,10 @@ class FragmentHR_Home : Fragment() {
 
         displaySpinner()
 
+        trash.setOnClickListener{
+            crearDialogConfirmarLimpiarFiltros()
+        }
+
     }
 
     private fun actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos: MutableList<User>) {
@@ -152,7 +163,11 @@ class FragmentHR_Home : Fragment() {
         // Get tecnologias activas
         val tecnologiasActivas = obtenerTecnologiasActivas(tecnologias)
         userFilter.tecnologias = tecnologiasActivas
+        findAsesoresTecnicosByFilter(userFilter);
+        return true
+    }
 
+    private fun findAsesoresTecnicosByFilter(userFilter: User){
         val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)
         scope.launch {
@@ -161,7 +176,6 @@ class FragmentHR_Home : Fragment() {
                 actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicosFiltrados)
             }
         }
-        return true
     }
 
     private fun onAsesorClick(position: Int): Boolean {
@@ -198,10 +212,12 @@ class FragmentHR_Home : Fragment() {
                 val categoria= mapCategoriaTecnologia.get(position);
                 if (categoria != null) {
                     recTecnologias.visibility = View.VISIBLE
+                    textTecnologia.visibility = View.VISIBLE
                     displayTecnologiasByCategoriaOnRecyclerView(categoria)
                     categoriaSeleccionada = categoria
                 } else {
                     recTecnologias.visibility = View.INVISIBLE
+                    textTecnologia.visibility = View.INVISIBLE
                 }
 
             }
@@ -223,5 +239,23 @@ class FragmentHR_Home : Fragment() {
         return tecnologias.filter { tecnologia -> tecnologia.active }.map { tecActiva -> tecActiva.text }
     }
 
+    private fun crearDialogConfirmarLimpiarFiltros() {
+        dialogLimpiarFiltros = AlertDialog.Builder(this.context)
+        dialogLimpiarFiltros.setTitle("¿Deseas limpiar los filtros de búsqueda?");
+        dialogLimpiarFiltros.setMessage("Si presiona Confirmar, volverá al estado inicial.")
+        dialogLimpiarFiltros.setPositiveButton("Confirmar") { _, _ ->
+            userFilter = User()
+            tecnologiasFiltradasPorCategoria = arrayListOf()
+            recTecnologias.visibility = View.INVISIBLE
+            textTecnologia.visibility = View.INVISIBLE
+            tecnologias.forEach({tec-> tec.active = false})
+            spinnerCategorias.setSelection(0)
+            findAsesoresTecnicosByFilter(userFilter);
+        }
+        dialogLimpiarFiltros.setNegativeButton("Cancelar") { _, _ ->
+            // TODO ... dicen hacer algo acá?
+        }
+        dialogLimpiarFiltros.show()
+    }
 
 }
