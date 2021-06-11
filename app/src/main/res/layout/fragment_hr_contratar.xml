@@ -16,6 +16,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="33dp"
         android:src="@drawable/back"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,7 +72,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
         android:text="Descripcion Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin justo nunc, sed laoreet tellus facilisis vel. Vestibulum quis ligula ut diam auctor efficitur. Nulla sit amet urna odio."
-        android:textColor="#1E1E1E"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 

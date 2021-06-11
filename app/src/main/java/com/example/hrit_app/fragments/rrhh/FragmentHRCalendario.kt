@@ -1,22 +1,28 @@
 package com.example.hrit_app.fragments.rrhh
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hrit_app.R
+import com.example.hrit_app.adapters.HREntrevistaEstadoAdapter
 import com.example.hrit_app.entities.Entrevista
+import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.EntrevistaService
+import com.example.hrit_app.services.UserService
+import com.example.hrit_app.utils.LoadingDialog
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import kotlinx.android.synthetic.main.fragment_signup.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,28 +30,52 @@ import kotlinx.coroutines.launch
 
 class FragmentHRCalendario : Fragment() {
 
-    lateinit var v: View
-    private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
+    // private var entrevistasList = entrevistas
+    private lateinit var entrevistasList: MutableList<Entrevista>
+    private lateinit var entrevistasFiltradas: MutableList<Entrevista>
 
-    private var entrevistas: MutableList<Entrevista> = ArrayList<Entrevista>()
-    private var entrevistaService: EntrevistaService = EntrevistaService()
+    // Vista
+    private lateinit var v: View
+
+    // Recycler View
+    private lateinit var recEntrevistas: RecyclerView
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var entrevistaListAdapter: HREntrevistaEstadoAdapter
+    private lateinit var recListaVacia: TextView
+
+    // Dialog
+    private lateinit var dialogContacto: AlertDialog.Builder
+    private lateinit var dialogDescartar: AlertDialog.Builder
+
+    // Services
+    private var userService = UserService()
+    private var entrevistaService = EntrevistaService()
+
+    private lateinit var chipGroup: ChipGroup
+    private lateinit var usersDev: MutableList<User>
+
+    // Dialog Loading
+    private lateinit var dialogLoading: LoadingDialog
 
     // SharedPreferences
     private lateinit var sharedPreferences: SharedPreferences
 
     // Asincronismo
-    private val parentJob = Job()
-    private val scope = CoroutineScope(Dispatchers.Default + parentJob)
+    val parentJob = Job()
+    val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        v = inflater.inflate(R.layout.fragment_hr_calendario, container, false)
+        v = inflater.inflate(R.layout.fragment_hr_calendario_estado, container, false)
+        recEntrevistas = v.findViewById(R.id.rec_calendariohr_pendientes)
+        recListaVacia = v.findViewById(R.id.rec_calendariohr_empty)
+        chipGroup = v.findViewById(R.id.calendarhr_chips)
 
-        tabLayout = v.findViewById(R.id.tab_layout)
-        viewPager = v.findViewById(R.id.view_pager)
+        // Dialog cargando
+        dialogLoading = activity?.let { LoadingDialog(it) }!!
+        dialogLoading.cargando()
 
         // Shared Preferences
         sharedPreferences = requireContext().getSharedPreferences(
@@ -62,79 +92,182 @@ class FragmentHRCalendario : Fragment() {
         val uidKey = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
 
         scope.launch {
-            entrevistas = entrevistaService.findAllEntrevistasByHR(uidKey)
+            entrevistasList = entrevistaService.findAllEntrevistasByHR(uidKey)
+            usersDev = userService.findAllAsesoresTecnicos()
+            recEntrevistas.setHasFixedSize(true)
+            linearLayoutManager = LinearLayoutManager(context)
+            // setNombresDev()
             activity?.runOnUiThread {
-                viewPager.adapter = ViewPagerAdapter(requireActivity(), entrevistas)
-                TabLayoutMediator(
-                    tabLayout,
-                    viewPager,
-                    TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                        when (position) {
-                            0 -> tab.text = "Aceptadas"
-                            1 -> tab.text = "Rechazadas"
-                            2 -> tab.text = "Pendientes"
+                recEntrevistas.layoutManager = linearLayoutManager
+                setRecyclerView2("Aceptadas")
+                dialogLoading.terminarCargando()
+            }
+        }
+
+        chipGroup.setOnCheckedChangeListener { _, checkedId ->
+            setRecyclerView2(v.findViewById<Chip>(checkedId).text.toString())
+        }
+
+
+    }
+
+    // Funciones para enviar al adapter
+    private fun onContactoClick(x: Int): Boolean {
+        val entrevista = entrevistasFiltradas[x]
+        scope.launch {
+            val userDev = userService.findByID(entrevista.idUserDev)
+            activity?.runOnUiThread {
+                if (userDev != null) {
+                    crearDialogContacto(userDev)
+                }
+                dialogContacto.show()
+            }
+        }
+        return true
+    }
+
+    private fun onDescartarClick(x: Int): Boolean {
+        val entrevista = entrevistasFiltradas[x]
+        scope.launch {
+            activity?.runOnUiThread {
+                crearDialogDescartar(x, entrevista)
+                dialogDescartar.show()
+            }
+        }
+        return true
+    }
+
+    private fun onItemClick(x: Int): Boolean {
+        return true
+    }
+
+    // Dialogs
+    private fun crearDialogContacto(userDev: User) {
+        val stringDialog =
+            "Podras contactarte con ${userDev.name} ${userDev.lastName} al correo electronico:\n- ${userDev.email}"
+        dialogContacto = AlertDialog.Builder(this.context);
+        dialogContacto.setTitle("Datos de contacto");
+        dialogContacto.setMessage(stringDialog);
+        dialogContacto.setPositiveButton("Ok") { _, _ ->
+        }
+    }
+
+    private fun crearDialogDescartar(posicionEntrevista: Int, entrevista: Entrevista) {
+        val stringDialog =
+            "Desea cancelar la solicitud entrevista?"
+        dialogDescartar = AlertDialog.Builder(this.context);
+        dialogDescartar.setTitle("Cancelar entrevista");
+        dialogDescartar.setMessage(stringDialog);
+        dialogDescartar.setNegativeButton("No") { _, _ -> }
+        dialogDescartar.setPositiveButton("Si, cancelar")
+        { _, _ ->
+            entrevistaService.updateEntrevistaEstado(
+                entrevista.id,
+                Entrevista.Constants.estadoCancelada
+            )
+            entrevistasList.removeAt(posicionEntrevista)
+            setRecyclerView()
+        }
+    }
+
+    // Set de los datos del recycler view
+    private fun setRecyclerView() {
+        entrevistaListAdapter = HREntrevistaEstadoAdapter(entrevistasList) { x ->
+            onItemClick(x)
+        }
+
+        if (entrevistasList.isEmpty()) {
+            recListaVacia.visibility = View.VISIBLE
+            recEntrevistas.visibility = View.INVISIBLE
+        } else {
+            entrevistaListAdapter =
+                if (entrevistasList[0].estado == Entrevista.Constants.estadoPendienteRespuesta) {
+                    HREntrevistaEstadoAdapter(entrevistasList) { x ->
+                        onDescartarClick(x)
+                    }
+                } else {
+                    HREntrevistaEstadoAdapter(entrevistasList) { x ->
+                        onContactoClick(x)
+                    }
+                }
+        }
+
+        recEntrevistas.adapter = entrevistaListAdapter
+    }
+
+    private fun setRecyclerView2(estado: String) {
+        val estadoConstant = buscarConstantEstado(estado)
+        entrevistasFiltradas = filtrarEntrevistasPorEstado(entrevistasList, estadoConstant)
+
+        if (entrevistasFiltradas.isEmpty()) {
+            listaVaciaView()
+        } else {
+            recListaVacia.visibility = View.INVISIBLE
+            recEntrevistas.visibility = View.VISIBLE
+
+            entrevistaListAdapter =
+                when (entrevistasFiltradas[0].estado) {
+                    Entrevista.Constants.estadoAceptado -> {
+                        HREntrevistaEstadoAdapter(entrevistasFiltradas) { x ->
+                            onContactoClick(x)
                         }
-                    }).attach()
+                    }
+                    Entrevista.Constants.estadoPendienteRespuesta -> {
+                        HREntrevistaEstadoAdapter(entrevistasFiltradas) { x ->
+                            onDescartarClick(x)
+                        }
+                    }
+
+                    else -> HREntrevistaEstadoAdapter(entrevistasFiltradas) { x ->
+                        onItemClick(x)
+                    }
+                }
+        }
+
+        recEntrevistas.adapter = entrevistaListAdapter
+    }
+
+    // Metodos para poder filtrar la entrevista
+    private fun filtrarEntrevistasPorEstado(
+        entrevistas: MutableList<Entrevista>,
+        estado: String
+    ): MutableList<Entrevista> {
+        return entrevistas.filter { entrevista -> entrevista.estado == estado } as MutableList<Entrevista>
+    }
+
+    private fun buscarConstantEstado(estado: String): String {
+        var estadoConstant = ""
+        when (estado) {
+            "Aceptadas" -> {
+                estadoConstant = Entrevista.Constants.estadoAceptado
+            }
+            "Rechazadas" -> {
+                estadoConstant = Entrevista.Constants.estadoRechazada
+            }
+            "Completadas" -> {
+                estadoConstant = Entrevista.Constants.estadoFinalizada
+            }
+            "Canceladas" -> {
+                estadoConstant = Entrevista.Constants.estadoCancelada
+            }
+            "Pendientes" -> {
+                estadoConstant = Entrevista.Constants.estadoPendienteRespuesta
+            }
+        }
+        return estadoConstant
+    }
+
+    private fun listaVaciaView() {
+        recListaVacia.visibility = View.VISIBLE
+        recEntrevistas.visibility = View.INVISIBLE
+    }
+
+    private fun setNombresDev() {
+        for (entrevista in entrevistasList) {
+            val userDev = usersDev.find { it.id == entrevista.idUserDev }
+            if (userDev != null) {
+                entrevista.idUserDev = "${userDev.name} ${userDev.lastName}"
             }
         }
     }
-
-    // Le paso la lista de las entrevistas y por dentro crea los fragmentes segun donde me ponga en el tab.
-    // Cuando crea el fragment le envia la lista filtrada segun estado
-    // Los distintos fragments en el constructor reciben una lista de entrevistas
-    class ViewPagerAdapter(
-        fragmentActivity: FragmentActivity,
-        entrevistas: MutableList<Entrevista>
-    ) :
-        FragmentStateAdapter(fragmentActivity) {
-
-        private var listaEntrevistas = entrevistas
-        override fun createFragment(position: Int): Fragment {
-
-            return when (position) {
-                0 -> FragmentHRCalendarioEstado(
-                    filtrarEntrevistasPorEstado(
-                        listaEntrevistas,
-                        Entrevista.Constants.estadoAceptado
-                    )
-                )
-                1 -> FragmentHRCalendarioEstado(
-                    filtrarEntrevistasPorEstado(
-                        listaEntrevistas,
-                        Entrevista.Constants.estadoRechazada
-                    )
-                )
-                2 -> FragmentHRCalendarioEstado(
-                    filtrarEntrevistasPorEstado(
-                        listaEntrevistas,
-                        Entrevista.Constants.estadoPendienteRespuesta
-                    )
-                )
-
-
-                else -> FragmentHRCalendarioEstado(
-                    filtrarEntrevistasPorEstado(
-                        listaEntrevistas,
-                        Entrevista.Constants.estadoAceptado
-                    )
-                )
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return TAB_COUNT
-        }
-
-        companion object {
-            private const val TAB_COUNT = 3
-        }
-
-        private fun filtrarEntrevistasPorEstado(
-            entrevistas: MutableList<Entrevista>,
-            estado: String
-        ): MutableList<Entrevista> {
-            return entrevistas.filter { entrevista -> entrevista.estado == estado } as MutableList<Entrevista>
-        }
-    }
-
 }

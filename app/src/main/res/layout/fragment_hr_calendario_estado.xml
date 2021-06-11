@@ -8,17 +8,86 @@
     android:animateLayoutChanges="true"
     tools:context=".fragments.rrhh.FragmentHRCalendarioEstado">
 
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:text="Mis solicitudes de Entrevistas"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/calendarhr_chips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="32dp"
+        app:checkedChip="@+id/calendarhr_chip_aceptadas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/calendarhr_chip_aceptadas"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aceptadas"
+            app:chipMinTouchTargetSize="35dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/calendarhr_chip_rechazadas"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rechazadas"
+            app:chipMinTouchTargetSize="35dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/calendarhr_chip_pendientes"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pendientes"
+            app:chipMinTouchTargetSize="35dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/calendarhr_chip_compleadas"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Completadas"
+            app:chipMinTouchTargetSize="40dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/calendarhr_chip_canceladas"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Canceladas"
+            app:chipMinTouchTargetSize="40dp" />
+
+    </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_calendariohr_pendientes"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarhr_chips" />
 
     <TextView
         android:id="@+id/rec_calendariohr_empty"

@@ -1,10 +1,13 @@
 package com.example.hrit_app.fragments.rrhh
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -15,6 +18,10 @@ import com.example.hrit_app.R
 import com.example.hrit_app.adapters.HRHistorialAsesoresAdapter
 import com.example.hrit_app.entities.Entrevista
 import com.example.hrit_app.entities.User
+import com.example.hrit_app.notifications.ApiClient
+import com.example.hrit_app.notifications.ApiInterface
+import com.example.hrit_app.notifications.SendNotificationModel
+import com.example.hrit_app.notifications.RequestNotification
 import com.example.hrit_app.services.EntrevistaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.LoadingDialog
@@ -23,6 +30,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class FragmentHRHistorial : Fragment() {
@@ -115,10 +126,9 @@ class FragmentHRHistorial : Fragment() {
         val uid = sharedPreferences.getString(SharedPreferencesKey.UID, "").toString()
 
         scope.launch {
-            //entrevistasUser = entrevistaService.findAllEntrevistasByHR(uid)
             usersAsesores = userService.findAllAsesoresTecnicos()
             entrevistas = entrevistaService.findAllEntrevistas()
-            entrevistasUser = entrevistas.filter{it.idUserHr == uid}.toMutableList()
+            entrevistasUser = entrevistas.filter { it.idUserHr == uid }.toMutableList()
 
             calcularTecnologiasMasSolicitadas()
 
@@ -132,22 +142,23 @@ class FragmentHRHistorial : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setTextosEntrevistas() {
+        val entrevistasAceptadas =
+            filtrarEntrevistasPorEstado(entrevistasUser, Entrevista.Constants.estadoAceptado).size
+        val entrevistasRechazadas =
+            filtrarEntrevistasPorEstado(entrevistasUser, Entrevista.Constants.estadoRechazada).size
+        val entrevistasCanceladas =
+            filtrarEntrevistasPorEstado(entrevistasUser, Entrevista.Constants.estadoCancelada).size
+
+        // TODO Como deberia calcularlo?
+        val porcentajeExito =
+            entrevistasAceptadas * 100 / (entrevistasAceptadas + entrevistasRechazadas)
+
         txtEntrevistasAceptadas.text =
-            filtrarEntrevistasPorEstado(
-                entrevistasUser,
-                Entrevista.Constants.estadoAceptado
-            ).size.toString()
-        txtEntrevistasRechazadas.text =
-            filtrarEntrevistasPorEstado(
-                entrevistasUser,
-                Entrevista.Constants.estadoRechazada
-            ).size.toString()
-        txtEntrevistasCanceladas.text =
-            filtrarEntrevistasPorEstado(
-                entrevistasUser,
-                Entrevista.Constants.estadoCancelada
-            ).size.toString()
+            "$entrevistasAceptadas (${porcentajeExito}% éxito)"
+        txtEntrevistasRechazadas.text = entrevistasRechazadas.toString()
+        txtEntrevistasCanceladas.text = entrevistasCanceladas.toString()
         txtEntrevistasSolicitadas.text = entrevistasUser.size.toString()
     }
 
@@ -169,9 +180,10 @@ class FragmentHRHistorial : Fragment() {
 
     private fun onAsesorClick(position: Int): Boolean {
         val asesor = usersAsesores[position]
-        val action =
-            FragmentHRHistorialDirections.actionFragmentHRHistorialToFragmentHRContratar(asesor)
-        v.findNavController().navigate(action)
+        notif()
+        //val action =
+        //    FragmentHRHistorialDirections.actionFragmentHRHistorialToFragmentHRContratar(asesor)
+        //v.findNavController().navigate(action)
         return true
     }
 
@@ -204,6 +216,31 @@ class FragmentHRHistorial : Fragment() {
         barTecnologiaUno.progress = tecnologiaUno.value * 100 / cantidadConsultasTecnologias
         barTecnologiaDos.progress = tecnologiaDos.value * 100 / cantidadConsultasTecnologias
         barTecnologiaTres.progress = tecnologiaTres.value * 100 / cantidadConsultasTecnologias
+    }
+
+    private fun notif() {
+        val sendNotificationModel = SendNotificationModel("check", "i miss you")
+        val requestNotificaton = RequestNotification("", sendNotificationModel)
+
+        val apiService = ApiClient.getClient()?.create(ApiInterface::class.java)
+
+        Log.d("TEST", sendNotificationModel.toString())
+        Log.d("TEST", requestNotificaton.toString())
+
+        apiService?.sendChatNotification(requestNotificaton)?.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(
+                call: Call<ResponseBody?>?,
+                response: Response<ResponseBody?>?
+            ) {
+                Log.d("kkkk", response.toString())
+            }
+
+            override fun onFailure(
+                call: Call<ResponseBody?>?,
+                t: Throwable?
+            ) {
+            }
+        })
     }
 }
 

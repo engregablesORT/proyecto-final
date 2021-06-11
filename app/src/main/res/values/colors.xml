@@ -15,4 +15,10 @@
     <color name="hrit_secondary">#33D0D5</color>
     <color name="hrit_third">#64B5C1</color>
     <color name="hrit_gray">#1E1E1E</color>
+    <color name="entrevistas_aceptadas">#E8F5E9</color>
+    <color name="entrevistas_rechazadas">#FFEBEE</color>
+    <color name="entrevistas_pendientes">#E3F2FD</color>
+    <color name="entrevistas_canceladas">#FFF3E0</color>
+    <color name="entrevistas_completadas">#D5D5D6</color>
+
 </resources>
