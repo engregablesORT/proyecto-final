@@ -35,6 +35,10 @@ class UserService {
         return userRepository.findAllAT()
     }
 
+    suspend fun findByUsuarioFilter(usuarioFilter: User): MutableList<User>{
+      return userRepository.findByUsuarioFilter(usuarioFilter)
+    }
+
     fun findByNombre(textNombre: String, asesoresTecnicos:MutableList<User>): MutableList<User> {
         val usuariosFiltrados = asesoresTecnicos.filter { usuario ->
             usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(textNombre.toUpperCase()) ||

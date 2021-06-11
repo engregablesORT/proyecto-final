@@ -6,7 +6,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FDFDFD"
+    android:visibility="visible"
     tools:context=".fragments.rrhh.FragmentHR_Home">
+
+    <ImageView
+        android:id="@+id/trashFilter"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/escoba"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/homeHrCategoriasTec" />
+
+    <Spinner
+        android:id="@+id/homeHrCategoriasTec"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:autofillHints="Seleccionar Categoría ..."
+        android:background="@drawable/button_rounded"
+        android:backgroundTint="#64B5C1"
+        android:dropDownSelector="@android:drawable/arrow_down_float"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <TextView
         android:id="@+id/filterText"
@@ -24,11 +54,11 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/home_hr_text_tecnologias">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -44,16 +74,17 @@
     </SearchView>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/home_hr_text_tecnologias"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="sans-serif"
         android:text="Tecnologías"
         android:textColor="#4E4D4D"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/homeHrCategoriasTec" />
 
     <TextView
         android:id="@+id/categoriaText"
