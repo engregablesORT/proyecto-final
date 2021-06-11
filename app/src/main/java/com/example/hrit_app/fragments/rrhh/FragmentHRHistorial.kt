@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +17,6 @@ import com.example.hrit_app.R
 import com.example.hrit_app.adapters.HRHistorialAsesoresAdapter
 import com.example.hrit_app.entities.Entrevista
 import com.example.hrit_app.entities.User
-import com.example.hrit_app.notifications.ApiClient
-import com.example.hrit_app.notifications.ApiInterface
-import com.example.hrit_app.notifications.SendNotificationModel
-import com.example.hrit_app.notifications.RequestNotification
 import com.example.hrit_app.services.EntrevistaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.LoadingDialog
@@ -30,10 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class FragmentHRHistorial : Fragment() {
@@ -180,10 +171,9 @@ class FragmentHRHistorial : Fragment() {
 
     private fun onAsesorClick(position: Int): Boolean {
         val asesor = usersAsesores[position]
-        notif()
-        //val action =
-        //    FragmentHRHistorialDirections.actionFragmentHRHistorialToFragmentHRContratar(asesor)
-        //v.findNavController().navigate(action)
+        val action =
+            FragmentHRHistorialDirections.actionFragmentHRHistorialToFragmentHRContratar(asesor)
+        v.findNavController().navigate(action)
         return true
     }
 
@@ -216,31 +206,6 @@ class FragmentHRHistorial : Fragment() {
         barTecnologiaUno.progress = tecnologiaUno.value * 100 / cantidadConsultasTecnologias
         barTecnologiaDos.progress = tecnologiaDos.value * 100 / cantidadConsultasTecnologias
         barTecnologiaTres.progress = tecnologiaTres.value * 100 / cantidadConsultasTecnologias
-    }
-
-    private fun notif() {
-        val sendNotificationModel = SendNotificationModel("check", "i miss you")
-        val requestNotificaton = RequestNotification("", sendNotificationModel)
-
-        val apiService = ApiClient.getClient()?.create(ApiInterface::class.java)
-
-        Log.d("TEST", sendNotificationModel.toString())
-        Log.d("TEST", requestNotificaton.toString())
-
-        apiService?.sendChatNotification(requestNotificaton)?.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(
-                call: Call<ResponseBody?>?,
-                response: Response<ResponseBody?>?
-            ) {
-                Log.d("kkkk", response.toString())
-            }
-
-            override fun onFailure(
-                call: Call<ResponseBody?>?,
-                t: Throwable?
-            ) {
-            }
-        })
     }
 }
 
