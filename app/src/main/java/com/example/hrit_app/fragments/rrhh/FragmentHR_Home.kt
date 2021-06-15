@@ -19,8 +19,12 @@ import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.TecnologiaService
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Categoria
+import com.example.hrit_app.utils.constants.Seniority
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_hr_home.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,12 +54,19 @@ class FragmentHR_Home : Fragment() {
     lateinit var textTecnologia: TextView
     lateinit var trash: ImageView
     private lateinit var dialogLimpiarFiltros: AlertDialog.Builder
+    private lateinit var chipGroup: ChipGroup
 
 
     val mapCategoriaTecnologia: Map<Int, String> = mapOf( Pair(1, Categoria.BE),
         Pair(2, Categoria.FE),
         Pair(3, Categoria.MOBILE),
         Pair(4, Categoria.BD ));
+
+    val mapSeniorityChip: Map<String, String> = mapOf( Pair("JR", Seniority.JR),
+        Pair("SSR", Seniority.SSR),
+        Pair("SR", Seniority.SR),
+        Pair("LT", Seniority.TL),
+        Pair("ALL", "ALL"))
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,6 +81,7 @@ class FragmentHR_Home : Fragment() {
         spinnerCategorias = v.findViewById(R.id.homeHrCategoriasTec)
         textTecnologia = v.findViewById(R.id.home_hr_text_tecnologias)
         trash = v.findViewById(R.id.trashFilter)
+        chipGroup = v.findViewById(R.id.seniority_chips_2)
 
         return v
     }
@@ -105,28 +117,28 @@ class FragmentHR_Home : Fragment() {
 
 
             override fun onQueryTextChange(newText: String): Boolean {
-                val parentJob = Job()
-                val scope = CoroutineScope(Dispatchers.Default + parentJob)
-                scope.launch {
-                    if (newText.replace(" ", "").length > 0) {
-                        asesoresTecnicos = userService.findByNombre(newText, asesoresTecnicos)
-                    } else {
-                        asesoresTecnicos = userService.findAllAsesoresTecnicos()
-                    }
-                    activity?.runOnUiThread {
-                        actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos)
-                    }
-                }
+                userFilter.name = newText
+                findAsesoresTecnicosByFilter(userFilter)
                 return false
             }
         })
+
+        chipGroup.setOnCheckedChangeListener { _, checkedId ->
+            val senioritySeleccionado = v.findViewById<Chip>(checkedId).text.toString()
+            val seniority = mapSeniorityChip.get(senioritySeleccionado);
+            if (seniority != null && !seniority.equals("ALL")) {
+                userFilter.seniority = seniority
+            } else {
+                userFilter.seniority = ""
+            }
+            findAsesoresTecnicosByFilter(userFilter)
+        }
 
         displaySpinner()
 
         trash.setOnClickListener{
             crearDialogConfirmarLimpiarFiltros()
         }
-
     }
 
     private fun actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicos: MutableList<User>) {
@@ -142,18 +154,20 @@ class FragmentHR_Home : Fragment() {
     }
 
     fun onTecnologiaClick(position: Int): Boolean {
-        // Actualizo estado
+        // Obtengo la tecnologia en cuestion
         var tecnologiaEnCuestion: Tecnologia
         if (tecnologiasFiltradasPorCategoria.size == 0) {
             tecnologiaEnCuestion = tecnologias.get(position)
         } else {
             tecnologiaEnCuestion = tecnologiasFiltradasPorCategoria.get(position)
         }
+        // Actualizo su estado para mostrar o no si esta activa
         val isTecActiva = !tecnologiaEnCuestion.active
         tecnologiaEnCuestion.active = isTecActiva
-        // Lo reflejo en la lista
         val action: String = if (isTecActiva) "agregado." else "removido."
         Snackbar.make(v, tecnologiaEnCuestion.text + " fue " + action, Snackbar.LENGTH_SHORT).show()
+
+        // Lo reflejo en la lista
         if (categoriaSeleccionada.length>0){
             displayTecnologiasByCategoriaOnRecyclerView(tecnologiaEnCuestion.categoria)
         } else {
@@ -168,14 +182,14 @@ class FragmentHR_Home : Fragment() {
     }
 
     private fun findAsesoresTecnicosByFilter(userFilter: User){
-        val parentJob = Job()
-        val scope = CoroutineScope(Dispatchers.Default + parentJob)
-        scope.launch {
-            asesoresTecnicosFiltrados = userService.findByUsuarioFilter(userFilter)
-            activity?.runOnUiThread {
-                actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicosFiltrados)
-            }
-        }
+        asesoresTecnicosFiltrados = asesoresTecnicos.filter { usuario ->
+                usuario.seniority.contains(userFilter.seniority)
+                && usuario.tecnologias.containsAll(userFilter.tecnologias)
+                && (usuario.name.toUpperCase().contains(userFilter.name.toUpperCase()) ||
+                    usuario.lastName.toUpperCase().contains(userFilter.name.toUpperCase()))
+        }.toMutableList()
+
+        actualizarListaDelRecyclerViewDeAsesores(asesoresTecnicosFiltrados)
     }
 
     private fun onAsesorClick(position: Int): Boolean {
@@ -245,17 +259,37 @@ class FragmentHR_Home : Fragment() {
         dialogLimpiarFiltros.setMessage("Si presiona Confirmar, volverá al estado inicial.")
         dialogLimpiarFiltros.setPositiveButton("Confirmar") { _, _ ->
             userFilter = User()
-            tecnologiasFiltradasPorCategoria = arrayListOf()
-            recTecnologias.visibility = View.INVISIBLE
-            textTecnologia.visibility = View.INVISIBLE
-            tecnologias.forEach({tec-> tec.active = false})
-            spinnerCategorias.setSelection(0)
+            resetearSpinner()
+            resetearChips()
+            resetSearchView()
             findAsesoresTecnicosByFilter(userFilter);
         }
         dialogLimpiarFiltros.setNegativeButton("Cancelar") { _, _ ->
-            // TODO ... dicen hacer algo acá?
+            // TODO ... no hacer nada?
         }
         dialogLimpiarFiltros.show()
+
+    }
+
+    private fun resetearSpinner(){
+        tecnologiasFiltradasPorCategoria = arrayListOf()
+        recTecnologias.visibility = View.INVISIBLE
+        textTecnologia.visibility = View.INVISIBLE
+        tecnologias.forEach({tec-> tec.active = false})
+        spinnerCategorias.setSelection(0)
+
+    }
+
+    private fun resetearChips(){
+        chipGroup.chip_jr.isChecked = false
+        chipGroup.chip_ssr.isChecked =  false
+        chipGroup.chip_sr.isChecked = false
+        chipGroup.chip_tl.isChecked = false
+        chipGroup.chip_all.isChecked = true
+    }
+
+    private fun resetSearchView(){
+        searchView.setQuery("", false)
     }
 
 }

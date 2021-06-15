@@ -56,32 +56,6 @@ object UserRepository {
         db.collection("users").document(uid).set(userFirebase)
     }
 
-    suspend fun findByUsuarioFilter(usuarioFilter: User): MutableList<User>{
-        val usuariosFiltrados: MutableList<User> = arrayListOf()
-        var userRef = db.collection(USERS_COLLECTION)
-                            .whereEqualTo(ROL, Rol.AT)
-        if (usuarioFilter.precio.isNotBlank()){
-            userRef = userRef.whereLessThanOrEqualTo(PRECIO, usuarioFilter.precio)
-        }
-        if (usuarioFilter.seniority.isNotBlank()){
-            userRef = userRef.whereEqualTo(SENIORITY, usuarioFilter.seniority)
-        }
-        /*if (usuarioFilter.tecnologias.isNotEmpty()){
-            // TODO preguntar al profe de taller
-            userRef = userRef.whereArrayContainsAny(TECNOLOGIAS, usuarioFilter.tecnologias)
-        }*/
-        return try {
-            val snapshot = userRef.get().await()
-            for (documento in snapshot.documents) {
-                documento.toObject<User>()?.let { usuariosFiltrados.add(it) }
-            }
-            usuariosFiltrados.filter { usuario -> usuario.tecnologias.containsAll(usuarioFilter.tecnologias) }.toMutableList()
-        } catch (e: Exception) {
-            Log.d("ERROR", e.message.toString())
-            arrayListOf()
-        }
-    }
-
     suspend fun findAllAT(): MutableList<User> {
         val usersAT: MutableList<User> = arrayListOf()
         return try {
