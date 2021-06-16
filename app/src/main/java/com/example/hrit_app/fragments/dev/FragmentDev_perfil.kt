@@ -147,7 +147,9 @@ class FragmentDev_perfil : Fragment() {
     {
         var mensajeError = ""
 
-        if(!emailEditText.text.toString().contains('@')  || emailEditText.text.toString().length > Validaciones.MAX_CARACT_EMAIL)
+        if(!emailEditText.text.toString().contains('@')  ||
+            !emailEditText.text.toString().contains('.') ||
+            emailEditText.text.toString().length > Validaciones.MAX_CARACT_EMAIL)
             mensajeError = "El email ingresado es inválido."
 
         if(passwordEditText.text.toString().length > Validaciones.MAX_CARACT_PASSW || passwordEditText.text.toString().length < Validaciones.MIN_CARACT_PASSW)
@@ -159,8 +161,11 @@ class FragmentDev_perfil : Fragment() {
         if(titleEditText.text.toString().length > Validaciones.MAX_CARACT_TITLE)
             mensajeError = "El título no puede contener más de " + Validaciones.MAX_CARACT_TITLE + " caracteres."
 
-        if(nombreEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE || apellidoEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE)
-            mensajeError = "El nombre o apellido no puede contener más de " + Validaciones.MAX_CARACT_NOMBRE + " caracteres."
+        if(nombreEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE ||
+            nombreEditText.text.toString().isEmpty() ||
+            apellidoEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE ||
+            apellidoEditText.text.toString().isEmpty())
+            mensajeError = "El nombre o apellido no pueden estar en blanco ni contener más de " + Validaciones.MAX_CARACT_NOMBRE + " caracteres."
 
         return mensajeError
     }
