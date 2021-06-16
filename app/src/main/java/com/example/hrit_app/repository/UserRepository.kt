@@ -3,6 +3,7 @@ package com.example.hrit_app.repository
 import android.util.Log
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.utils.constants.Rol
+import com.example.hrit_app.utils.constants.Seniority
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase

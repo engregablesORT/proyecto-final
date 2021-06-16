@@ -6,29 +6,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FDFDFD"
+    android:visibility="visible"
     tools:context=".fragments.rrhh.FragmentHR_Home">
 
-    <TextView
-        android:id="@+id/filterText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+    <ImageView
+        android:id="@+id/trashFilter"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
-        android:text="FILTRAR"
-        android:textColor="@color/hrit_primary"
+        android:src="@drawable/trash"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
+        app:layout_constraintTop_toBottomOf="@+id/homeHrCategoriasTec" />
+
+    <Spinner
+        android:id="@+id/homeHrCategoriasTec"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:autofillHints="Seleccionar Categoría ..."
+        android:background="@drawable/button_rounded"
+        android:backgroundTint="#64B5C1"
+        android:dropDownSelector="@android:drawable/arrow_down_float"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recTecnologias"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/home_hr_text_tecnologias">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -44,24 +63,26 @@
     </SearchView>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/home_hr_text_tecnologias"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="sans-serif"
         android:text="Tecnologías"
         android:textColor="#4E4D4D"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/homeHrCategoriasTec" />
 
     <TextView
         android:id="@+id/categoriaText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="25dp"
-        android:text="Asesores Técnicos"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="20dp"
+        android:text="Asesores
+"
         android:textColor="#FF4E4D4D"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recTecnologias" />
@@ -78,5 +99,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoriaText" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/seniority_chips_2"
+        android:layout_width="267dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="28dp"
+        app:checkedChip="@+id/chip_all"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recTecnologias"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_all"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ALL"
+            app:chipMinTouchTargetSize="35dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_jr"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JR"
+            app:chipMinTouchTargetSize="35dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_ssr"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SSR"
+            app:chipMinTouchTargetSize="35dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_sr"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SR"
+            app:chipMinTouchTargetSize="35dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_tl"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LT"
+            app:chipMinTouchTargetSize="35dp" />
+
+
+    </com.google.android.material.chip.ChipGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

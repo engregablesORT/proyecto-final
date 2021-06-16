@@ -35,14 +35,6 @@ class UserService {
         return userRepository.findAllAT()
     }
 
-    fun findByNombre(textNombre: String, asesoresTecnicos:MutableList<User>): MutableList<User> {
-        val usuariosFiltrados = asesoresTecnicos.filter { usuario ->
-            usuario.rol.equals(Rol.AT) && (usuario.name.toUpperCase().contains(textNombre.toUpperCase()) ||
-                    usuario.lastName.toUpperCase().contains(textNombre.toUpperCase()))
-        }
-        return usuariosFiltrados.toMutableList()
-    }
-
 
     fun createUserFirebase(user: User, uid: String) {
         userRepository.crearUsuarioFirebase(user, uid)
