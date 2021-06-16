@@ -7,6 +7,59 @@
     android:layout_height="match_parent"
     tools:context=".fragments.dev.FragmentDev_historial" >
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/historialhr_asesores_cl"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:background="#D5D5D5"
+        app:layout_constraintBottom_toTopOf="@+id/historialTransaccionesTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/historialdev_textoCalif"
+            android:layout_width="0dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="16dp"
+            android:text="Tu calificación"
+            android:textColor="#0E0E0E"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/historialdev_valoracion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/historialdev_valoracion"
+            android:layout_width="21dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:text="x.x"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ratingBar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:isIndicator="false"
+            android:rating="3.5"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_transacciones"
         android:layout_width="347dp"
@@ -34,40 +87,11 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="56dp"
-        android:background="#D5D5D6"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/historialTransaccionesTitle"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/historialhr_entrevistas_rechazadas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="x"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="#EF5350" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="Rechazadas"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/black" />
-
-    </LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="159dp"
         android:layout_height="182dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="80dp"
         android:background="#D5D5D6"
         android:orientation="vertical"
         android:padding="16dp"
@@ -93,10 +117,40 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="160dp"
         android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="80dp"
+        android:background="#D5D5D6"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/historialTransaccionesTitle"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/historialhr_entrevistas_rechazadas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="#EF5350" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Rechazadas"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="24dp"
         android:background="#D5D5D6"
         android:orientation="vertical"
         android:padding="16dp"
@@ -128,7 +182,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/hrit_primary"
-        android:text="Estadisticas del desarrollador"
+        android:text="Resumen general"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -142,7 +196,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
-        android:text="Historial"
+        android:text="Tus estadísticas"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -184,4 +238,5 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/rec_transacciones"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
