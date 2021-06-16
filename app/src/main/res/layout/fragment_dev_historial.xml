@@ -181,7 +181,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/hrit_primary"
-        android:text="Resumen general"
+        android:text="Mi Resumen general"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
