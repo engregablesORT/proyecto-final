@@ -36,6 +36,12 @@ class FragmentDev_perfil : Fragment() {
     lateinit var senioritySeleccionado: String
     lateinit var editarTecnologias: Button
 
+    val MIN_CARACT_PASSW = 6
+    val MAX_CARACT_PASSW = 15
+    val MAX_CARACT_DESC = 256
+    val MAX_CARACT_TITLE = 24
+    val MAX_CARACT_NOMBRE = 24
+
     // User
     lateinit var user: User
     var userService: UserService = UserService()
@@ -84,26 +90,32 @@ class FragmentDev_perfil : Fragment() {
             }
         }
         btnGuardarDevPerfil.setOnClickListener {
-            val userNuevo = User(
-                uidKey,
-                emailEditText.text.toString(),
-                passwordEditText.text.toString(),
-                nombreEditText.text.toString(),
-                apellidoEditText.text.toString(),
-                user.rol,
-                user.tecnologias,
-                descripcionEditText.text.toString(),
-                precioHoraEdit.text.toString(),
-                titleEditText.text.toString(),
-                senioritySeleccionado,
-                "",
-                0.0
-            )
-            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT)
-                .setTextColor(Color.GREEN).show()
-            userService.updateAsesorTecnico(userNuevo, uidKey)
-            Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT)
-                .setTextColor(Color.GREEN).show()
+            var mensajeError = validarDatos()
+
+            if(mensajeError.equals(""))
+            {
+                val userNuevo = User(
+                    uidKey,
+                    emailEditText.text.toString(),
+                    passwordEditText.text.toString(),
+                    nombreEditText.text.toString(),
+                    apellidoEditText.text.toString(),
+                    user.rol,
+                    user.tecnologias,
+                    descripcionEditText.text.toString(),
+                    precioHoraEdit.text.toString(),
+                    titleEditText.text.toString(),
+                    senioritySeleccionado,
+                    "",
+                    0.0
+                )
+                Snackbar.make(v, "Los cambios fueron guardados.", Snackbar.LENGTH_SHORT)
+                    .setTextColor(Color.GREEN).show()
+                userService.updateAsesorTecnico(userNuevo, uidKey)
+            } else {
+                Snackbar.make(v, mensajeError, Snackbar.LENGTH_SHORT)
+                    .setTextColor(Color.RED).show()
+            }
         }
 
         editarTecnologias.setOnClickListener {
@@ -134,6 +146,28 @@ class FragmentDev_perfil : Fragment() {
         } else {
             spinner.setSelection(0)
         }
+    }
+
+    private fun validarDatos() : String
+    {
+        var mensajeError = ""
+
+        if(!emailEditText.text.toString().contains('@'))
+            mensajeError = "El email ingresado es inválido."
+
+        if(passwordEditText.text.toString().length > MAX_CARACT_PASSW || passwordEditText.text.toString().length < MIN_CARACT_PASSW)
+            mensajeError = "La contraseña no puede contener menos de " + MIN_CARACT_PASSW + " ni más de " + MAX_CARACT_PASSW + " caracteres."
+
+        if(descripcionEditText.text.toString().length > MAX_CARACT_DESC)
+            mensajeError = "La descripción no puede contener más de " + MAX_CARACT_DESC + " caracteres."
+
+        if(titleEditText.text.toString().length > MAX_CARACT_TITLE)
+            mensajeError = "El título no puede contener más de " + MAX_CARACT_TITLE + " caracteres."
+
+        if(nombreEditText.text.toString().length > MAX_CARACT_NOMBRE || apellidoEditText.text.toString().length > MAX_CARACT_NOMBRE)
+            mensajeError = "El nombre o apellido no puede contener más de " + MAX_CARACT_NOMBRE + " caracteres."
+
+        return mensajeError
     }
 
     private fun displaySpinner() {
