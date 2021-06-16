@@ -14,6 +14,7 @@ import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Seniority
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
+import com.example.hrit_app.utils.constants.Validaciones
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,12 +36,6 @@ class FragmentDev_perfil : Fragment() {
     lateinit var spinner: Spinner
     lateinit var senioritySeleccionado: String
     lateinit var editarTecnologias: Button
-
-    val MIN_CARACT_PASSW = 6
-    val MAX_CARACT_PASSW = 15
-    val MAX_CARACT_DESC = 256
-    val MAX_CARACT_TITLE = 24
-    val MAX_CARACT_NOMBRE = 24
 
     // User
     lateinit var user: User
@@ -109,8 +104,8 @@ class FragmentDev_perfil : Fragment() {
                     "",
                     0.0
                 )
-                Snackbar.make(v, "Los cambios fueron guardados.", Snackbar.LENGTH_SHORT)
-                    .setTextColor(Color.GREEN).show()
+                Snackbar.make(v, "El usuario ha sido actualizado.", Snackbar.LENGTH_SHORT)
+                    .show()
                 userService.updateAsesorTecnico(userNuevo, uidKey)
             } else {
                 Snackbar.make(v, mensajeError, Snackbar.LENGTH_SHORT)
@@ -152,20 +147,20 @@ class FragmentDev_perfil : Fragment() {
     {
         var mensajeError = ""
 
-        if(!emailEditText.text.toString().contains('@'))
+        if(!emailEditText.text.toString().contains('@')  || emailEditText.text.toString().length > Validaciones.MAX_CARACT_EMAIL)
             mensajeError = "El email ingresado es inválido."
 
-        if(passwordEditText.text.toString().length > MAX_CARACT_PASSW || passwordEditText.text.toString().length < MIN_CARACT_PASSW)
-            mensajeError = "La contraseña no puede contener menos de " + MIN_CARACT_PASSW + " ni más de " + MAX_CARACT_PASSW + " caracteres."
+        if(passwordEditText.text.toString().length > Validaciones.MAX_CARACT_PASSW || passwordEditText.text.toString().length < Validaciones.MIN_CARACT_PASSW)
+            mensajeError = "La contraseña no puede contener menos de " + Validaciones.MIN_CARACT_PASSW + " ni más de " + Validaciones.MAX_CARACT_PASSW + " caracteres."
 
-        if(descripcionEditText.text.toString().length > MAX_CARACT_DESC)
-            mensajeError = "La descripción no puede contener más de " + MAX_CARACT_DESC + " caracteres."
+        if(descripcionEditText.text.toString().length > Validaciones.MAX_CARACT_DESC)
+            mensajeError = "La descripción no puede contener más de " + Validaciones.MAX_CARACT_DESC + " caracteres."
 
-        if(titleEditText.text.toString().length > MAX_CARACT_TITLE)
-            mensajeError = "El título no puede contener más de " + MAX_CARACT_TITLE + " caracteres."
+        if(titleEditText.text.toString().length > Validaciones.MAX_CARACT_TITLE)
+            mensajeError = "El título no puede contener más de " + Validaciones.MAX_CARACT_TITLE + " caracteres."
 
-        if(nombreEditText.text.toString().length > MAX_CARACT_NOMBRE || apellidoEditText.text.toString().length > MAX_CARACT_NOMBRE)
-            mensajeError = "El nombre o apellido no puede contener más de " + MAX_CARACT_NOMBRE + " caracteres."
+        if(nombreEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE || apellidoEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE)
+            mensajeError = "El nombre o apellido no puede contener más de " + Validaciones.MAX_CARACT_NOMBRE + " caracteres."
 
         return mensajeError
     }
