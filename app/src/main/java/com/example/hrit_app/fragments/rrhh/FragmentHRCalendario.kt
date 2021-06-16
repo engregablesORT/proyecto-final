@@ -165,8 +165,9 @@ class FragmentHRCalendario : Fragment() {
                 entrevista.id,
                 Entrevista.Constants.estadoCancelada
             )
-            entrevistasList.removeAt(posicionEntrevista)
-            setRecyclerView()
+            val entrevistaBorrada = entrevistasFiltradas.removeAt(posicionEntrevista)
+            entrevistasList.remove(entrevistaBorrada)
+            setRecyclerView2("Pendientes")
         }
     }
 

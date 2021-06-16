@@ -9,6 +9,7 @@ class Entrevista(
     nombreEmpresaHr: String,
     idUserDev: String,
     idUserHr: String,
+    nombreDev: String,
     fecha: String,
     duracion: Int,
     valoracion: Int,
@@ -18,13 +19,14 @@ class Entrevista(
     tecnologias: List<String>
 ) : Parcelable {
 
-    constructor() : this("", "", "", "", "", "", 0, 0, 0, "", "", emptyList())
+    constructor() : this("", "", "", "", "", "", "", 0, 0, 0, "", "", emptyList())
 
     var id: String
     var nombreUserHr: String
     var nombreEmpresaHr: String
     var idUserDev: String
     var idUserHr: String
+    var nombreDev: String
     var fecha: String
     var duracion: Int
     var valoracion: Int
@@ -50,6 +52,7 @@ class Entrevista(
         this.nombreEmpresaHr = nombreEmpresaHr
         this.idUserDev = idUserDev
         this.idUserHr = idUserHr
+        this.nombreDev = nombreDev
         this.fecha = fecha
         this.duracion = duracion
         this.valoracion = valoracion

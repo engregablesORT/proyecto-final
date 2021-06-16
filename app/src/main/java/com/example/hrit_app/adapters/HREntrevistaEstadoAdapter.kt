@@ -84,7 +84,7 @@ class HREntrevistaEstadoAdapter(
 
         holder.setFecha(entrevistasList[position].fecha)
         holder.setHora(entrevistasList[position].duracion)
-        holder.setNombreDev(entrevistasList[position].idUserDev)
+        holder.setNombreDev(entrevistasList[position].nombreDev)
 
         when (entrevistasList[position].estado) {
             Entrevista.Constants.estadoAceptado -> {
