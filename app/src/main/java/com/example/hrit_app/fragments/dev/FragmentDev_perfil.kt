@@ -14,6 +14,7 @@ import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.Seniority
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
+import com.example.hrit_app.utils.constants.Validaciones
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -84,26 +85,32 @@ class FragmentDev_perfil : Fragment() {
             }
         }
         btnGuardarDevPerfil.setOnClickListener {
-            val userNuevo = User(
-                uidKey,
-                emailEditText.text.toString(),
-                passwordEditText.text.toString(),
-                nombreEditText.text.toString(),
-                apellidoEditText.text.toString(),
-                user.rol,
-                user.tecnologias,
-                descripcionEditText.text.toString(),
-                precioHoraEdit.text.toString(),
-                titleEditText.text.toString(),
-                senioritySeleccionado,
-                "",
-                0.0
-            )
-            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT)
-                .setTextColor(Color.GREEN).show()
-            userService.updateAsesorTecnico(userNuevo, uidKey)
-            Snackbar.make(v, "Usuario ha sido actualizado", Snackbar.LENGTH_SHORT)
-                .setTextColor(Color.GREEN).show()
+            var mensajeError = validarDatos()
+
+            if(mensajeError.equals(""))
+            {
+                val userNuevo = User(
+                    uidKey,
+                    emailEditText.text.toString(),
+                    passwordEditText.text.toString(),
+                    nombreEditText.text.toString(),
+                    apellidoEditText.text.toString(),
+                    user.rol,
+                    user.tecnologias,
+                    descripcionEditText.text.toString(),
+                    precioHoraEdit.text.toString(),
+                    titleEditText.text.toString(),
+                    senioritySeleccionado,
+                    "",
+                    0.0
+                )
+                Snackbar.make(v, "El usuario ha sido actualizado.", Snackbar.LENGTH_SHORT)
+                    .show()
+                userService.updateAsesorTecnico(userNuevo, uidKey)
+            } else {
+                Snackbar.make(v, mensajeError, Snackbar.LENGTH_SHORT)
+                    .setTextColor(Color.RED).show()
+            }
         }
 
         editarTecnologias.setOnClickListener {
@@ -134,6 +141,33 @@ class FragmentDev_perfil : Fragment() {
         } else {
             spinner.setSelection(0)
         }
+    }
+
+    private fun validarDatos() : String
+    {
+        var mensajeError = ""
+
+        if(!emailEditText.text.toString().contains('@')  ||
+            !emailEditText.text.toString().contains('.') ||
+            emailEditText.text.toString().length > Validaciones.MAX_CARACT_EMAIL)
+            mensajeError = "El email ingresado es inválido."
+
+        if(passwordEditText.text.toString().length > Validaciones.MAX_CARACT_PASSW || passwordEditText.text.toString().length < Validaciones.MIN_CARACT_PASSW)
+            mensajeError = "La contraseña no puede contener menos de " + Validaciones.MIN_CARACT_PASSW + " ni más de " + Validaciones.MAX_CARACT_PASSW + " caracteres."
+
+        if(descripcionEditText.text.toString().length > Validaciones.MAX_CARACT_DESC)
+            mensajeError = "La descripción no puede contener más de " + Validaciones.MAX_CARACT_DESC + " caracteres."
+
+        if(titleEditText.text.toString().length > Validaciones.MAX_CARACT_TITLE)
+            mensajeError = "El título no puede contener más de " + Validaciones.MAX_CARACT_TITLE + " caracteres."
+
+        if(nombreEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE ||
+            nombreEditText.text.toString().isEmpty() ||
+            apellidoEditText.text.toString().length > Validaciones.MAX_CARACT_NOMBRE ||
+            apellidoEditText.text.toString().isEmpty())
+            mensajeError = "El nombre o apellido no pueden estar en blanco ni contener más de " + Validaciones.MAX_CARACT_NOMBRE + " caracteres."
+
+        return mensajeError
     }
 
     private fun displaySpinner() {

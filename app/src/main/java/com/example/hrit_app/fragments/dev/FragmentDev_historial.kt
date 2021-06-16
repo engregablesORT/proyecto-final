@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.hrit_app.adapters.EntrevistaListAdapter
 import com.example.hrit_app.adapters.TransaccionListAdapter
 import com.example.hrit_app.entities.Entrevista
 import com.example.hrit_app.services.EntrevistaService
+import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.LoadingDialog
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
 import kotlinx.android.synthetic.main.item_transaccion.*
@@ -30,10 +32,14 @@ class FragmentDev_historial : Fragment() {
     private lateinit var txtEntrevistasTotales: TextView
     private lateinit var txtEntrevistasRechazadas: TextView
     private lateinit var txtGananciasTotales: TextView
+    private lateinit var txtValoracion : TextView
 
     private var entrevistasFinalizadas : MutableList<Entrevista> = ArrayList<Entrevista>()
     private var entrevistasTotales : MutableList<Entrevista> = ArrayList<Entrevista>()
     private var entrevistaService: EntrevistaService = EntrevistaService()
+
+    private var valoracionDev = 0.0
+    private var userService : UserService = UserService()
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -56,6 +62,7 @@ class FragmentDev_historial : Fragment() {
         txtEntrevistasTotales = v.findViewById(R.id.historialdev_entrevistas_totales)
         txtEntrevistasRechazadas = v.findViewById(R.id.historialhr_entrevistas_rechazadas)
         txtGananciasTotales = v.findViewById(R.id.historialdev_ganancias_totales)
+        txtValoracion = v.findViewById(R.id.historialdev_valoracion)
         recTransacciones = v.findViewById(R.id.rec_transacciones)
 
         sharedPreferences = requireContext().getSharedPreferences(
@@ -82,10 +89,12 @@ class FragmentDev_historial : Fragment() {
         scope.launch {
             entrevistasFinalizadas = entrevistaService.findAllEntrevistasFinalizadasByDev(uid)
             entrevistasTotales = entrevistaService.findAllEntrevistasByDEV(uid)
+            valoracionDev = userService.findByID(uid)?.valoracion!!
 
             activity?.runOnUiThread {
                 actualizarEntrevistas(entrevistasFinalizadas)
                 setTextosEntrevistas()
+                setValoracion()
                 dialogLoading.terminarCargando()
             }
         }
@@ -104,6 +113,11 @@ class FragmentDev_historial : Fragment() {
             ).size.toString()
         txtGananciasTotales.text =
             "$ " + sumarTotalGanancias(entrevistasFinalizadas).toString()
+    }
+
+    private fun setValoracion() {
+        txtValoracion.text = valoracionDev.toString()
+        view?.findViewById<RatingBar>(R.id.ratingBar)!!.rating = valoracionDev.toFloat()
     }
 
     private fun filtrarEntrevistasPorEstado(

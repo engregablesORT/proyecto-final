@@ -2,6 +2,7 @@ package com.example.hrit_app.fragments.rrhh
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.hrit_app.R
 import com.example.hrit_app.entities.User
 import com.example.hrit_app.services.UserService
 import com.example.hrit_app.utils.constants.SharedPreferencesKey
+import com.example.hrit_app.utils.constants.Validaciones
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -110,25 +112,58 @@ class FragmentHRPerfil : Fragment() {
         }
 
         btnGuardar.setOnClickListener {
-            val userNuevo = User(
-                "",
-                inputEmailEdit.text.toString(),
-                inputPasswordEdit.text.toString(),
-                inputFirstNameEdit.text.toString(),
-                inputLastNameEdit.text.toString(),
-                user.rol,
-                user.tecnologias,
-                "",
-                "",
-                inputTitularEdit.text.toString(),
-                "",
-                inputEmpresaEdit.text.toString(),
-                user.valoracion
-            )
-            Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
-            userService.updateUserHR(userNuevo, uidKey)
-            deshabilitarFormulario()
+            var mensajeError = validarDatos()
+
+            if(mensajeError.equals("")) {
+                val userNuevo = User(
+                    "",
+                    inputEmailEdit.text.toString(),
+                    inputPasswordEdit.text.toString(),
+                    inputFirstNameEdit.text.toString(),
+                    inputLastNameEdit.text.toString(),
+                    user.rol,
+                    user.tecnologias,
+                    "",
+                    "",
+                    inputTitularEdit.text.toString(),
+                    "",
+                    inputEmpresaEdit.text.toString(),
+                    user.valoracion
+                )
+                Snackbar.make(v, "El usuario ha sido actualizado", Snackbar.LENGTH_SHORT).show()
+                userService.updateUserHR(userNuevo, uidKey)
+                deshabilitarFormulario()
+            } else {
+                Snackbar.make(v, mensajeError, Snackbar.LENGTH_SHORT)
+                    .setTextColor(Color.RED).show()
+            }
         }
+    }
+
+    private fun validarDatos() : String {
+        var mensajeError = ""
+
+        if(!inputEmailEdit.text.toString().contains('@') ||
+            !inputEmailEdit.text.toString().contains('.') ||
+            inputEmailEdit.text.toString().length > Validaciones.MAX_CARACT_EMAIL)
+            mensajeError = "El email ingresado es inválido."
+
+        if(inputPasswordEdit.text.toString().length > Validaciones.MAX_CARACT_PASSW || inputPasswordEdit.text.toString().length < Validaciones.MIN_CARACT_PASSW)
+            mensajeError = "La contraseña no puede contener menos de " + Validaciones.MIN_CARACT_PASSW + " ni más de " + Validaciones.MAX_CARACT_PASSW + " caracteres."
+
+        if(inputEmpresaEdit.text.toString().length > Validaciones.MAX_CARACT_EMPRESA)
+            mensajeError = "El nombre de la empresa no puede contener más de " + Validaciones.MAX_CARACT_EMPRESA + " caracteres."
+
+        if(inputTitularEdit.text.toString().length > Validaciones.MAX_CARACT_TITLE)
+            mensajeError = "El titular no puede contener más de " + Validaciones.MAX_CARACT_TITLE + " caracteres."
+
+        if(inputFirstNameEdit.text.toString().length > Validaciones.MAX_CARACT_NOMBRE ||
+            inputFirstNameEdit.text.toString().isEmpty() ||
+            inputLastNameEdit.text.toString().length > Validaciones.MAX_CARACT_NOMBRE ||
+            inputLastNameEdit.text.toString().isEmpty())
+            mensajeError = "El nombre o apellido no pueden estar en blanco ni contener más de " + Validaciones.MAX_CARACT_NOMBRE + " caracteres."
+
+        return mensajeError
     }
 
     private fun setUserHintValues() {
