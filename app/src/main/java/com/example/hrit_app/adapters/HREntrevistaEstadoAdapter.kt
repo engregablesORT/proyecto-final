@@ -41,14 +41,6 @@ class HREntrevistaEstadoAdapter(
         view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_calendariohr_estado, parent, false)
         context = parent.context
-/*
-        scope.launch {
-            for(entrevista in entrevistasList){
-                entrevista.idUserDev = userService.findByID(entrevista.idUserDev)?.name.toString()
-            }
-        }
-*/
-
 
         return HREntrevistaAceptadaAdapterHolder(view)
     }

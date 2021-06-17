@@ -68,8 +68,11 @@ class Entrevista(
         nombreEmpresaHr = parcel.readString().toString()
         idUserDev = parcel.readString().toString()
         idUserHr = parcel.readString().toString()
+        nombreDev = parcel.readString().toString()
         fecha = parcel.readString().toString()
+        duracion = parcel.readInt()
         valoracion = parcel.readInt()
+        precio = parcel.readInt()
         estado = parcel.readString().toString()
         comentarios = parcel.readString().toString()
     }

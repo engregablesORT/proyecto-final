@@ -199,6 +199,10 @@ class FragmentHRCalendario : Fragment() {
     private fun setRecyclerView2(estado: String) {
         val estadoConstant = buscarConstantEstado(estado)
         entrevistasFiltradas = filtrarEntrevistasPorEstado(entrevistasList, estadoConstant)
+        entrevistaListAdapter = HREntrevistaEstadoAdapter(entrevistasList) { x ->
+            onItemClick(x)
+        }
+
 
         if (entrevistasFiltradas.isEmpty()) {
             listaVaciaView()
