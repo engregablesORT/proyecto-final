@@ -142,11 +142,13 @@ class FragmentHRHistorial : Fragment() {
         val entrevistasCanceladas =
             filtrarEntrevistasPorEstado(entrevistasUser, Entrevista.Constants.estadoCancelada).size
 
-        val porcentajeExito =
-            entrevistasAceptadas * 100 / (entrevistasAceptadas + entrevistasRechazadas + entrevistasCanceladas)
+        if (entrevistasUser.size > 0) {
+            val porcentajeExito =
+                entrevistasAceptadas * 100 / (entrevistasAceptadas + entrevistasRechazadas + entrevistasCanceladas)
 
-        txtEntrevistasAceptadas.text =
-            "$entrevistasAceptadas (${porcentajeExito}% éxito)"
+            txtEntrevistasAceptadas.text =
+                "$entrevistasAceptadas (${porcentajeExito}% éxito)"
+        }
         txtEntrevistasRechazadas.text = entrevistasRechazadas.toString()
         txtEntrevistasCanceladas.text = entrevistasCanceladas.toString()
         txtEntrevistasSolicitadas.text = entrevistasUser.size.toString()
