@@ -145,9 +145,7 @@ class Fragment_signup : Fragment() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    //       Toast.makeText( "Authentication failed.",
-                    //        Toast.LENGTH_SHORT).show()
-                    //            updateUI(null)
+                    Snackbar.make(v, "Error al crear el usuario", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
